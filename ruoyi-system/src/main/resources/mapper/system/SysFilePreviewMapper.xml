@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysFilePreviewMapper">
+
+    <resultMap type="SysFilePreview" id="BusFilePreviewResult">
+        <result property="id"    column="id"    />
+        <result property="filename"    column="fileName"    />
+        <result property="filetype"    column="fileType"    />
+        <result property="uploadpath"    column="uploadPath"    />
+        <result property="uploadfilename"    column="uploadFileName"    />
+        <result property="pdfpath"    column="pdfPath"    />
+        <result property="pdfname"    column="pdfName"    />
+        <result property="documentType"    column="documentType"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="remark"    column="remark"    />
+        <result property="previewUrl"    column="preview_url"    />
+    </resultMap>
+
+    <sql id="selectBusFilePreviewVo">
+        select id, fileName, fileType, uploadPath, uploadFileName, pdfPath, pdfName,documentType, create_time, create_by, update_time, update_by, remark ,preview_url from bus_file_preview
+    </sql>
+
+    <select id="selectBusFilePreviewList" parameterType="SysFilePreview" resultMap="BusFilePreviewResult">
+        <include refid="selectBusFilePreviewVo"/>
+        <where>
+            <if test="filename != null  and filename != ''"> and fileName like concat('%', #{filename}, '%')</if>
+            <if test="filetype != null  and filetype != ''"> and fileType = #{filetype}</if>
+            <if test="uploadpath != null  and uploadpath != ''"> and uploadPath = #{uploadpath}</if>
+            <if test="uploadfilename != null  and uploadfilename != ''"> and uploadFileName like concat('%', #{uploadfilename}, '%')</if>
+            <if test="pdfpath != null  and pdfpath != ''"> and pdfPath = #{pdfpath}</if>
+            <if test="pdfname != null  and pdfname != ''"> and pdfName like concat('%', #{pdfname}, '%')</if>
+            <if test="documentType != null  and documentType != ''"> and documentType = #{documentType}</if>
+
+        </where>
+    </select>
+
+    <select id="selectBusFilePreviewById" parameterType="Long" resultMap="BusFilePreviewResult">
+        <include refid="selectBusFilePreviewVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertBusFilePreview" parameterType="SysFilePreview" useGeneratedKeys="true" keyProperty="id">
+        insert into bus_file_preview
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="filename != null">fileName,</if>
+            <if test="filetype != null">fileType,</if>
+            <if test="uploadpath != null">uploadPath,</if>
+            <if test="uploadfilename != null">uploadFileName,</if>
+            <if test="pdfpath != null">pdfPath,</if>
+            <if test="pdfname != null">pdfName,</if>
+            <if test="documentType != null and documentType != ''">documentType,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="remark != null">remark,</if>
+            <if test="previewUrl != null">preview_url,</if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="filename != null">#{filename},</if>
+            <if test="filetype != null">#{filetype},</if>
+            <if test="uploadpath != null">#{uploadpath},</if>
+            <if test="uploadfilename != null">#{uploadfilename},</if>
+            <if test="pdfpath != null">#{pdfpath},</if>
+            <if test="pdfname != null">#{pdfname},</if>
+            <if test="documentType != null and documentType != ''">#{documentType},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="remark != null">#{remark},</if>
+            <if test="previewUrl != null">#{previewUrl},</if>
+        </trim>
+    </insert>
+
+    <update id="updateBusFilePreview" parameterType="SysFilePreview">
+        update bus_file_preview
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="filename != null">fileName = #{filename},</if>
+            <if test="filetype != null">fileType = #{filetype},</if>
+            <if test="uploadpath != null">uploadPath = #{uploadpath},</if>
+            <if test="uploadfilename != null">uploadFileName = #{uploadfilename},</if>
+            <if test="pdfpath != null">pdfPath = #{pdfpath},</if>
+            <if test="pdfname != null">pdfName = #{pdfname},</if>
+            <if test="documentType != null and documentType != ''">documentType = #{documentType},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="remark != null">remark = #{remark},</if>
+            <if test="previewUrl != null">preview_url = #{previewUrl},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBusFilePreviewById" parameterType="Long">
+        delete from bus_file_preview where id = #{id}
+    </delete>
+
+    <delete id="deleteBusFilePreviewByIds" parameterType="String">
+        delete from bus_file_preview where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectBusFilePreviewByIds"  parameterType="Long" resultMap="BusFilePreviewResult">
+        <include refid="selectBusFilePreviewVo"/>
+        where id = #{id}
+
+    </select>
+    <select id="getDocumentCount" resultType="java.util.Map">
+        SELECT documentType,count(*) as docuCount FROM bus_file_preview
+        GROUP BY documentType;
+    </select>
+
+</mapper>
