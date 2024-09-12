@@ -1,93 +1,107 @@
-# questionnaire
+# distribution OS 项目开发手册
+
+## 开发手册
+
+**若依前后端分离开发手册**       [介绍 | RuoYi](http://doc.ruoyi.vip/ruoyi-vue/)
+
+**若依小程序开发手册**             [介绍 | RuoYi](http://doc.ruoyi.vip/ruoyi-app/)
+
+**springboot 开发文档** 			[Spring Boot 中文文档 (springdoc.cn)](https://springdoc.cn/spring-boot/)
+
+**vue2开发手册**						[简介 | Vue.js (vuejs.org)](https://cn.vuejs.org/guide/introduction.html)
+
+**redis开发文档**						[Documentation | Redis](https://redis.io/docs/)
+
+**Redis中文开发文档**				[Redis 教程_redis教程](https://www.redis.net.cn/tutorial/3501.html)
+
+**swaager接口开发文档**			[API Documentation & Design Tools for Teams | Swagger](https://swagger.io/)
+
+​	
 
 
 
-## Getting started
+## 项目简介
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+### 项目名称
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+distribution OS
 
-## Add your files
+### 项目描述
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+分销式维修系统
+
+### 项目目标
+
+分销式维修系统
+
+实现微信小程序分销式维修系统
+
+### 主要功能
+
+分销 维修 积分 管理 
+
+### 技术栈
+
+- 框架：若依 uniapp Element-UI  Uview
+- 后端：Java1.8、Spring Boot2、MySQL、Redis、Kafka等
+- 前端：Vue
+- 工具：Git、Maven、Docker、Swagger 等
+- 数据库：MySQL等
+- 部署：NGINX ，Apache，
+
+## 开发环境
+
+### 开发工具
+
+- 操作系统：Windows、Linux等
+- 编程语言：Java1.8、JavaScript 等
+- 开发工具：HBuildx、 IDEA、VSCode、Git、微信小程序等
+
+### 数据库环境
+
+- 数据库：MySQL、PostgreSQL、MongoDB等
+- 数据库工具：Navicat、MySQL Workbench、PostgreSQL Navigator、MongoDB Compass 等
+
+### 服务器和容器化技术
+
+- 服务器：Apache Tomcat、Nginx、Docker、Kubernetes等
+- 容器化技术：Docker、Kubernetes、Jenkins 等
+
+### 运行前的配置
+
+- 1、将其他文档格式转化为pdf格式需要按如下配置
+- 1.1、首先在你的本地电脑或者服务器的Linux环境下安装openoffice。
+- windows环境下参照：https://blog.51cto.com/gblfy/5654134 教程
+- linux环境下参照：https://blog.csdn.net/github_38924695/article/details/89470960 教程
+- 1.2、启动openoffice服务，在参考教程里有启动命令。
+- 1.3、修改application.yml配置文件中jodconverter配置下的“office-home”路径，修改为安装的openoffice路径。
+- 1.4、修改application.yml配置文件中ruoyi配置下的profile属性值。如果是window则不用修改，如果是Linux环境下运行则修改为“/home/ruoyi/uploadPath”。
+- 2、如果要预览文档需要修改application.yml文件里的httpUrl属性，改为电脑本机的ip地址。
+
+
+## 项目结构
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/ShanYouMuXi/questionnaire.git
-git branch -M main
-git push -uf origin main
+.git  			—这是一个隐藏的文件夹，用于存储Git版本控制系统的元数据。它跟踪项目的所有更改，并允许您在需要时回滚到之前的版本。
+.github                        —这个文件夹包含了与GitHub相关的文件，例如问题和拉取请求模板。
+.idea                           —这个文件夹包含了与IntelliJ IDEA（一个流行的Java集成开发环境）相关的配置文件。
+bin                              —这个文件夹包含了项目的可执行脚本，例如`ry.bat`（Windows批处理文件）和`ry.sh`（Unix shell脚本）。
+doc                             —这个文件夹包含了项目的文档，例如API文档、用户手册等。
+ruoyi-admin                —项目自带默认控制层管理模块。
+RuoYi-App                 —项目小程序前端。
+ruoyi-common           —项目通用组件模块。
+ruoyi-framework        —项目框架模块。
+ruoyi-generator         —项目代码生成器模块或组件。
+ruoyi-quartz              —项目定时模块。
+ruoyi-system             — 项目系统模块。
+ruoyi-ui                     —项目前端UI。
+sql                            —项目数据库。
+.gitignore                  —这个文件包含了一个列表，列出了Git应该忽略的文件和文件夹。这些文件和文件夹不会被版本控制系统跟踪。
+LICENSE                 —这个文件包含了项目的许可证信息，说明了项目的使用条款和限制。
+pom.xml                   —这个文件是一个Maven项目的配置文件，用于定义项目的构建和依赖关系。
+README.md           —这个文件包含了项目的自述信息，通常包括项目的简介、安装和使用说明等。
+ruoyi.iml                   —这是一个与IntelliJ IDEA相关的文件，用于存储项目的模块配置信息。
+ry.bat                        —这是一个Windows批处理文件，用于运行项目的脚本或命令。
+ry.sh                         —这是一个Unix shell脚本，用于运行项目的脚本或命令。
 ```
 
-## Integrate with your tools
-
-- [ ] [Set up project integrations](https://gitlab.com/ShanYouMuXi/questionnaire/-/settings/integrations)
-
-## Collaborate with your team
-
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
-
-## Test and Deploy
-
-Use the built-in continuous integration in GitLab.
-
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
-
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
-
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
-
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
-
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
-
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
-
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
