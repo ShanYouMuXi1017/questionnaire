@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.QuestAnswerMapper">
+    
+    <resultMap type="QuestAnswer" id="QuestAnswerResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="issueId"    column="issue_id"    />
+        <result property="answer"    column="answer"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+    </resultMap>
+
+    <sql id="selectQuestAnswerVo">
+        select id, user_id, router_id, issue_id, answer, create_date, update_date from quest_answer
+    </sql>
+
+    <select id="selectQuestAnswerList" parameterType="QuestAnswer" resultMap="QuestAnswerResult">
+        <include refid="selectQuestAnswerVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="routerId != null "> and router_id = #{routerId}</if>
+            <if test="issueId != null "> and issue_id = #{issueId}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuestAnswerById" parameterType="Long" resultMap="QuestAnswerResult">
+        <include refid="selectQuestAnswerVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuestAnswer" parameterType="QuestAnswer">
+        insert into quest_answer
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="routerId != null">router_id,</if>
+            <if test="issueId != null">issue_id,</if>
+            <if test="answer != null">answer,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="routerId != null">#{routerId},</if>
+            <if test="issueId != null">#{issueId},</if>
+            <if test="answer != null">#{answer},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuestAnswer" parameterType="QuestAnswer">
+        update quest_answer
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="routerId != null">router_id = #{routerId},</if>
+            <if test="issueId != null">issue_id = #{issueId},</if>
+            <if test="answer != null">answer = #{answer},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuestAnswerById" parameterType="Long">
+        delete from quest_answer where id = #{id}
+    </delete>
+
+    <delete id="deleteQuestAnswerByIds" parameterType="String">
+        delete from quest_answer where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

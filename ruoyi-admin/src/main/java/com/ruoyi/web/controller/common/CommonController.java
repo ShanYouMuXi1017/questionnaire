@@ -1,6 +1,5 @@
 package com.ruoyi.web.controller.common;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -24,7 +23,7 @@ import com.ruoyi.framework.config.ServerConfig;
 
 /**
  * 通用请求处理
- *
+ * 
  * @author ruoyi
  */
 @RestController
@@ -40,7 +39,7 @@ public class CommonController
 
     /**
      * 通用下载请求
-     *
+     * 
      * @param fileName 文件名称
      * @param delete 是否删除
      */
@@ -134,28 +133,6 @@ public class CommonController
     }
 
     /**
-     * 通用上传请求返回磁盘路径
-     */
-    @PostMapping("/uploadWithAbsolutePath")
-    public AjaxResult uploadFileWithAbsolutePath(MultipartFile file) throws Exception
-    {
-        try
-        {
-            // 上传文件路径
-            String filePath = RuoYiConfig.getUploadPath();
-            // 上传并返回新文件名称
-            String fileName = FileUploadUtils.uploadWithAbsolutePath(filePath, file);
-            AjaxResult ajax = AjaxResult.success();
-            ajax.put("uploadpath", filePath+ File.separator+fileName);
-            return ajax;
-        }
-        catch (Exception e)
-        {
-            return AjaxResult.error(e.getMessage());
-        }
-    }
-
-    /**
      * 本地资源通用下载
      */
     @GetMapping("/download/resource")
@@ -177,26 +154,6 @@ public class CommonController
             response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
             FileUtils.setAttachmentResponseHeader(response, downloadName);
             FileUtils.writeBytes(downloadPath, response.getOutputStream());
-        }
-        catch (Exception e)
-        {
-            log.error("下载文件失败", e);
-        }
-    }
-
-    @GetMapping("/downloadResourceeasy")
-    public void resourceDownloadEasy(String resource, HttpServletRequest request, HttpServletResponse response)
-            throws Exception
-    {
-        try
-        {
-            if (!FileUtils.checkAllowDownload(resource))
-            {
-                throw new Exception(StringUtils.format("资源文件({})非法，不允许下载。 ", resource));
-            }
-            response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-            FileUtils.setAttachmentResponseHeader(response, resource);
-            FileUtils.writeBytes(resource, response.getOutputStream());
         }
         catch (Exception e)
         {
