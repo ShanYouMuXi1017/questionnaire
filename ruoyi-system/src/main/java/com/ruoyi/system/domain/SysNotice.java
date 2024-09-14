@@ -9,7 +9,7 @@ import com.ruoyi.common.xss.Xss;
 
 /**
  * 通知公告表 sys_notice
- *
+ * 
  * @author ruoyi
  */
 public class SysNotice extends BaseEntity
@@ -22,7 +22,7 @@ public class SysNotice extends BaseEntity
     /** 公告标题 */
     private String noticeTitle;
 
-    /** 公告类型（1通知 2公告 3研发页面公告） */
+    /** 公告类型（1通知 2公告） */
     private String noticeType;
 
     /** 公告内容 */

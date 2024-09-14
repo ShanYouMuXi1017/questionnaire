@@ -70,7 +70,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/index'),
         name: 'Index',
-        meta: { title: '首页', icon: 'home', affix: true }
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -92,34 +92,6 @@ export const constantRoutes = [
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
-  {
-    path: '/system/user-address',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:address:list'],
-    children: [
-      {
-        path: 'address',
-        component: () => import('@/views/system/user/address'),
-        name: 'address',
-        meta: { title: '用户地址', activeMenu: '/system/user' }
-      }
-    ]
-  },
-  {
-    path: '/system/user-visit',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:visit:list'],
-    children: [
-      {
-        path: 'visit',
-        component: () => import('@/views/system/user/visit'),
-        name: 'visit',
-        meta: { title: '委托拜访', activeMenu: '/system/user' }
-      }
-    ]
-  },
   {
     path: '/system/user-auth',
     component: Layout,
@@ -193,8 +165,8 @@ export const dynamicRoutes = [
 ]
 
 // 防止连续点击多次路由报错
-let routerPush = Router.prototype.push
-let routerReplace = Router.prototype.replace
+let routerPush = Router.prototype.push;
+let routerReplace = Router.prototype.replace;
 // push
 Router.prototype.push = function push(location) {
   return routerPush.call(this, location).catch(err => err)
@@ -205,9 +177,7 @@ Router.prototype.replace = function push(location) {
 }
 
 export default new Router({
-  base:'admin',
   mode: 'history', // 去掉url中的#
-  // mode: 'hash',
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })

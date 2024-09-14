@@ -12,7 +12,7 @@
       <el-form-item label="操作人员" prop="createBy">
         <el-input
           v-model="queryParams.createBy"
-          placeholder="操作人员账户模糊查询"
+          placeholder="请输入操作人员"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -42,8 +42,7 @@
           size="mini"
           @click="handleAdd"
           v-hasPermi="['system:notice:add']"
-        >新增
-        </el-button>
+        >新增</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -54,8 +53,7 @@
           :disabled="single"
           @click="handleUpdate"
           v-hasPermi="['system:notice:edit']"
-        >修改
-        </el-button>
+        >修改</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -66,26 +64,14 @@
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['system:notice:remove']"
-        >删除
-        </el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          round
-          icon="el-icon-warning-outline"
-          size="mini"
-          @click="handleNoticeTip"
-        >
-        </el-button>
+        >删除</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
     <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center"/>
-      <el-table-column label="序号" align="center" prop="noticeId" width="100"/>
+      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column label="序号" align="center" prop="noticeId" width="100" />
       <el-table-column
         label="公告标题"
         align="center"
@@ -102,7 +88,7 @@
           <dict-tag :options="dict.type.sys_notice_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="创建者" align="center" prop="createBy" width="100"/>
+      <el-table-column label="创建者" align="center" prop="createBy" width="100" />
       <el-table-column label="创建时间" align="center" prop="createTime" width="100">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createTime, '{y}-{m}-{d}') }}</span>
@@ -116,23 +102,14 @@
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:notice:edit']"
-          >修改
-          </el-button>
+          >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
             v-hasPermi="['system:notice:remove']"
-          >删除
-          </el-button>
-          <el-button
-            size="mini"
-            type="text"
-            icon="el-icon-view"
-            @click="openDetailDialog(scope.row.noticeId)"
-          >预览
-          </el-button>
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -151,7 +128,7 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="公告标题" prop="noticeTitle">
-              <el-input v-model="form.noticeTitle" placeholder="请输入公告标题"/>
+              <el-input v-model="form.noticeTitle" placeholder="请输入公告标题" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -173,8 +150,7 @@
                   v-for="dict in dict.type.sys_notice_status"
                   :key="dict.value"
                   :label="dict.value"
-                >{{ dict.label }}
-                </el-radio>
+                >{{dict.label}}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -190,40 +166,19 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
-
-    <!--预览通知公告详情 -->
-    <el-dialog :title="form.noticeTitle" :visible.sync="openDetail" width="800px" append-to-body>
-      <div style="margin-top:-20px;margin-bottom:10px;">
-        <el-tag size="mini" effect="dark" type="warning" v-if="form.noticeType==2">公告</el-tag>
-        <el-tag size="mini" effect="dark" v-else>信息</el-tag>
-        <span style="margin-left:20px;">{{ form.createTime }}</span> <br/>
-        <p style="margin: 8px; font-weight: bold">!注意: 因为渲染模式区别, 故公告在小程序上的板式可能有所不同!</p>
-        <hr/>
-      </div>
-      <div v-loading="loadingDetail" class="content">
-        <div v-html="form.noticeContent" style="margin-left:0px;margin-right:76px" class="ql-editor"></div>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="closeDetail"> 关 闭</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import {listNotice, getNotice, delNotice, addNotice, updateNotice, getRAndDNtceNum} from '@/api/system/notice'
+import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice";
 
 export default {
-  name: 'Notice',
+  name: "Notice",
   dicts: ['sys_notice_status', 'sys_notice_type'],
   data() {
     return {
       // 遮罩层
       loading: true,
-      // 详情加载
-      loadingDetail: false,
-      // 打开详情
-      openDetail: false,
       // 选中数组
       ids: [],
       // 非单个禁用
@@ -237,7 +192,7 @@ export default {
       // 公告表格数据
       noticeList: [],
       // 弹出层标题
-      title: '',
+      title: "",
       // 是否显示弹出层
       open: false,
       // 查询参数
@@ -250,37 +205,34 @@ export default {
       },
       // 表单参数
       form: {},
-      //研发页面文字通知数量
-      rAndDNoticeNum: 0,
       // 表单校验
       rules: {
         noticeTitle: [
-          { required: true, message: '公告标题不能为空', trigger: 'blur' }
+          { required: true, message: "公告标题不能为空", trigger: "blur" }
         ],
         noticeType: [
-          { required: true, message: '公告类型不能为空', trigger: 'change' }
+          { required: true, message: "公告类型不能为空", trigger: "change" }
         ]
       }
-    }
+    };
   },
   created() {
-    this.getList()
-    this.getRAndDNoticeCount()
+    this.getList();
   },
   methods: {
     /** 查询公告列表 */
     getList() {
-      this.loading = true
+      this.loading = true;
       listNotice(this.queryParams).then(response => {
-        this.noticeList = response.rows
-        this.total = response.total
-        this.loading = false
-      })
+        this.noticeList = response.rows;
+        this.total = response.total;
+        this.loading = false;
+      });
     },
     // 取消按钮
     cancel() {
-      this.open = false
-      this.reset()
+      this.open = false;
+      this.reset();
     },
     // 表单重置
     reset() {
@@ -289,127 +241,72 @@ export default {
         noticeTitle: undefined,
         noticeType: undefined,
         noticeContent: undefined,
-        status: '0'
-      }
-      this.resetForm('form')
+        status: "0"
+      };
+      this.resetForm("form");
     },
     /** 搜索按钮操作 */
     handleQuery() {
-      this.queryParams.pageNum = 1
-      this.getList()
+      this.queryParams.pageNum = 1;
+      this.getList();
     },
     /** 重置按钮操作 */
     resetQuery() {
-      this.resetForm('queryForm')
-      this.handleQuery()
+      this.resetForm("queryForm");
+      this.handleQuery();
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
       this.ids = selection.map(item => item.noticeId)
-      this.single = selection.length != 1
+      this.single = selection.length!=1
       this.multiple = !selection.length
     },
     /** 新增按钮操作 */
     handleAdd() {
-      this.reset()
-      this.open = true
-      this.title = '添加公告'
+      this.reset();
+      this.open = true;
+      this.title = "添加公告";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
-      this.reset()
+      this.reset();
       const noticeId = row.noticeId || this.ids
       getNotice(noticeId).then(response => {
-        this.form = response.data
-        this.open = true
-        this.title = '修改公告'
-      })
-    },
-    // 打开信息详情
-    openDetailDialog(id) {
-      this.openDetail = true
-      this.loadingDetail = true
-      getNotice(id).then(response => {
-        this.form = response.data
-        this.openDetail = true
-        this.loadingDetail = false
-      })
-    },
-    // 取消按钮
-    closeDetail() {
-      this.titleDetail = '详情'
-      this.openDetail = false
-      this.reset()
+        this.form = response.data;
+        this.open = true;
+        this.title = "修改公告";
+      });
     },
     /** 提交按钮 */
     submitForm: function() {
-      this.getRAndDNoticeCount();
-      this.$refs['form'].validate(valid => {
+      this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.noticeId != undefined) {
             updateNotice(this.form).then(response => {
-              this.$modal.msgSuccess('修改成功')
-              this.open = false
-              this.getList()
-            })
+              this.$modal.msgSuccess("修改成功");
+              this.open = false;
+              this.getList();
+            });
           } else {
-            if(this.form.noticeType === '3'){
-              this.getRAndDNoticeCount();
-              if(this.rAndDNoticeNum === 0){
-                addNotice(this.form).then(response => {
-                  this.$modal.msgSuccess('新增成功')
-                  this.open = false
-                  this.getList()
-                })
-              }
-              else {
-                this.$modal.msgError('小程序研发页面文字已存在，不可新增，请点击修改');
-                return;
-              }
-            }
-            else {
-              addNotice(this.form).then(response => {
-                this.$modal.msgSuccess('新增成功')
-                this.open = false
-                this.getList()
-              })
-            }
+            addNotice(this.form).then(response => {
+              this.$modal.msgSuccess("新增成功");
+              this.open = false;
+              this.getList();
+            });
           }
         }
-      })
+      });
     },
     /** 删除按钮操作 */
     handleDelete(row) {
       const noticeIds = row.noticeId || this.ids
       this.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function() {
-        return delNotice(noticeIds)
+        return delNotice(noticeIds);
       }).then(() => {
-        this.getList()
-        this.$modal.msgSuccess('删除成功')
-      }).catch(() => {
-      })
-    },
-
-    /** 提示按钮操作 */
-    handleNoticeTip() {
-      this.$message({
-        showClose: true,
-        duration: 0,
-        dangerouslyUseHTMLString: true,
-        message: '<p style="text-align: center">注意:</p>' +
-          '<hr/><p style="text-align: center">公告在小程序端只会显示最新的一条</p>' +
-          '<br/><p style="text-align: center">所有正常通知均会显示在小程序列表</p>' +
-          '<br/><p style="text-align: center">建议不要开放太多通知以免数据阻塞</p>' +
-          '<br/><p style="text-align: center">引入图片建议选择尺寸较小的</p>',
-        type: 'warning'
-    })
-    },
-    //查询研发页面是否存在通知文字
-    getRAndDNoticeCount(){
-      getRAndDNtceNum().then(res =>{
-        this.rAndDNoticeNum = res;
-      })
+        this.getList();
+        this.$modal.msgSuccess("删除成功");
+      }).catch(() => {});
     }
   }
-}
+};
 </script>

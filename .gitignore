@@ -8,8 +8,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
 
-RuoYi-App/node_modules/
-
 ######################################################################
 # IDE
 
