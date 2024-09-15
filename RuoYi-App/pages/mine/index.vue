@@ -112,9 +112,6 @@
 	import {
 		getUserProfile
 	} from '../../api/system/user';
-	import {
-		isAgent
-	} from '../../api/system/distri';
 
 	export default {
 		data() {
@@ -122,7 +119,6 @@
 				nickName: this.$store.state.user.nickName,
 				roles: [],
 				version: getApp().globalData.config.appInfo.version,
-				isAgent: 0,
 				modalVisible: false
 			}
 		},
@@ -142,14 +138,8 @@
 
 		onPullDownRefresh() {
 			this.updateRoles();
-			isAgent().then((r) => {
-				this.isAgent = r.data[0].isAgent;
-			});
 		},
 		created() {
-			isAgent().then((r) => {
-				this.isAgent = r.data[0].isAgent;
-			});
 		},
 		methods: {
       //拜访客户订阅消息
@@ -228,19 +218,6 @@
 			},
 			handleJiaoLiuQun() {
 				this.$modal.showToast('电话： 0871-67322300 67322190 手机： 13095328257 ')
-			},
-			handleDistriCost() {
-				if (this.isAgent === 0) {
-					this.$tab.navigateTo('/pages/componentsB/distri/index');
-				}
-				if (this.isAgent !== 0) {
-					uni.showToast({
-						title: '维修金额尚未达到门槛, 当前用户不是代理商',
-						icon: 'none',
-						mask: true,
-						duration: 2000
-					});
-				}
 			},
 			handlePointCost() {
 				this.$tab.navigateTo('/pages/componentsB/point/index')

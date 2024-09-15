@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { parseStrEmpty } from "@/utils/ruoyi";
+import { parseStrEmpty } from '@/utils/ruoyi'
 
 // 查询用户列表
 export function listUser(query) {
@@ -7,6 +7,23 @@ export function listUser(query) {
     url: '/system/user/list',
     method: 'get',
     params: query
+  })
+}
+
+// 模糊查询用户的基本信息, 用户ID输入框
+export function getUsersInfoLike(data) {
+  return request({
+    url: '/system/user/query',
+    method: 'put',
+    params: data
+  })
+}
+
+// 查询所有用户的基本信息(userId, nickName, avatar), 用于列表显示
+export function getUsersInfo() {
+  return request({
+    url: '/system/user/usersInfo',
+    method: 'get'
   })
 }
 
@@ -87,7 +104,7 @@ export function updateUserProfile(data) {
   })
 }
 
-// 用户密码重置
+// 用户密码修改
 export function updateUserPwd(oldPassword, newPassword) {
   const data = {
     oldPassword,
@@ -105,7 +122,6 @@ export function uploadAvatar(data) {
   return request({
     url: '/system/user/profile/avatar',
     method: 'post',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     data: data
   })
 }

@@ -104,6 +104,14 @@ public class RuoYiConfig
         return getProfile() + "/avatar";
     }
 
+
+    /**
+     * 获取banner上传路径
+     */
+    public static String getBannerPath()
+    {
+        return getProfile() + "/banner";
+    }
     /**
      * 获取下载路径
      */

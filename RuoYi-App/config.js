@@ -3,7 +3,7 @@
 module.exports = {
 	// baseUrl: 'https://gkxiu.com/prod-api',
 	baseUrl: 'http://localhost:8080',
-	// baseUrl: 'http://192.168.19.9:8080',
+	// baseUrl: 'http://192.168.111.60:8080',
 	// 应用信息
 	appInfo: {
 		// 应用名称

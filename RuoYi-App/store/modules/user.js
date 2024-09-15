@@ -11,9 +11,6 @@ import {
 	setToken,
 	removeToken
 } from '@/utils/auth'
-import {
-	isAgent
-} from '../../api/system/distri'
 
 
 

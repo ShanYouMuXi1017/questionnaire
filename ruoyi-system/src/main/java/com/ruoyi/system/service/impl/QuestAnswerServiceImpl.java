@@ -1,11 +1,12 @@
 package com.ruoyi.system.service.impl;
 
-import java.util.List;
+import com.ruoyi.system.domain.QuestAnswer;
+import com.ruoyi.system.mapper.QuestAnswerMapper;
+import com.ruoyi.system.service.IQuestAnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.system.mapper.QuestAnswerMapper;
-import com.ruoyi.system.domain.QuestAnswer;
-import com.ruoyi.system.service.IQuestAnswerService;
+
+import java.util.List;
 
 /**
  * 回答表Service业务层处理
