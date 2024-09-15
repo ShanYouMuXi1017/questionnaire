@@ -31,7 +31,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class TokenService
 {
-    private static final Logger log = LoggerFactory.getLogger(TokenService.class);
+    public static final Logger log = LoggerFactory.getLogger(TokenService.class);
 
     // 令牌自定义标识
     @Value("${token.header}")

@@ -24,7 +24,7 @@
       </el-form-item>
     </el-form>
     <el-row>
-      <el-table @row-click="clickRow" ref="table" :data="userList" @selection-change="handleSelectionChange" height="260px">
+      <el-table @row-click="clickRow" ref="table" :data="users" @selection-change="handleSelectionChange" height="260px">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="用户名称" prop="userName" :show-overflow-tooltip="true" />
         <el-table-column label="用户昵称" prop="nickName" :show-overflow-tooltip="true" />
@@ -75,7 +75,7 @@ export default {
       // 总条数
       total: 0,
       // 未授权用户数据
-      userList: [],
+      users: [],
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -103,7 +103,7 @@ export default {
     // 查询表数据
     getList() {
       unallocatedUserList(this.queryParams).then(res => {
-        this.userList = res.rows;
+        this.users = res.rows;
         this.total = res.total;
       });
     },
@@ -127,9 +127,11 @@ export default {
       }
       authUserSelectAll({ roleId: roleId, userIds: userIds }).then(res => {
         this.$modal.msgSuccess(res.msg);
-        this.visible = false;
-        this.$emit("ok");
-      }); 
+        if (res.code === 200) {
+          this.visible = false;
+          this.$emit("ok");
+        }
+      });
     }
   }
 };

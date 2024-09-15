@@ -42,3 +42,11 @@ export function delNotice(noticeId) {
     method: 'delete'
   })
 }
+
+// 查询研发页面文字通知数量
+export function getRAndDNtceNum() {
+  return request({
+    url: '/system/notice/getRAndDNoticeNum',
+    method: 'get'
+  })
+}

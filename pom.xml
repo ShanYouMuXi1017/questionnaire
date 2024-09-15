@@ -3,31 +3,30 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	
+
     <groupId>com.ruoyi</groupId>
     <artifactId>ruoyi</artifactId>
-    <version>3.8.8</version>
+    <version>3.8.7</version>
 
     <name>ruoyi</name>
     <url>http://www.ruoyi.vip</url>
-    <description>问卷调查</description>
-    
+    <description>若依管理系统</description>
+
     <properties>
-        <ruoyi.version>3.8.8</ruoyi.version>
+        <ruoyi.version>3.8.7</ruoyi.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
-        <spring-framework.version>5.3.33</spring-framework.version>
-        <spring-security.version>5.7.12</spring-security.version>
-        <druid.version>1.2.23</druid.version>
+        <druid.version>1.2.20</druid.version>
         <bitwalker.version>1.21</bitwalker.version>
         <swagger.version>3.0.0</swagger.version>
         <kaptcha.version>2.3.3</kaptcha.version>
         <pagehelper.boot.version>1.4.7</pagehelper.boot.version>
         <fastjson.version>2.0.43</fastjson.version>
-        <oshi.version>6.6.3</oshi.version>
+        <oshi.version>6.4.8</oshi.version>
         <commons.io.version>2.13.0</commons.io.version>
+        <commons.collections.version>3.2.2</commons.collections.version>
         <poi.version>4.1.2</poi.version>
         <velocity.version>2.3</velocity.version>
         <jwt.version>0.9.1</jwt.version>
@@ -36,24 +35,6 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
-
-            <!-- SpringFramework的依赖配置-->
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-framework-bom</artifactId>
-                <version>${spring-framework.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-
-            <!-- SpringSecurity的依赖配置-->
-            <dependency>
-                <groupId>org.springframework.security</groupId>
-                <artifactId>spring-security-bom</artifactId>
-                <version>${spring-security.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
 
             <!-- SpringBoot的依赖配置-->
             <dependency>
@@ -126,6 +107,13 @@
                 <version>${velocity.version}</version>
             </dependency>
 
+            <!-- collections工具类 -->
+            <dependency>
+                <groupId>commons-collections</groupId>
+                <artifactId>commons-collections</artifactId>
+                <version>${commons.collections.version}</version>
+            </dependency>
+
             <!-- 阿里JSON解析器 -->
             <dependency>
                 <groupId>com.alibaba.fastjson2</groupId>
@@ -147,19 +135,6 @@
                 <version>${kaptcha.version}</version>
             </dependency>
 
-            <!-- 定时任务-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-quartz</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
-
-            <!-- 代码生成-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi.version}</version>
-            </dependency>
 
             <!-- 核心模块-->
             <dependency>
@@ -168,12 +143,28 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+            <!-- 定时任务模块 -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-quartz</artifactId>
+                <version>3.8.7</version>
+            </dependency>
+
+                        <!-- 代码生成-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-generator</artifactId>
+                <version>${ruoyi.version}</version>
+            </dependency>
+
+
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-system</artifactId>
                 <version>${ruoyi.version}</version>
             </dependency>
+
 
             <!-- 通用工具-->
             <dependency>
@@ -182,14 +173,15 @@
                 <version>${ruoyi.version}</version>
             </dependency>
 
+
         </dependencies>
     </dependencyManagement>
 
     <modules>
         <module>ruoyi-admin</module>
         <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
         <module>ruoyi-quartz</module>
+        <module>ruoyi-system</module>
         <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
     </modules>

@@ -8,7 +8,7 @@
 
     <div class="login-division"></div>
     <div class="login-division">
-      <h1 class="title">工控速修</h1>
+      <h1 class="title">问卷调查</h1>
       <h1 class="title">后台管理</h1>
     </div>
     <div class="login-division"></div>
@@ -71,7 +71,7 @@
     <div class="login-division"></div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>版权所有©：云南硕晨信息技术有限公司 (滇ICP备11002993号)</span>
+      <span>备案号</span>
     </div>
   </div>
 </template>
