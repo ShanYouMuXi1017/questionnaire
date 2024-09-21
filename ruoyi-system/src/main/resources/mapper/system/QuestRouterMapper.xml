@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="QuestRouter" id="QuestRouterResult">
         <result property="routerId"    column="router_id"    />
+        <result property="routeName"    column="route_name"    />
         <result property="beginName"    column="begin_name"    />
         <result property="endName"    column="end_name"    />
         <result property="status"    column="status"    />
@@ -17,15 +18,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectQuestRouterVo">
-        select router_id, begin_name, end_name, status, image_url, core, flag, create_date, update_date from quest_router
+        select router_id, route_name, begin_name, end_name, status, image_url, core, flag, create_date, update_date from quest_router
     </sql>
 
     <select id="selectQuestRouterList" parameterType="QuestRouter" resultMap="QuestRouterResult">
         <include refid="selectQuestRouterVo"/>
         <where>  
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
             <if test="beginName != null  and beginName != ''"> and begin_name like concat('%', #{beginName}, '%')</if>
             <if test="endName != null  and endName != ''"> and end_name like concat('%', #{endName}, '%')</if>
             <if test="status != null "> and status = #{status}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
         </where>
     </select>
     
@@ -38,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into quest_router
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="routerId != null">router_id,</if>
+            <if test="routeName != null">route_name,</if>
             <if test="beginName != null">begin_name,</if>
             <if test="endName != null">end_name,</if>
             <if test="status != null">status,</if>
@@ -49,6 +53,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="routerId != null">#{routerId},</if>
+            <if test="routeName != null">#{routeName},</if>
             <if test="beginName != null">#{beginName},</if>
             <if test="endName != null">#{endName},</if>
             <if test="status != null">#{status},</if>
@@ -63,6 +68,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateQuestRouter" parameterType="QuestRouter">
         update quest_router
         <trim prefix="SET" suffixOverrides=",">
+            <if test="routeName != null">route_name = #{routeName},</if>
             <if test="beginName != null">begin_name = #{beginName},</if>
             <if test="endName != null">end_name = #{endName},</if>
             <if test="status != null">status = #{status},</if>

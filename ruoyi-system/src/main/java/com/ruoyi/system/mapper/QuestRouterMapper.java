@@ -1,14 +1,13 @@
 package com.ruoyi.system.mapper;
 
-import com.ruoyi.system.domain.QuestRouter;
-
 import java.util.List;
+import com.ruoyi.system.domain.QuestRouter;
 
 /**
  * 路线问卷Mapper接口
  * 
  * @author MCL
- * @date 2024-09-14
+ * @date 2024-09-21
  */
 public interface QuestRouterMapper 
 {
