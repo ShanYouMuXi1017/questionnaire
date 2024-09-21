@@ -1,6 +1,14 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form-item label="路线名称" prop="routeName">
+        <el-input
+          v-model="queryParams.routeName"
+          placeholder="请输入路线名称"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="起始位置名称" prop="beginName">
         <el-input
           v-model="queryParams.beginName"
@@ -26,6 +34,14 @@
             :value="dict.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="创建时间" prop="createDate">
+        <el-date-picker clearable
+          v-model="queryParams.createDate"
+          type="date"
+          value-format="yyyy-MM-dd"
+          placeholder="请选择创建时间">
+        </el-date-picker>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -81,7 +97,8 @@
 
     <el-table v-loading="loading" :data="routerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="问卷编号" align="center" prop="routerId" />
+      <el-table-column label="问卷ID" align="center" prop="routerId" />
+      <el-table-column label="路线名称" align="center" prop="routeName" />
       <el-table-column label="起始位置名称" align="center" prop="beginName" />
       <el-table-column label="终点位置名称" align="center" prop="endName" />
       <el-table-column label="状态" align="center" prop="status">
@@ -132,6 +149,9 @@
     <!-- 添加或修改路线问卷对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+        <el-form-item label="路线名称" prop="routeName">
+          <el-input v-model="form.routeName" placeholder="请输入路线名称" />
+        </el-form-item>
         <el-form-item label="起始位置名称" prop="beginName">
           <el-input v-model="form.beginName" placeholder="请输入起始位置名称" />
         </el-form-item>
@@ -184,7 +204,7 @@ import { listRouter, getRouter, delRouter, addRouter, updateRouter } from "@/api
 
 export default {
   name: "Router",
-  dicts: ['sys_normal_disable', 'quest_flag'],
+  dicts: ['sys_normal_disable'],
   data() {
     return {
       // 遮罩层
@@ -209,9 +229,11 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
+        routeName: null,
         beginName: null,
         endName: null,
         status: null,
+        createDate: null,
       },
       // 表单参数
       form: {},
@@ -242,6 +264,7 @@ export default {
     reset() {
       this.form = {
         routerId: null,
+        routeName: null,
         beginName: null,
         endName: null,
         status: null,

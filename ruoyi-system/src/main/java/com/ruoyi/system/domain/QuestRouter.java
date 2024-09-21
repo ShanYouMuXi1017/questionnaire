@@ -1,18 +1,17 @@
 package com.ruoyi.system.domain;
 
+import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-
-import java.util.Date;
+import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
  * 路线问卷对象 quest_router
  * 
  * @author MCL
- * @date 2024-09-14
+ * @date 2024-09-21
  */
 public class QuestRouter extends BaseEntity
 {
@@ -20,6 +19,10 @@ public class QuestRouter extends BaseEntity
 
     /** 问卷ID */
     private Long routerId;
+
+    /** 路线名称 */
+    @Excel(name = "路线名称")
+    private String routeName;
 
     /** 起始位置名称 */
     @Excel(name = "起始位置名称")
@@ -62,6 +65,15 @@ public class QuestRouter extends BaseEntity
     public Long getRouterId() 
     {
         return routerId;
+    }
+    public void setRouteName(String routeName) 
+    {
+        this.routeName = routeName;
+    }
+
+    public String getRouteName() 
+    {
+        return routeName;
     }
     public void setBeginName(String beginName) 
     {
@@ -140,6 +152,7 @@ public class QuestRouter extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("routerId", getRouterId())
+            .append("routeName", getRouteName())
             .append("beginName", getBeginName())
             .append("endName", getEndName())
             .append("status", getStatus())

@@ -1,18 +1,17 @@
 package com.ruoyi.system.service.impl;
 
-import com.ruoyi.system.domain.QuestRouter;
-import com.ruoyi.system.mapper.QuestRouterMapper;
-import com.ruoyi.system.service.IQuestRouterService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.ruoyi.system.mapper.QuestRouterMapper;
+import com.ruoyi.system.domain.QuestRouter;
+import com.ruoyi.system.service.IQuestRouterService;
 
 /**
  * 路线问卷Service业务层处理
  * 
  * @author MCL
- * @date 2024-09-14
+ * @date 2024-09-21
  */
 @Service
 public class QuestRouterServiceImpl implements IQuestRouterService 
