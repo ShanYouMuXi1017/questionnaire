@@ -140,31 +140,6 @@
             >导出
             </el-button>
           </el-col>
-          <el-col :span="1.5">
-            <el-tooltip effect="dark" content="显示选中用户的地址数据" placement="bottom">
-              <el-button
-                type="primary"
-                icon="el-icon-location-outline"
-                size="mini"
-                :disabled="multiple"
-                @click="handleAddress"
-                v-hasPermi="['system:address:list']"
-              >地址
-              </el-button>
-            </el-tooltip>
-          </el-col>
-          <el-col :span="1.5">
-            <el-tooltip effect="dark" content="选中业务员后ID输入框将自动提示" placement="bottom">
-              <el-button
-                type="success"
-                icon="el-icon-discover"
-                size="mini"
-                @click="handleVisit"
-                v-hasPermi="['system:visit:list']"
-              >委托拜访
-              </el-button>
-            </el-tooltip>
-          </el-col>
           <right-toolbar :showSearch.sync="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
         </el-row>
 
@@ -722,28 +697,6 @@ export default {
       this.download('system/user/export', {
         ...this.queryParams
       }, `user_${new Date().getTime()}.xlsx`)
-    },
-
-    /** 用户地址操作 */
-    handleAddress(row) {
-      const userIds = row.userId || this.ids
-
-      this.$router.push({
-        path: '/system/user-address/address',
-        query: {
-          ids: userIds
-        }
-      })
-    }, /** 委托拜访操作 */
-    handleVisit(row) {
-      const userIds = row.userId || this.ids
-
-      this.$router.push({
-        path: '/system/user-visit/visit',
-        query: {
-          ids: userIds
-        }
-      })
     },
     /** 下载模板操作 */
     importTemplate() {

@@ -91,35 +91,7 @@ export const constantRoutes = [
 ]
 
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [
-  {
-    path: '/system/user-address',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:address:list'],
-    children: [
-      {
-        path: 'address',
-        component: () => import('@/views/system/user/address'),
-        name: 'address',
-        meta: { title: '用户地址', activeMenu: '/system/user' }
-      }
-    ]
-  },
-  {
-    path: '/system/user-visit',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:visit:list'],
-    children: [
-      {
-        path: 'visit',
-        component: () => import('@/views/system/user/visit'),
-        name: 'visit',
-        meta: { title: '委托拜访', activeMenu: '/system/user' }
-      }
-    ]
-  },
+export const dynamicRoutes = [ 
   {
     path: '/system/user-auth',
     component: Layout,

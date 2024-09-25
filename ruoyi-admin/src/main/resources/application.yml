@@ -5,7 +5,7 @@ ruoyi:
   # 版本
   version: 1.0.0
   # 版权年份
-  copyrightYear: 2024
+  copyrightYear: 2023
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/ruoyi/uploadPath
   #  profile: /home/ruoyi/uploadPath
@@ -19,6 +19,9 @@ ruoyi:
   # 微信小程序的secret
   secret: 2246cb339865526c1fd71f2dae525f3b
 
+#  appId: wxf5752db94f663dce
+#  # 微信小程序的secret
+#  secret: 5823d95ebd234a56ccc6e5326065f893
 
 
 # 开发环境配置

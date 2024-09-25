@@ -1,8 +1,7 @@
 <template>
 	<view class="work-container">
- 
 
-		<u-navbar @leftClick="handlerNoticeClick" safeAreaInsetTop fixed placeholder title="维修">
+		<u-navbar @leftClick="handlerNoticeClick" safeAreaInsetTop fixed placeholder title="问卷">
 			<view slot="left">
 				<u-badge isDot="true" :show="showNoticeDot" type="error"  :offset="[8,5]" absolute="true"></u-badge>
 				<u-icon name="bell-fill" color="#4b95df" size="20"></u-icon>
@@ -44,11 +43,11 @@
 </template>
 
 <script>
-import { getSup, updateSup, queryAgent, isAgent2 } from '@/api/system/distri';
+ 
 import { getUser } from '@/api/system/user';
 import { getLastAnnouncement, listBanner, listNotice } from '../api/home';
 import { baseUrl } from '../config';
-import { getMaxCoupon, handleCoupon } from '../api/system/coupon';
+ 
 export default {
 	data() {
 		return {
@@ -111,20 +110,8 @@ export default {
 			var dateOnlyString = date.toISOString().slice(0, 10);
 			return dateOnlyString;
 		},
- 
-		updateStepList(flag) {
-			let allStepsList = this.allStepsList;
-			let activeStepIndex = flag - 1;
-			let activeColor = '#007AFF';
-
-			return allStepsList.map((step, index) => {
-				return {
-					...step,
-					active: index === activeStepIndex,
-					color: index === activeStepIndex ? activeColor : ''
-				};
-			});
-		},
+	 
+	 
 		/**
 		 * 轮播图点击处理
 		 * @param {Object} e 第几张图片
@@ -169,84 +156,12 @@ export default {
 		},
 		fetchData() {},
 		onLoad: function (query) {
-			//一系列绑定上下级关系的处理========================================
-			console.log('=======测试1====');
-			console.log(query);
-			console.log(query.pid);
-			console.log(query.flag);
-			if(query.flag==="2"||query.flag==="3"){
-				var pid = parseInt(query.pid)
-				var flag = parseInt(query.flag)
-
-			}else if(query.flag === undefined){
-				console.log("不是2、3")
-				let decodedScene = decodeURIComponent(query.scene);
-				// 创建一个对象来存储解析出来的键值对
-				let params = {};
-				
-				// 使用正则表达式匹配并提取键值对
-				decodedScene.replace(/([^&=]+)=([^&]*)/g, (match, key, value) => {
-					params[key] = value;
-				});
-				var pid = parseInt(params['pid']);
-				var flag = parseInt(params['flag']);
-			}
-			var temp = 0;
-			//扫码&&不是自己的码
-			console.log(flag);
-			if ((flag === 1 && pid !== this.userId) || (flag === 2 && pid !== this.userId)||(flag === 3 && pid !== this.userId)) {
-				//==============================该用户没有上级
-				getSup().then((response) => {
-					if (response.data.pid === 0) {
-						//没有上级
-						queryAgent(this.userId).then((response) => {
-							response.data.forEach((item) => {
-								if (item.userId === pid) {
-									temp = 1;
-								}
-							});
-						});
-						//===============================不是下级的码
-						if (temp != 1) {
-							isAgent2(pid).then((response2) => {
-								//pid对应的是代理商
-								// console.log(response2)
-								// console.log("response2")
-								//=================================确保对面是代理商
-								if (response2.data[0].isAgent === 0) {
-									updateSup(this.userId, pid).then((response) => {
-										console.log('绑定成功');
-									});
-								} else {
-									console.log('对面不是代理商');
-								}
-							});
-						} else {
-							console.log('扫了下级的码');
-						}
-					} else {
-						//有上级
-						console.log('这名用户有上级的');
-					}
-				});
-			} else {
-				console.log('不是扫码进或者扫了自己的码');
-			}
-
-			//一系列绑定上下级关系的处理========================================
-
 				this.list = [
 					{
 						icon: '/static/icon/repair.png',
 						title: '设备维修',
 						page: '/pages/componentsA/maintainIndex/adminMaintain',
 						visible: true // 添加 visible 属性
-					},
-					{
-						icon: '/static/icon/wendang.png',
-						title: '技术资料',
-						page: '/pages/document/index',
-						visible: true
 					}
 				];
 			// 页面加载同步设置公告栏信息

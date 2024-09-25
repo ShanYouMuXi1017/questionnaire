@@ -13,7 +13,7 @@
 			"style": {
 				"navigationBarTitleText": "登录"
 			}
-		},  {
+		}, {
 			"path": "pages/mine/index",
 			"style": {
 				"navigationStyle": "custom",
@@ -36,18 +36,19 @@
 			"style": {
 				"navigationBarTitleText": "浏览文本"
 			}
-		},
-		{
-			"path": "pages/document/index",
-			"style": {
-				"navigationBarTitleText": "技术资料",
-				"enablePullDownRefresh": true
-			}
 		}
 	],
 	"subPackages": [{
 				"root": "pages/componentsA",
 				"pages": [
+					{
+						"path" : "relation/relation",
+						"style" : 
+						{
+							"navigationBarTitleText" : "联系我们",
+							"enablePullDownRefresh" : false
+						}
+					}
 				]
 			}, {
 				"root": "pages/componentsB",
@@ -75,6 +76,27 @@
 						"path": "about/index",
 						"style": {
 							"navigationBarTitleText": "关于我们"
+						}
+					}, 
+					{
+						"path": "common/notice/announcement",
+						"style": {
+							"navigationBarTitleText": "最新公告",
+							"enablePullDownRefresh": true
+						}
+					},
+					{
+						"path": "common/notice/notificationlist",
+						"style": {
+							"navigationBarTitleText": "公司通知",
+							"enablePullDownRefresh": true
+						}
+					},
+					{
+						"path": "common/notice/notification",
+						"style": {
+							"navigationBarTitleText": "通知详情",
+							"enablePullDownRefresh": true
 						}
 					}
 				]}],

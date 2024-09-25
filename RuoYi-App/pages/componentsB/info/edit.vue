@@ -29,7 +29,6 @@
 			</uni-forms>
 			<button type="primary" @click="submit">提交</button>
 		</view>
-		<u-divider text="首次完善信息可以获取积分" textSize="10" textColor="#717171"></u-divider>
 	</view>
 </template>
 
