@@ -89,19 +89,6 @@ export default {
 	// 	this.getUserInfo();
 	// },
 	created() {
-		//处理得到面值最大的券
-		getMaxCoupon().then((response) => {
-			this.coupons = response;
-			this.coupons.endTime = this.parseDate(response.endTime);
-			this.$forceUpdate(); // 手动更新组件
-			if (typeof this.coupons.couponValue == 'undefined') {
-			} else {
-				//处理优惠券领取通知
-				this.$nextTick(() => {
-					this.$refs.coupon_pop.show = true;
-				});
-			}
-		});
 	},
 
 	methods: {
@@ -110,7 +97,6 @@ export default {
 			var dateOnlyString = date.toISOString().slice(0, 10);
 			return dateOnlyString;
 		},
-	 
 	 
 		/**
 		 * 轮播图点击处理
@@ -159,8 +145,8 @@ export default {
 				this.list = [
 					{
 						icon: '/static/icon/repair.png',
-						title: '设备维修',
-						page: '/pages/componentsA/maintainIndex/adminMaintain',
+						title: '问卷调查',
+						page: '/pages/questionnaire/route_choice',
 						visible: true // 添加 visible 属性
 					}
 				];
