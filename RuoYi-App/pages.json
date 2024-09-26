@@ -36,6 +36,22 @@
 			"style": {
 				"navigationBarTitleText": "浏览文本"
 			}
+		},
+		{
+			"path" : "pages/questionnaire/route_choice",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/questionnaire/questionnaire_filling",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 	],
 	"subPackages": [{
