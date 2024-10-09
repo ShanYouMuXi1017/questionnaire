@@ -2,6 +2,7 @@ package com.ruoyi.system.service;
 
 import java.util.List;
 import com.ruoyi.system.domain.QuestRouter;
+import com.ruoyi.system.domain.vo.QuestAnswerSheetVo;
 
 /**
  * 路线问卷Service接口
@@ -58,4 +59,54 @@ public interface IQuestRouterService
      * @return 结果
      */
     public int deleteQuestRouterByRouterId(Long routerId);
+
+    /**
+     * 计算每份每人答卷的总分
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷集合
+     */
+    public List<QuestAnswerSheetVo> sumEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
+
+
+    /**
+     * 计算每份问卷的答卷数
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷集合
+     */
+    public List<QuestAnswerSheetVo> countRouter(QuestAnswerSheetVo questAnswerSheet);
+
+    /**
+     * 计算每份答卷的平均分
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷集合
+     */
+    public List<QuestAnswerSheetVo> avgEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
+
+    /**
+     * 计算每份答卷里的小题的平均分
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷集合
+     */
+    public List<QuestAnswerSheetVo> avgEveryAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
+
+    /**
+     * 计算总的平均分
+     *
+     * @return 路线问卷集合
+     */
+    public QuestAnswerSheetVo avgAnswerRouter();
+
+    /**
+     * 展示每份每人的答卷
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷集合
+     */
+    public List<QuestAnswerSheetVo> selectEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
+
+
 }
