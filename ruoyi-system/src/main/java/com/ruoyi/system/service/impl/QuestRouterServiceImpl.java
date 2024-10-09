@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.system.domain.vo.QuestAnswerSheetVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.QuestRouterMapper;
@@ -89,5 +91,74 @@ public class QuestRouterServiceImpl implements IQuestRouterService
     public int deleteQuestRouterByRouterId(Long routerId)
     {
         return questRouterMapper.deleteQuestRouterByRouterId(routerId);
+    }
+
+    /**
+     * 计算每份每人答卷的总分
+     * @param questAnswerSheet 答卷数据展示
+     * @return 计算每份每人答卷的总分
+     */
+    @Override
+    public List<QuestAnswerSheetVo> sumEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.sumEveryoneAnswerRouter(questAnswerSheet);
+    }
+
+    /**
+     * 计算每份问卷的答卷数
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷
+     */
+    @Override
+    public List<QuestAnswerSheetVo> countRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.countRouter(questAnswerSheet);
+    }
+
+    /**
+     * 计算每份答卷的平均分
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷
+     */
+    @Override
+    public List<QuestAnswerSheetVo> avgEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.avgEveryoneAnswerRouter(questAnswerSheet);
+    }
+
+    /**
+     * 计算每份答卷里的小题的平均分
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷
+     */
+    @Override
+    public List<QuestAnswerSheetVo> avgEveryAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.avgEveryAnswerRouter(questAnswerSheet);
+    }
+
+    /**
+     * 计算总的平均分
+     *
+     * @return 路线问卷
+     */
+    @Override
+    public QuestAnswerSheetVo avgAnswerRouter()
+    {
+        return questRouterMapper.avgAnswerRouter();
+    }
+
+    /**
+     * 展示每份每人的答卷
+     *
+     * @param questAnswerSheet 答卷数据展示
+     * @return 路线问卷
+     */
+    @Override
+    public List<QuestAnswerSheetVo> selectEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.selectEveryoneAnswerRouter(questAnswerSheet);
     }
 }

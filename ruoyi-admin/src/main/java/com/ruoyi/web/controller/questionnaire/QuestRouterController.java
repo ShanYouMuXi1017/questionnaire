@@ -2,6 +2,8 @@ package com.ruoyi.web.controller.questionnaire;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.system.domain.vo.QuestAnswerSheetVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,5 +102,65 @@ public class QuestRouterController extends BaseController
     public AjaxResult remove(@PathVariable Long[] routerIds)
     {
         return toAjax(questRouterService.deleteQuestRouterByRouterIds(routerIds));
+    }
+
+    /**
+     * 计算每份每人答卷的总分
+     */
+    @GetMapping("/sumEveryoneAnswerRouter")
+    public TableDataInfo sumEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.sumEveryoneAnswerRouter(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+    * 计算每份问卷的答卷数
+     */
+    @GetMapping("/countRouter")
+    public TableDataInfo countRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.countRouter(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+     * 计算每份答卷的平均分
+     */
+    @GetMapping("/avgEveryoneAnswerRouter")
+    public TableDataInfo avgEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.avgEveryoneAnswerRouter(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+     * 计算每份答卷里的小题的平均分
+     */
+    @GetMapping("/avgEveryAnswerRouter")
+    public TableDataInfo avgEveryAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.avgEveryAnswerRouter(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+     * 计算总的平均分
+     */
+    @GetMapping("/avgAnswerRouter")
+    public QuestAnswerSheetVo avgAnswerRouter()
+    {
+        QuestAnswerSheetVo questAnswerSheet = questRouterService.avgAnswerRouter();
+        return questAnswerSheet;
+    }
+
+    /**
+     * 展示每份每人的答卷
+     */
+    @GetMapping("/selectEveryoneAnswerRouter")
+    public TableDataInfo selectEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.selectEveryoneAnswerRouter(questAnswerSheet);
+        return getDataTable(list);
     }
 }
