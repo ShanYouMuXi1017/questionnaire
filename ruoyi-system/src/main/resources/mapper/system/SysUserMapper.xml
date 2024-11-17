@@ -28,6 +28,16 @@
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
+    <!--小程序用户基本信息-->
+    <resultMap type="SysUser" id="SysUserResult2">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="ageDuan" column="age_duan"/>
+        <result property="ridingAge" column="riding_age"/>
+        <result property="preferredRouters" column="preferred_routers"/>
+    </resultMap>
+
     <resultMap id="deptResult" type="SysDept">
         <id property="deptId" column="dept_id"/>
         <result property="parentId" column="parent_id"/>
@@ -88,6 +98,17 @@
                  left join sys_dept d on u.dept_id = d.dept_id
                  left join sys_user_role ur on u.user_id = ur.user_id
                  left join sys_role r on r.role_id = ur.role_id
+    </sql>
+
+    <!--小程序用户基本信息-->
+    <sql id="selectUserVo2">
+        select u.user_id,
+               u.user_name,
+               u.nick_name,
+               u.age_duan,
+               u.riding_age,
+               u.preferred_routers
+        from sys_user u
     </sql>
 
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
@@ -165,6 +186,12 @@
 
     <select id="selectUserById" parameterType="Long" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
+        where u.user_id = #{userId}
+    </select>
+
+    <!--小程序用户基本信息-->
+    <select id="selectUserById2" parameterType="Long" resultMap="SysUserResult2">
+        <include refid="selectUserVo2"/>
         where u.user_id = #{userId}
     </select>
 

@@ -1,6 +1,23 @@
 import upload from '@/utils/upload'
 import request from '@/utils/request'
 
+// 查询用户基本信息是否填写(骑行)
+export function isFillUserBasic(userId) {
+	return request({
+		url: '/system/user/basic/' + userId,
+		method: 'get'
+	})
+}
+
+
+// 填写用户基本信息(骑行)
+export function fillUserBasic(data) {
+	return request({
+		url: '/system/user/basic',
+		method: 'post',
+		data:data
+	})
+}
 
 // 查询用户列表
 export function listUser(query) {
@@ -10,7 +27,7 @@ export function listUser(query) {
 		params: query
 	})
 }
- 
+
 // 查询用户详细
 export function getUser(userId) {
   return request({

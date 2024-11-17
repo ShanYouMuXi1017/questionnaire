@@ -151,6 +151,35 @@ public class SysUser extends BaseEntity {
     /** 用户二维码信息（用于拉取新人） */
     private String qrCode;
 
+    /** 小程序用户基本信息 */
+    private Long ageDuan;//年龄段
+    private Long ridingAge;//骑龄
+    private String preferredRouters;//1~3条最喜欢的路线
+
+    public Long getAgeDuan() {
+        return ageDuan;
+    }
+
+    public void setAgeDuan(Long ageDuan) {
+        this.ageDuan = ageDuan;
+    }
+
+    public Long getRidingAge() {
+        return ridingAge;
+    }
+
+    public void setRidingAge(Long ridingAge) {
+        this.ridingAge = ridingAge;
+    }
+
+    public String getPreferredRouters() {
+        return preferredRouters;
+    }
+
+    public void setPreferredRouters(String preferredRouters) {
+        this.preferredRouters = preferredRouters;
+    }
+
     public SysUser() {
 
     }
