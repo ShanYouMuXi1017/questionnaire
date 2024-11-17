@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.mysql.cj.x.protobuf.Mysqlx;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -289,5 +290,20 @@ public class SysUserController extends BaseController {
     @GetMapping("/deptTree")
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
+    }
+
+
+
+    /**
+     * 小程序判断用户是否填写基本信息
+     */
+    @GetMapping("/basic/{userId}")
+    public AjaxResult basic(@PathVariable("userId") Long userId) {
+
+        SysUser sysUser = userService.selectUserById2(userId);
+        if(sysUser.getAgeDuan()==null&&sysUser.getRidingAge()==null&&sysUser.getPreferredRouters()==null){
+            return success(-1);//没有填写
+        }
+        return success(1);//填写了
     }
 }

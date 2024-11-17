@@ -160,6 +160,17 @@ public class SysUserServiceImpl implements ISysUserService {
 
 
     /**
+     * 通过用户ID查询用户基本信息(小程序)
+     *
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    @Override
+    public SysUser selectUserById2(Long userId) {
+        return userMapper.selectUserById2(userId);
+    }
+
+    /**
      * 通过用户ID查询用户基本信息
      *
      * @param userId 用户ID
