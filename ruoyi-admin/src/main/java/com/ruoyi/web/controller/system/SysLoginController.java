@@ -70,7 +70,7 @@ public class SysLoginController {
                 SysUser user = new SysUser();
                 user.setUserName(openId);
                 if (userService.checkUserNameUnique(user)) {
-                    user.setNickName("新用户");
+                    user.setNickName("骑友");
                     user.setUserType("11");
                     user.setPassword(SecurityUtils.encryptPassword(simpleEncryption(openId)));
                     userService.insertUser(user);

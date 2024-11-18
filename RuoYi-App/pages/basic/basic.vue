@@ -27,7 +27,7 @@ export default {
 
       // 跳转到首页
       wx.redirectTo({
-        url: '/pages/index'
+        url: '/pages/questionnaire/route_choice'
       });
     }
   }
