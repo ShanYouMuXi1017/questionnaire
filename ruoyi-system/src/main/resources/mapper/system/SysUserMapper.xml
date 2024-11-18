@@ -33,6 +33,7 @@
         <id property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="nickName" column="nick_name"/>
+        <result property="sex" column="sex"/>
         <result property="ageDuan" column="age_duan"/>
         <result property="ridingAge" column="riding_age"/>
         <result property="preferredRouters" column="preferred_routers"/>
@@ -105,6 +106,7 @@
         select u.user_id,
                u.user_name,
                u.nick_name,
+               u.sex,
                u.age_duan,
                u.riding_age,
                u.preferred_routers

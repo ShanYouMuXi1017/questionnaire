@@ -16,7 +16,7 @@
     {
       "path": "pages/basic/basic",
       "style": {
-        "navigationBarTitleText": "填写基本信息",
+        "navigationBarTitleText": "基本信息",
         "enablePullDownRefresh": false,
         "navigationStyle": "default"
       }
@@ -154,7 +154,7 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/index",
+        "pagePath": "pages/questionnaire/route_choice",
         "iconPath": "pages/componentsA/static/images/tabbar/repair_normal.png",
         "selectedIconPath": "pages/componentsA/static/images/tabbar/repair_active.png",
         "text": "骑行"
