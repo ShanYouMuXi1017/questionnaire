@@ -301,7 +301,7 @@ public class SysUserController extends BaseController {
     public AjaxResult basic(@PathVariable("userId") Long userId) {
 
         SysUser sysUser = userService.selectUserById2(userId);
-        if(sysUser.getAgeDuan()==null&&sysUser.getRidingAge()==null&&sysUser.getPreferredRouters()==null){
+        if(sysUser.getSex()==null||sysUser.getAgeDuan()==null||sysUser.getRidingAge()==null||sysUser.getPreferredRouters()==null){
             return success(-1);//没有填写
         }
         return success(1);//填写了

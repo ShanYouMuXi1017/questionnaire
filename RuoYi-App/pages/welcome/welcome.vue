@@ -51,7 +51,7 @@ export default {
        await isFillUserBasic(this.userId).then(res=>{
         if(res.data===1){//填了
           uni.reLaunch({
-            url: '/pages/index'
+            url: '/pages/questionnaire/route_choice'
           });
         }
         if(res.data===-1){//没填
