@@ -7,8 +7,8 @@
 				<u-icon name="bell-fill" color="#4b95df" size="20"></u-icon>
 			</view>
 		</u-navbar>
-		
-		
+
+
 		<!-- 轮播图 -->
 		<u-swiper
 			:list="swiperData"
@@ -43,11 +43,11 @@
 </template>
 
 <script>
- 
+
 import { getUser } from '@/api/system/user';
 import { getLastAnnouncement, listBanner, listNotice } from '../api/home';
 import { baseUrl } from '../config';
- 
+
 export default {
 	data() {
 		return {
@@ -74,7 +74,7 @@ export default {
 				productId: 1122,
 				repair: 0,
 				userId: 26,
-				userName: '新用户'
+				userName: '骑友'
 			},
 			active: 0, // 当前活动的步骤
 			list: [],
@@ -97,7 +97,7 @@ export default {
 			var dateOnlyString = date.toISOString().slice(0, 10);
 			return dateOnlyString;
 		},
-	 
+
 		/**
 		 * 轮播图点击处理
 		 * @param {Object} e 第几张图片
