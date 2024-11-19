@@ -16,7 +16,7 @@
     {
       "path": "pages/basic/basic",
       "style": {
-        "navigationBarTitleText": "基本信息",
+        "navigationBarTitleText": "骑友信息调查",
         "enablePullDownRefresh": false,
         "navigationStyle": "default"
       }

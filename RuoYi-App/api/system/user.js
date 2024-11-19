@@ -13,11 +13,20 @@ export function isFillUserBasic(userId) {
 // 填写用户基本信息(骑行)
 export function fillUserBasic(data) {
 	return request({
-		url: '/system/user/basic',
-		method: 'post',
+		url: '/system/user/basic/update',
+		method: 'put',
 		data:data
 	})
 }
+
+// 查询路线列表
+export function getRouters() {
+	return request({
+		url: '/system/user/basic/list',
+		method: 'get'
+	})
+}
+
 
 // 查询用户列表
 export function listUser(query) {
