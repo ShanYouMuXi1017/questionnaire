@@ -9,7 +9,7 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="起始位置名称" prop="beginName">
+      <!-- <el-form-item label="起始位置名称" prop="beginName">
         <el-input
           v-model="queryParams.beginName"
           placeholder="请输入起始位置名称"
@@ -24,7 +24,7 @@
           clearable
           @keyup.enter.native="handleQuery"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable>
           <el-option
@@ -99,6 +99,12 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="问卷ID" align="center" prop="routerId" />
       <el-table-column label="路线名称" align="center" prop="routeName" />
+      <el-table-column label="路线图片" align="center" prop="imageUrl" width="100">
+        <template slot-scope="scope">
+          <image-preview :src="scope.row.imageUrl" :width="50" :height="50"/>
+        </template>
+      </el-table-column>
+
       <el-table-column label="起始位置名称" align="center" prop="beginName" />
       <el-table-column label="终点位置名称" align="center" prop="endName" />
       <el-table-column label="状态" align="center" prop="status">
@@ -106,7 +112,6 @@
           <dict-tag :options="dict.type.sys_normal_disable" :value="scope.row.status"/>
         </template>
       </el-table-column>
-      <el-table-column label="图片路径" align="center" prop="imageUrl" />
       <el-table-column label="总分" align="center" prop="core" />
       <el-table-column label="创建时间" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
@@ -147,12 +152,28 @@
     />
 
     <!-- 添加或修改路线问卷对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="60%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="路线名称" prop="routeName">
+        <el-row> 
+          <el-col :span="12">
+            <el-form-item label="路线名称" prop="routeName">
           <el-input v-model="form.routeName" placeholder="请输入路线名称" />
         </el-form-item>
-        <el-form-item label="起始位置名称" prop="beginName">
+          </el-col>
+          <el-col :span="12">
+        <el-form-item label="总分" prop="core">
+          <el-input v-model="form.core" placeholder="请输入总分" />
+        </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row> 
+          <el-col :span="12">
+            <el-form-item label="图片图片" prop="imageUrl">
+          <image-upload v-model="form.imageUrl"/>
+        </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="起始位置名称" prop="beginName">
           <el-input v-model="form.beginName" placeholder="请输入起始位置名称" />
         </el-form-item>
         <el-form-item label="终点位置名称" prop="endName">
@@ -168,28 +189,9 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="图片路径" prop="imageUrl">
-          <el-input v-model="form.imageUrl" placeholder="请输入图片路径" />
-        </el-form-item>
-        <el-form-item label="总分" prop="core">
-          <el-input v-model="form.core" placeholder="请输入总分" />
-        </el-form-item>
-        <el-form-item label="创建时间" prop="createDate">
-          <el-date-picker clearable
-            v-model="form.createDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择创建时间">
-          </el-date-picker>
-        </el-form-item>
-        <el-form-item label="更新时间" prop="updateDate">
-          <el-date-picker clearable
-            v-model="form.updateDate"
-            type="date"
-            value-format="yyyy-MM-dd"
-            placeholder="请选择更新时间">
-          </el-date-picker>
-        </el-form-item>
+          </el-col>
+        </el-row>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm">确 定</el-button>
@@ -203,7 +205,7 @@
 import { listRouter, getRouter, delRouter, addRouter, updateRouter } from "@/api/questionnaire/router";
 
 export default {
-  name: "Router",
+  name: "index",
   dicts: ['sys_normal_disable'],
   data() {
     return {
@@ -239,6 +241,21 @@ export default {
       form: {},
       // 表单校验
       rules: {
+        routeName: [{
+            required: true,
+            message: "路线名称不能为空",
+            trigger: "blur"
+          }],
+          imageUrl: [{
+            required: true,
+            message: "路线图片不能为空",
+            trigger: "blur"
+          }],
+          status: [{
+            required: true,
+            message: "路线状态不能为空",
+            trigger: "blur"
+          }],
       }
     };
   },

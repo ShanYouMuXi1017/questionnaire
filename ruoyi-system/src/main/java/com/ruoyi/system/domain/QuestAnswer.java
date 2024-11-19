@@ -33,9 +33,13 @@ public class QuestAnswer extends BaseEntity
     @Excel(name = "问题ID")
     private Long issueId;
 
+    /** 评分 */
+    @Excel(name = "评分")
+    private String answer;
+
     /** 回答 */
     @Excel(name = "回答")
-    private String answer;
+    private String answerResult ;
 
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -111,6 +115,14 @@ public class QuestAnswer extends BaseEntity
         return updateDate;
     }
 
+    public String getAnswerResult() {
+        return answerResult;
+    }
+
+    public void setAnswerResult(String answerResult) {
+        this.answerResult = answerResult;
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
@@ -119,6 +131,7 @@ public class QuestAnswer extends BaseEntity
             .append("routerId", getRouterId())
             .append("issueId", getIssueId())
             .append("answer", getAnswer())
+            .append("answerResult", getAnswerResult())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())
             .toString();
