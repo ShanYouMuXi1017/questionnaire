@@ -19,6 +19,7 @@ public class QuestAnswerSheetVo {
     private int answerType;
     private Integer grade;
     private String answer;
+    private String answerResult;
 
     public int getRouterId() {
         return routerId;
@@ -156,6 +157,14 @@ public class QuestAnswerSheetVo {
         this.answer = answer;
     }
 
+    public String getAnswerResult() {
+        return answerResult;
+    }
+
+    public void setAnswerResult(String answerResult) {
+        this.answerResult = answerResult;
+    }
+
     @Override
     public String toString() {
         return "QuestAnswerSheetVo{" +
@@ -176,6 +185,7 @@ public class QuestAnswerSheetVo {
                 ", answerType=" + answerType +
                 ", grade=" + grade +
                 ", answer='" + answer + '\'' +
+                ", answerResult='" + answerResult + '\'' +
                 '}';
     }
 }

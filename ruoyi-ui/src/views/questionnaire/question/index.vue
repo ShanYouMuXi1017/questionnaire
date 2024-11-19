@@ -145,7 +145,7 @@
     />
 
     <!-- 添加或修改问卷问题对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="60%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-form-item label="问卷编号" prop="routerId">
           <el-input v-model="form.routerId" placeholder="请输入问卷编号" />
