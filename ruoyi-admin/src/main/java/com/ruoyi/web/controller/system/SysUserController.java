@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.mysql.cj.x.protobuf.Mysqlx;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -14,6 +15,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.UserBasicInfoVo;
 import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
@@ -290,4 +292,40 @@ public class SysUserController extends BaseController {
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
     }
+
+
+
+    /**
+     * 小程序判断用户是否填写基本信息
+     */
+    @GetMapping("/basic/{userId}")
+    public AjaxResult basic(@PathVariable("userId") Long userId) {
+        SysUser sysUser = userService.selectUserById2(userId);
+        if(sysUser.getSex()==null||sysUser.getAgeDuan()==null||sysUser.getRidingAge()==null||sysUser.getPreferredRouters()==null){
+            return success(-1);//没有填写
+        }
+        return success(1);//填写了
+    }
+
+
+    /**
+     * 小程序端 用户填写基本信息接口
+     * @param userBasicInfoVo
+     * @return
+     */
+    @PutMapping("/basic/update")
+    public AjaxResult fillBasic(@RequestBody UserBasicInfoVo userBasicInfoVo) {
+        SysUser sysUser = userService.selectUserById(userBasicInfoVo.getUserId());
+        sysUser.setSex(userBasicInfoVo.getSex());
+        sysUser.setAgeDuan(userBasicInfoVo.getAge_duan());
+        sysUser.setRidingAge(userBasicInfoVo.getRiding_age());
+        sysUser.setPreferredRouters(userBasicInfoVo.getPreferred_routers());
+        return toAjax(userService.updateUser(sysUser));
+    }
+
+
+    //@GetMapping("/basic/list")
+    //public AjaxResult routersList() {
+    //    List<SysUser> list ;
+    //}
 }
