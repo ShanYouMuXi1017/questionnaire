@@ -152,23 +152,23 @@ public class SysUser extends BaseEntity {
     private String qrCode;
 
     /** 小程序用户基本信息 */
-    private Long ageDuan;//年龄段
-    private Long ridingAge;//骑龄
+    private String ageDuan;//年龄段
+    private String ridingAge;//骑龄
     private String preferredRouters;//1~3条最喜欢的路线
 
-    public Long getAgeDuan() {
+    public String getAgeDuan() {
         return ageDuan;
     }
 
-    public void setAgeDuan(Long ageDuan) {
+    public void setAgeDuan(String ageDuan) {
         this.ageDuan = ageDuan;
     }
 
-    public Long getRidingAge() {
+    public String getRidingAge() {
         return ridingAge;
     }
 
-    public void setRidingAge(Long ridingAge) {
+    public void setRidingAge(String ridingAge) {
         this.ridingAge = ridingAge;
     }
 

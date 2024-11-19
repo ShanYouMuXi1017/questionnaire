@@ -1,24 +1,21 @@
 {
-  "id": "qiun-data-charts",
-  "displayName": "秋云 ucharts echarts 高性能跨全端图表组件",
-  "version": "2.3.6-20211201",
-  "description": "uCharts v2.3上线，支持nvue！全新官方图表组件，支持H5及APP用ECharts渲染图表，uniapp可视化首选组件",
+  "id": "lfj-dropdown-box",
+  "displayName": "lfj-dropdown-box下拉框 多选 单选 搜索 数据过多下拉加载等功能",
+  "version": "1.0.0",
+  "description": "lfj-dropdown-box",
   "keywords": [
-    "ucharts",
-    "echarts",
-    "f2",
-    "图表",
-    "可视化"
+    "下拉框",
+    "下拉单选",
+    "下拉多选",
+    "搜索",
+    "触底加载"
 ],
-  "repository": "https://gitee.com/uCharts/uCharts",
+  "repository": "https://gitee.com/li-feijie1/lfj-dropdown-box",
   "engines": {
-    "HBuilderX": "^3.1.0"
+    "HBuilderX": "^4.17"
   },
   "dcloudext": {
-    "category": [
-        "前端组件",
-        "通用组件"
-    ],
+    "type": "component-vue",
     "sale": {
       "regular": {
         "price": "0.00"
@@ -28,14 +25,14 @@
       }
     },
     "contact": {
-      "qq": "474119"
+      "qq": ""
     },
     "declaration": {
       "ads": "无",
-      "data": "插件不采集任何数据",
+      "data": "无",
       "permissions": "无"
     },
-    "npmurl": ""
+    "npmurl": "https://gitee.com/li-feijie1/lfj-dropdown-box.git"
   },
   "uni_modules": {
     "dependencies": [],
@@ -43,12 +40,18 @@
     "platforms": {
       "cloud": {
         "tcb": "y",
-        "aliyun": "y"
+        "aliyun": "y",
+        "alipay": "y"
       },
       "client": {
+        "Vue": {
+          "vue2": "y",
+          "vue3": "y"
+        },
         "App": {
           "app-vue": "y",
-          "app-nvue": "y"
+          "app-nvue": "u",
+          "app-uvue": "u"
         },
         "H5-mobile": {
           "Safari": "y",
@@ -65,18 +68,18 @@
         },
         "小程序": {
           "微信": "y",
-          "阿里": "y",
-          "百度": "y",
-          "字节跳动": "y",
-          "QQ": "y"
+          "阿里": "u",
+          "百度": "u",
+          "字节跳动": "u",
+          "QQ": "u",
+          "钉钉": "u",
+          "快手": "u",
+          "飞书": "u",
+          "京东": "u"
         },
         "快应用": {
-          "华为": "y",
-          "联盟": "y"
-        },
-        "Vue": {
-            "vue2": "y",
-            "vue3": "y"
+          "华为": "u",
+          "联盟": "u"
         }
       }
     }
