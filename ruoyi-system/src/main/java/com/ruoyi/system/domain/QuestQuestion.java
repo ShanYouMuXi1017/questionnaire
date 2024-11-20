@@ -45,6 +45,11 @@ public class QuestQuestion extends BaseEntity
     @Excel(name = "评分")
     private Long garde;
 
+
+    /** 回答选项 */
+    @Excel(name = "回答选项")
+    private String answerOptions;
+
     /** 创建时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
@@ -123,6 +128,9 @@ public class QuestQuestion extends BaseEntity
         this.createDate = createDate;
     }
 
+    public String getAnswerOptions() {return answerOptions; }
+    public void setAnswerOptions(String answerOptions) {this.answerOptions = answerOptions; }
+
     public Date getCreateDate() 
     {
         return createDate;
@@ -146,6 +154,7 @@ public class QuestQuestion extends BaseEntity
             .append("typeWeight", getTypeWeight())
             .append("problem", getProblem())
             .append("answerType", getAnswerType())
+            .append("answerOptions", getAnswerOptions())
             .append("garde", getGarde())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())
