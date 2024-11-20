@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.SysUserBaseInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 
 import java.util.List;
 
@@ -261,5 +262,12 @@ public interface ISysUserService {
     * 查询非代理商的人数
     * */
     List<SysUser> getUnAgent();
+
+
+    /**
+     * 小程序 查询骑行路线列表
+     * @return
+     */
+    public List<RoutersListVo> getRoutersList();
 
 }

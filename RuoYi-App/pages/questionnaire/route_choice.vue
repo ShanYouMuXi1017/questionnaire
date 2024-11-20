@@ -13,23 +13,25 @@
     <view class="x-panel x-panel-content">
       <view v-if="filteredRoutes.length > 0">
         <!-- 遍历显示路线列表 -->
-        <view class="itemcss" v-for="(route, index) in filteredRoutes" :key="index">
-          <view class="x-row">
-            <view class="x-col col-left">
-              <text>{{ route.name }}</text>
-            </view>
-          </view>
-          <view class="x-row" style="display: flex; align-items: center">
-            <view class="x-col col-left" style="flex: 1; display: flex; align-items: center; text-align: left">
-              <!-- 图片 -->
-              <image style="width: 30%; height: 60px; margin-right: 10px" :src="route.image"></image>
-              <!-- 全长 -->
-              <view style="margin-right: 10px">
-                <text>全长: {{ route.length }} km</text>
+        <view class="itemcss" v-for="(route, index) in filteredRoutes" :key="index" >
+          <view @click="enter(route)">
+            <view class="x-row">
+              <view class="x-col col-left">
+                <text>{{ route.routeName }}</text>
               </view>
-              <!-- 爬升高度 -->
-              <view>
-                <text>爬升高度: {{ route.elevation }} m</text>
+            </view>
+            <view class="x-row" style="display: flex; align-items: center">
+              <view class="x-col col-left" style="flex: 1; display: flex; align-items: center; text-align: left">
+                <!-- 图片 -->
+                <image style="width: 30%; height: 60px; margin-right: 10px" :src="route.imageUrl"></image>
+                <!-- 全长 -->
+                <view style="margin-right: 10px">
+                  <text>全长: {{ route.length }} km</text>
+                </view>
+                <!-- 爬升高度 -->
+                <view>
+                  <text>爬升高度: {{ route.elevation }} m</text>
+                </view>
               </view>
             </view>
           </view>
@@ -45,102 +47,33 @@
 
 <script>
 import { toast } from "../../utils/common";
+import {getRouters} from "../../api/system/user";
 
 export default {
   name: 'route-choice',
   data() {
     return {
       // 模拟的路线列表数据
-      list: [
-        {
-          name: "323",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/2.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        },
-        {
-          name: "世博依碧中心至金殿",
-          length: 1.95,
-          elevation: 40,
-          image: "/static/images/1.jpg", // 使用实际图片路径
-          challenges: 1417,
-          remark: "风景优美，适合新手"
-        }
-      ],
+      list: [],
       // 用于展示的过滤后列表
       filteredRoutes: [],
       keyword: ''
     };
   },
   created() {
-    // 初始状态展示全部数据
-    this.filteredRoutes = this.list;
+    getRouters().then(res => {
+      if (res && res.data) {
+        this.list = res.data;
+        this.list.forEach(route => {
+          // 你可以根据需要赋值不同的 URL，这里是一个占位图片 URL
+          // route.imageUrl = route.imageUrl || '/default/path/to/placeholder-image.jpg';
+          route.imageUrl = 'https://th.bing.com/th/id/R.7802625ef081ea627fb2bde1777b188e?rik=CaRMWKA8fchmCA&riu=http%3a%2f%2fstatic.imxingzhe.com%2flushu%2f403cbd8a-436b-4af0-9876-af14dc472e9a.png!webActivityPhotos&ehk=0%2fqug0h0tf0iQDJyZ0HTXwAhSz90FYSQp4%2fZHp47C3Q%3d&risl=&pid=ImgRaw&r=0';
+        });
+        this.filteredRoutes = [...this.list];
+      }
+    }).catch(error => {
+      console.error("请求失败:", error);
+    });
     toast("选中路线进行问卷填写");
   },
   watch: {
@@ -152,10 +85,17 @@ export default {
     }
   },
   methods: {
+    enter(route) {
+      const routeStr = JSON.stringify(route);
+      // 使用 uni.navigateTo 跳转并传递参数
+      uni.navigateTo({
+        url: `/pages/questionnaire/questionnaire_filling?route=${encodeURIComponent(routeStr)}`
+      });
+    },
     // 根据输入的关键字进行搜索
     searchlist() {
       this.filteredRoutes = this.list.filter((route) =>
-          route.name.includes(this.keyword)
+          route.routeName.includes(this.keyword)
       );
     }
   }
