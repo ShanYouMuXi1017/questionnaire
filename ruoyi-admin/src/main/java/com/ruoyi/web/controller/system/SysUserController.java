@@ -15,6 +15,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 import com.ruoyi.system.domain.vo.UserBasicInfoVo;
 import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysPostService;
@@ -324,8 +325,15 @@ public class SysUserController extends BaseController {
     }
 
 
-    //@GetMapping("/basic/list")
-    //public AjaxResult routersList() {
-    //    List<SysUser> list ;
-    //}
+    @GetMapping("/basic/list")
+    public AjaxResult routersList() {
+        List<RoutersListVo> routersListVos = userService.getRoutersList();
+        for (RoutersListVo r:routersListVos
+             ) {
+            System.out.println(r);
+        }
+        return success(routersListVos);
+    }
+
 }
+

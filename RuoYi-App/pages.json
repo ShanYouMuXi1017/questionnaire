@@ -72,7 +72,14 @@
     {
       "path": "pages/questionnaire/questionnaire_filling",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "开始答题",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/questionnaire/answer_sheet",
+      "style": {
+        "navigationBarTitleText": "开始答题",
         "enablePullDownRefresh": false
       }
     }

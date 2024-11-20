@@ -65,6 +65,17 @@
         <result property="phonenumber" column="phonenumber"/>
     </resultMap>
 
+    <resultMap id="RoutersList" type="RoutersListVo">
+        <result property="routerId"    column="router_id"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="core"    column="core"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="length"    column="length"    />
+        <result property="elevation"    column="elevation"    />
+    </resultMap>
+
     <sql id="selectUserVo">
         select u.user_id,
                u.dept_id,
@@ -228,6 +239,19 @@
         from sys_user
         where sys_user.del_flag = 0
           and sys_user.status = '0'
+    </select>
+
+    <!--小程序查询骑行路线列表-->
+    <select id="getRoutersList" resultMap="RoutersList">
+        select router_id,
+               route_name,
+               image_url,
+               core,
+               create_date,
+               update_date,
+               length,
+               elevation
+        from quest_router
     </select>
 
     <select id="selectUserType" parameterType="Long" resultType="java.lang.String">

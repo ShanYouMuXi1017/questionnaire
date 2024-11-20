@@ -10,6 +10,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -90,6 +91,15 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public List<SysUsersInfo> selectUsersInfo() {
         return userMapper.selectUsersInfo();
+    }
+
+    /**
+     * 小程序 查询骑行路线列表
+     * @return
+     */
+    @Override
+    public List<RoutersListVo> getRoutersList() {
+        return userMapper.getRoutersList();
     }
 
     /**
