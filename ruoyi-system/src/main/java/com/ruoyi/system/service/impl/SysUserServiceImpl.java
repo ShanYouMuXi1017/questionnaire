@@ -10,6 +10,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
 import com.ruoyi.system.domain.vo.RoutersListVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
@@ -101,6 +102,16 @@ public class SysUserServiceImpl implements ISysUserService {
     public List<RoutersListVo> getRoutersList() {
         return userMapper.getRoutersList();
     }
+
+    /**
+     * 小程序 得到一份问卷表单
+     * @return
+     */
+    @Override
+    public List<QuestionSheetVo> getQuestSheet() {
+        return userMapper.getQuestSheet();
+    }
+
 
     /**
      * 根据userId查询该用户的用户类型
