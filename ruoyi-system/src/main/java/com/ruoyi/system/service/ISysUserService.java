@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.system.domain.SysUserBaseInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
 import com.ruoyi.system.domain.vo.RoutersListVo;
 
 import java.util.List;
@@ -270,4 +271,9 @@ public interface ISysUserService {
      */
     public List<RoutersListVo> getRoutersList();
 
+    /**
+     * 小程序 得到一份问卷表单
+     * @return
+     */
+    public List<QuestionSheetVo> getQuestSheet();
 }
