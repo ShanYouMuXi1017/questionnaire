@@ -65,6 +65,34 @@
         <result property="phonenumber" column="phonenumber"/>
     </resultMap>
 
+    <resultMap id="RoutersList" type="RoutersListVo">
+        <result property="routerId"    column="router_id"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="core"    column="core"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="length"    column="length"    />
+        <result property="elevation"    column="elevation"    />
+    </resultMap>
+
+
+
+    <resultMap id="QuestSheet" type="QuestionSheetVo">
+        <result property="issueId"    column="issue_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="problemType"    column="problem_type"    />
+        <result property="problem"    column="problem"    />
+        <result property="answerType"    column="answer_type"    />
+        <result property="answerOptions"    column="answer_options"    />
+        <result property="garde"    column="garde"    />
+        <result property="userId"    column="user_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="issueId"    column="issue_id"    />
+        <result property="answer"    column="answer"    />
+        <result property="answerResult"    column="answer_result"    />
+    </resultMap>
+
     <sql id="selectUserVo">
         select u.user_id,
                u.dept_id,
@@ -228,6 +256,37 @@
         from sys_user
         where sys_user.del_flag = 0
           and sys_user.status = '0'
+    </select>
+
+    <!--小程序查询骑行路线列表-->
+    <select id="getRoutersList" resultMap="RoutersList">
+        select router_id,
+               route_name,
+               image_url,
+               core,
+               create_date,
+               update_date,
+               length,
+               elevation
+        from quest_router
+    </select>
+
+
+    <!--小程序查询一份问卷表单-->
+    <!-- 小程序查询一份问卷表单，按问题类型分组，组内按问题ID升序排列 -->
+    <select id="getQuestSheet" resultMap="QuestSheet">
+        SELECT
+            qq.issue_id ,           -- 问题ID
+            qq.problem_type,   -- 问题类型
+            qq.problem ,            -- 问题内容
+            qq.answer_type,     -- 回答类型
+            qq.answer_options,  -- 回答选项
+            qq.garde                -- 评分
+        FROM
+            quest_question qq
+        ORDER BY
+            qq.problem_type,                 -- 按问题类型分组
+            qq.issue_id ASC                   -- 每组内按问题ID升序排列
     </select>
 
     <select id="selectUserType" parameterType="Long" resultType="java.lang.String">

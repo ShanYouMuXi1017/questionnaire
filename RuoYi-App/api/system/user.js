@@ -27,6 +27,15 @@ export function getRouters() {
 	})
 }
 
+// 展示问卷表单
+
+export function getQuestSheet(){
+	return request({
+		url:'/system/user/quest/sheet',
+		methods: 'get',
+	})
+}
+
 
 // 查询用户列表
 export function listUser(query) {

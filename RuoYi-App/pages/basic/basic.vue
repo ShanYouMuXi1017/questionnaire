@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {fillUserBasic} from "../../api/system/user";
+import {fillUserBasic, getRouters} from "../../api/system/user";
 
 export default {
   data() {
@@ -102,23 +102,32 @@ export default {
         { text: '5-10年', value: '3' },
         { text: '10年以上', value: '4' }
       ],
-      routesOptions: [
-        { text: '环翠湖 2.07km 爬升10m', value: '0' },
-        { text: '长虫山 33.4km 爬升864m', value: '1' },
-        { text: '梁王山 90.1km 爬升1653m', value: '2' },
-        { text: '环阳宗海 36km 爬升430m', value: '3' },
-        { text: '西山猫猫箐林道 72km 爬升1800m', value: '4' },
-        { text: '环草海绿道 23km 爬升71m', value: '5' },
-        { text: '环滇池 98.7km 爬升1028m', value: '6' },
-      ]
+      routesOptions: []
     };
   },
-  onLoad() {
+  created() {
     getRouters().then(res=>{
-      this.routesOptions
+      this.routesOptions = this.transformRoutesData(res.data)
     })
   },
   methods: {
+    transformRoutesData(routesData) {
+      return routesData.map(route => {
+        // 获取路线名称、全长、爬升高度
+        const routeName = route.routeName || '';
+        const length = route.length || '未知';
+        const elevation = route.elevation || '未知';
+
+        // 拼接 text 字符串：路线名称 + 全长 + 爬升高度
+        const text = `${routeName} ${length} km 爬升${elevation} m`;
+
+        // 生成一个新的对象，包含 text 和 value
+        return {
+          text: text,
+          value: route.routerId.toString()  // 确保 routerId 是字符串
+        };
+      });
+    },
     changeSex(e) {
       this.form.sex = e !== null ? e.value : '';
       this.clearError('sex');
