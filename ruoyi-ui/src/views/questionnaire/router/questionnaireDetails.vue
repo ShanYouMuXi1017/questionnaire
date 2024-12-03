@@ -31,7 +31,7 @@
       </el-table-column>
       <el-table-column label="问题类型权重" align="center" prop="typeWeight"  width="100" />
       <el-table-column label="问题" align="center" prop="problem" />
-      <el-table-column label="评分" align="center" prop="garde"  width="50"/>
+      <el-table-column label="评分" align="center" prop="grade"  width="50"/>
       <el-table-column label="回答类型" align="center" prop="answerType"  width="80">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.quest_answer_type" :value="scope.row.answerType"/>
@@ -39,12 +39,12 @@
       </el-table-column>
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width"  width="150">
-        <template slot="header" slot-scope="scope">
+        <!-- <template slot-scope="scope">
         <el-input
           v-model="search"
           size="mini"
           placeholder="输入关键字搜索"/>
-      </template>
+      </template> -->
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -96,8 +96,8 @@
         </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="评分" prop="garde">
-          <el-input v-model="form.garde" placeholder="请输入评分" />
+            <el-form-item label="评分" prop="grade">
+          <el-input v-model="form.grade" placeholder="请输入评分" />
         </el-form-item>
           </el-col>
         </el-row>
@@ -203,7 +203,7 @@ export default {
         typeWeight: null,
         problem: null,
         answerType: null,
-        garde: null,
+        grade: null,
         createDate: null,
         updateDate: null
       };

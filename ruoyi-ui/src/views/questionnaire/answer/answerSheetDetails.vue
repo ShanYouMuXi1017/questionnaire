@@ -6,10 +6,10 @@
         <router-link  to="read" >
           选择路线
         </router-link></el-button>
-        
-      <span v-show="questionList.length >0" >问卷名称：{{ paramRouteName }}</span>
-
-        <el-button
+        <el-descriptions :colon=false>
+    <el-descriptions-item label="问卷名称：">{{ paramRouteName }}</el-descriptions-item>
+    <el-descriptions-item label="答者编号：">{{ paramUserId }}</el-descriptions-item>
+    <el-descriptions-item >        <el-button
         v-show="questionList.length > 0"
           style="float: right;margin-right: 10px;"
           type="success"
@@ -18,7 +18,8 @@
           size="mini"
           @click="handleExport"
           v-hasPermi="['questionnaire:question:export']"
-        >导出</el-button>
+        >导出</el-button></el-descriptions-item>
+   </el-descriptions>
 
     </el-card>
 
@@ -46,6 +47,7 @@
 </template>
 
 <script> 
+import Cookies from 'js-cookie'
 import { selectEveryoneAnswerRouter } from "@/api/questionnaire/questAnswerSheetVo";
 export default {
   name: "AnswerSheetDetails",
@@ -83,23 +85,15 @@ export default {
     };
   },
   created() {
-    // this.getList();
-  },
-  mounted() {
-    this.paramRouteId = this.$route.params.paramRouteId;
-    this.paramRouteName = this.$route.params.paramRouteName;
-    this.paramUserId = this.$route.params.paramUserId;
-    console.log("this.paramRouteId");
-    console.log(this.paramRouteId);
-    console.log("this.paramRouteName");
-    console.log(this.paramRouteName);
-    console.log("this.paramUserId");
-    console.log(this.paramUserId);
-    if(this.paramRouteId){
+      this.paramRouteId  =Cookies.get('routeId');
+      this.paramRouteName =Cookies.get('routeName');
+      this.paramUserId =Cookies.get('routeUserId');
+
+
+      this.queryParams.routerId = Cookies.get('routeId');
+      this.queryParams.userId = Cookies.get('routeUserId');
       this.getList();
-    }
-    this.loading = false;
-    },
+  },
     computed: {
   filteredQuestionList() {
     // 如果没有搜索词，返回原列表
@@ -122,13 +116,8 @@ export default {
     /** 查询问卷问题列表 */
     getList() {
       this.loading = true;      
-      this.queryParams.routerId = this.paramRouteId ;
-      this.queryParams.userId = this.paramUserId;
-      console.log("this.queryParams");
-      console.log(this.queryParams);
+
       selectEveryoneAnswerRouter(this.queryParams).then(response => {
-        console.log("response");
-        console.log(response.rows);
         this.questionList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -136,13 +125,13 @@ export default {
     },
 
 
-
     /** 导出按钮操作 */
     handleExport() {
-      this.download('questionnaire/question/export', {
+      this.download('questionnaire/router/answerDetailsExport', {
         ...this.queryParams
-      }, `question_${new Date().getTime()}.xlsx`)
+      }, `answer_${new Date().getTime()}.xlsx`)
     },
+
     indexMethod(index) {
         return index+1;
       },

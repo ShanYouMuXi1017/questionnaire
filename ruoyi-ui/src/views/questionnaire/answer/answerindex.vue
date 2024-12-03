@@ -79,19 +79,28 @@
 
     <el-table v-loading="loading" :data="answerList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="答题序号" align="center" prop="id" />
-      <el-table-column label="用户编号" align="center" prop="userId" />
+      <el-table-column label="答题序号" align="center" prop="avgGrade" />
       <el-table-column label="问卷编号" align="center" prop="routerId" />
+      <el-table-column label="用户编号" align="center" prop="userId" />
       <el-table-column label="问题编号" align="center" prop="issueId" />
-      <el-table-column label="回答" align="center" prop="answer" />
+      <el-table-column label="问题类型" align="center" prop="problemType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.quest_issue_type" :value="scope.row.problemType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="问题类型权重" align="center" prop="typeWeight" />
+      <el-table-column label="问题" align="center" prop="problem" />
+      <el-table-column label="回答类型" align="center" prop="answerType">
+        <template slot-scope="scope">
+          <dict-tag :options="dict.type.quest_answer_type" :value="scope.row.answerType"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="分数" align="center" prop="grade" />
+      <el-table-column label="得分" align="center" prop="answer" />
+      <el-table-column label="选项" align="center" prop="answerResult" />
       <el-table-column label="创建时间" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateDate" width="180">
-        <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.updateDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
@@ -161,9 +170,10 @@
 
 <script>
 import { listAnswer, getAnswer, delAnswer, addAnswer, updateAnswer } from "@/api/questionnaire/answer";
-
+import { listAnswerDetails } from "@/api/questionnaire/questAnswerSheetVo";
 export default {
-  name: "Answer",
+  name: "answerindex",
+  dicts: ['quest_answer_type', 'quest_issue_type'],
   data() {
     return {
       // 遮罩层
@@ -206,7 +216,7 @@ export default {
     /** 查询回答表列表 */
     getList() {
       this.loading = true;
-      listAnswer(this.queryParams).then(response => {
+      listAnswerDetails(this.queryParams).then(response => {
         this.answerList = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -242,7 +252,7 @@ export default {
     },
     // 多选框选中数据
     handleSelectionChange(selection) {
-      this.ids = selection.map(item => item.id)
+      this.ids = selection.map(item => item.avgGrade)
       this.single = selection.length!==1
       this.multiple = !selection.length
     },
@@ -255,7 +265,7 @@ export default {
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
-      const id = row.id || this.ids
+      const id = row.avgGrade || this.ids
       getAnswer(id).then(response => {
         this.form = response.data;
         this.open = true;
@@ -284,7 +294,7 @@ export default {
     },
     /** 删除按钮操作 */
     handleDelete(row) {
-      const ids = row.id || this.ids;
+      const ids = row.avgGrade || this.ids;
       this.$modal.confirm('是否确认删除回答表编号为"' + ids + '"的数据项？').then(function() {
         return delAnswer(ids);
       }).then(() => {
@@ -294,7 +304,8 @@ export default {
     },
     /** 导出按钮操作 */
     handleExport() {
-      this.download('questionnaire/answer/export', {
+      
+      this.download('questionnaire/router/answerDetailsExport', {
         ...this.queryParams
       }, `answer_${new Date().getTime()}.xlsx`)
     }

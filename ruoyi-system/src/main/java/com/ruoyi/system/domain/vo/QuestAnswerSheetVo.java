@@ -1,25 +1,77 @@
 package com.ruoyi.system.domain.vo;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.annotation.Excel;
+
 import java.util.Date;
 
 public class QuestAnswerSheetVo {
+    /** 问卷ID */
+    @Excel(name = "问卷ID")
     private int routerId;
+
+    /** 路线名称 */
     private String routeName;
+
+    /** 图片路径 */
     private String imageUrl;
+
+    /** 总分 */
     private String core;
-    private Date createDate;
+
+
+    /** 总分 */
     private Integer sumGrade;
+
+    /** 总数 */
     private Integer total;
+
+    /** 每份问卷平均分 */
     private Double avgGrade;
+
+    /** 总的平均分 */
     private Double totalAvgGrade;
+
+    /** 用户编号 */
+    @Excel(name = "用户编号")
     private int userId;
+
+    /** 问题编号 */
+    @Excel(name = "问题编号")
     private int issueId;
+
+    /** 问题类型 */
+    @Excel(name = "问题类型")
     private String problemType;
+
+    /** 问题类型权重 */
+    @Excel(name = "类型权重")
     private Double typeWeight;
+
+    /** 问题 */
+    @Excel(name = "问题")
     private String problem;
+
+    /** 回答类型 */
+    @Excel(name = "回答类型" )
     private int answerType;
+
+    /** 分数 */
+    @Excel(name = "分数")
     private Integer grade;
+
+    /** 得分 */
+    @Excel(name = "得分")
     private String answer;
+
+    /** 回答选项 */
+    @Excel(name = "回答选项")
     private String answerResult;
+
+    /** 创建时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    private Date createDate;
+
 
     public int getRouterId() {
         return routerId;

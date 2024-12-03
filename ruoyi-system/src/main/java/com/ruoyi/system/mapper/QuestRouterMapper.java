@@ -108,4 +108,12 @@ public interface QuestRouterMapper
      * @return 展示每份每人的答卷
      */
     public List<QuestAnswerSheetVo> selectEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
+
+    /**
+     * 展示答题详情
+     *
+     * @param questAnswerSheet 展示答题详情
+     * @return 展示答题详情
+     */
+    public List<QuestAnswerSheetVo> listAnswerDetails(QuestAnswerSheetVo questAnswerSheet);
 }

@@ -36,9 +36,9 @@
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template slot="header" slot-scope="scope">
+        <!-- <template slot="header" slot-scope="scope">
 
-        </template>
+        </template> -->
         <template slot-scope="scope">
           <el-button size="mini" type="text" icon="el-icon-view" @click="readDetails(scope.row.routerId, scope.row.routeName, scope.row.userId)"
             v-hasPermi="['questionnaire:router:remove']">查看</el-button>
