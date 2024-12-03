@@ -3,6 +3,7 @@ package com.ruoyi.web.controller.questionnaire;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.system.domain.QuestAnswer;
 import com.ruoyi.system.domain.vo.QuestAnswerSheetVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,4 +164,28 @@ public class QuestRouterController extends BaseController
         List<QuestAnswerSheetVo> list = questRouterService.selectEveryoneAnswerRouter(questAnswerSheet);
         return getDataTable(list);
     }
+
+    /**
+     * 展示答题详情
+     */
+    @GetMapping("/listAnswerDetails")
+    public TableDataInfo listAnswerDetails(QuestAnswerSheetVo questAnswerSheet)
+    {
+        startPage();
+        List<QuestAnswerSheetVo> list = questRouterService.listAnswerDetails(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+     * 导出回答表列表
+     */
+    @Log(title = "答卷表", businessType = BusinessType.EXPORT)
+    @PostMapping("/answerDetailsExport")
+    public void export(HttpServletResponse response, QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.listAnswerDetails(questAnswerSheet);
+        ExcelUtil<QuestAnswerSheetVo> util = new ExcelUtil<QuestAnswerSheetVo>(QuestAnswerSheetVo.class);
+        util.exportExcel(response, list, "答卷表数据");
+    }
+
 }

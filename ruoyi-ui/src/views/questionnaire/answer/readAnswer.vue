@@ -47,7 +47,7 @@
               <div class="bottom clearfix">
                 <time class="time">{{ parseTime(router.createDate, '{y}-{m}-{d}') }}</time>
                 <el-button type="text" class="button"
-                  @click="readDetails(router.routerId, router.routeName, router.userId)">详情</el-button>
+                  @click="readDetails(router.userId)">详情</el-button>
               </div>
             </div>
           </el-card>
@@ -67,6 +67,7 @@
 import { listRouter } from "@/api/questionnaire/router";
 import { sumEveryoneAnswerRouter, countRouter, avgEveryoneAnswerRouter, avgEveryAnswerRouter, avgAnswerRouter, selectEveryoneAnswerRouter } from "@/api/questionnaire/questAnswerSheetVo";
 import { mount } from "sortablejs";
+import Cookies from 'js-cookie'
 
 export default {
   name: "ReadAnswer",
@@ -99,15 +100,9 @@ export default {
     };
   },
   created() {
-    this.getList();
-  },
-  mounted() {
-    this.paramRouteId = this.$route.params.paramRouteId;
-    this.paramRouteName = this.$route.params.paramRouteName;
-    if (this.paramRouteId) {
+      this.paramRouteId =  Cookies.get('routeId');
+      this.paramRouteName= Cookies.get('routeName')
       this.getList();
-    }
-    this.loading = false;
   },
   computed: {
     colSpan() {
@@ -148,15 +143,10 @@ export default {
       this.cardsPerRow = num;
     },
     // 点击路由实现跳转功能
-    readDetails(routeId, routeName, userId) {
-      console.log(routeId, routeName, userId);
+    readDetails(userId) {
+      Cookies.set('routeUserId', userId)
       this.$router.push({
         name: 'answerSheetDetails',
-        params: {
-          paramRouteId: routeId,
-          paramRouteName: routeName,
-          paramUserId: userId,
-        }
       })
     },
     sumGradeDesc() {

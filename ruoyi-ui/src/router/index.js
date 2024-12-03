@@ -86,13 +86,13 @@ export const constantRoutes = [
         name: 'readRouter',
         hidden: true,
         meta: { title: '问卷查看', icon: 'home', affix: false }
-      },{  
-      path: 'read',
-      component: () => import('@/views/questionnaire/answer/read'),
-      name: 'read',
-      hidden: true,
-      meta: { title: '答卷展示', icon: 'home', affix: false }
-    },
+      }, {
+        path: 'read',
+        component: () => import('@/views/questionnaire/answer/read'),
+        name: 'read',
+        hidden: true,
+        meta: { title: '答卷展示', icon: 'home', affix: false }
+      },
       {
         path: 'readAnswer',
         component: () => import('@/views/questionnaire/answer/readAnswer'),
@@ -106,13 +106,6 @@ export const constantRoutes = [
         name: 'answerSheetDetails',
         hidden: true,
         meta: { title: '答卷详情', icon: 'home', affix: false }
-      },
-      {
-        path: 'readAnswer',
-        component: () => import('@/views/questionnaire/answer/readAnswer'),
-        name: 'readAnswer',
-        hidden: true,
-        meta: { title: '路线答卷', icon: 'home', affix: false }
       },
     ]
   },
@@ -133,7 +126,7 @@ export const constantRoutes = [
 ]
 
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes = [ 
+export const dynamicRoutes = [
   {
     path: '/system/user-auth',
     component: Layout,
@@ -219,7 +212,7 @@ Router.prototype.replace = function push(location) {
 }
 
 export default new Router({
-  base:'admin',
+  base: 'admin',
   mode: 'history', // 去掉url中的#
   // mode: 'hash',
   scrollBehavior: () => ({ y: 0 }),

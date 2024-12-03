@@ -108,5 +108,12 @@ public interface IQuestRouterService
      */
     public List<QuestAnswerSheetVo> selectEveryoneAnswerRouter(QuestAnswerSheetVo questAnswerSheet);
 
+    /**
+     * 展示答题详情
+     *
+     * @param questAnswerSheet 展示答题详情
+     * @return 展示答题详情
+     */
+    public List<QuestAnswerSheetVo> listAnswerDetails(QuestAnswerSheetVo questAnswerSheet);
 
 }

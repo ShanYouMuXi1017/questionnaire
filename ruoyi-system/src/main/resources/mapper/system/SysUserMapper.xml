@@ -85,7 +85,7 @@
         <result property="problem"    column="problem"    />
         <result property="answerType"    column="answer_type"    />
         <result property="answerOptions"    column="answer_options"    />
-        <result property="garde"    column="garde"    />
+        <result property="grade"    column="grade"    />
         <result property="userId"    column="user_id"    />
         <result property="routerId"    column="router_id"    />
         <result property="issueId"    column="issue_id"    />
@@ -281,7 +281,7 @@
             qq.problem ,            -- 问题内容
             qq.answer_type,     -- 回答类型
             qq.answer_options,  -- 回答选项
-            qq.garde                -- 评分
+            qq.grade                -- 评分
         FROM
             quest_question qq
         ORDER BY

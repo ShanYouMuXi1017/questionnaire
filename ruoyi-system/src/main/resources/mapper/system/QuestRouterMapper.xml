@@ -203,7 +203,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             d.router_id,c.issue_id,
             c.problem_type,
             c.problem,
-            c.garde,
+            c.grade,
             d.avgGrade
         FROM quest_question c,(
             SELECT
@@ -256,7 +256,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             a.type_weight AS type_weight,
             a.problem AS problem,
             a.answer_type AS answer_type,
-            a.garde AS grade,
+            a.grade AS grade,
             b.answer AS answer,
             b.answer_result
         FROM quest_question a
@@ -265,5 +265,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test="routerId != null "> and b.router_id = #{routerId}</if>
          <if test="userId != null "> and b.user_id = #{userId}</if>
         </where>
+    </select>
+
+
+    <!--    展示答题详情-->
+    <select id="listAnswerDetails" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+        b.id		AS  avgGrade,
+        b.router_id AS router_id,
+        b.user_id AS user_id,
+        b.issue_id AS issue_id,
+        a.problem_type AS problem_type,
+        a.type_weight AS type_weight,
+        a.problem AS problem,
+        a.answer_type AS answer_type,
+        a.grade AS grade,
+        b.answer AS answer,
+        b.answer_result,
+        b.create_date as create_date
+        FROM quest_question a
+        INNER JOIN quest_answer b ON a.issue_id = b.issue_id
 </select>
 </mapper>

@@ -21,9 +21,6 @@ public class QuestQuestion extends BaseEntity
     /** 问题ID */
     private Long issueId;
 
-    /** 问卷ID */
-    @Excel(name = "问卷ID")
-    private Long routerId;
 
     /** 问题类型 */
     @Excel(name = "问题类型")
@@ -43,7 +40,7 @@ public class QuestQuestion extends BaseEntity
 
     /** 评分 */
     @Excel(name = "评分")
-    private Long garde;
+    private Long grade;
 
 
     /** 回答选项 */
@@ -69,15 +66,7 @@ public class QuestQuestion extends BaseEntity
     {
         return issueId;
     }
-    public void setRouterId(Long routerId) 
-    {
-        this.routerId = routerId;
-    }
 
-    public Long getRouterId() 
-    {
-        return routerId;
-    }
     public void setProblemType(String problemType) 
     {
         this.problemType = problemType;
@@ -114,14 +103,14 @@ public class QuestQuestion extends BaseEntity
     {
         return answerType;
     }
-    public void setGarde(Long garde) 
+    public void setGrade(Long grade)
     {
-        this.garde = garde;
+        this.grade = grade;
     }
 
-    public Long getGarde() 
+    public Long getGrade()
     {
-        return garde;
+        return grade;
     }
     public void setCreateDate(Date createDate) 
     {
@@ -149,13 +138,12 @@ public class QuestQuestion extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("issueId", getIssueId())
-            .append("routerId", getRouterId())
             .append("problemType", getProblemType())
             .append("typeWeight", getTypeWeight())
             .append("problem", getProblem())
             .append("answerType", getAnswerType())
             .append("answerOptions", getAnswerOptions())
-            .append("garde", getGarde())
+            .append("grade", getGrade())
             .append("createDate", getCreateDate())
             .append("updateDate", getUpdateDate())
             .toString();
