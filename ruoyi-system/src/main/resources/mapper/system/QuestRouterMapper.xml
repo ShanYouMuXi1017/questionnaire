@@ -46,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="answerType" column="answer_type" />
         <result property="grade" column="grade" />
         <result property="answer" column="answer" />
+        <result property="answerResult" column="answer_result" />
     </resultMap>
 
 
@@ -132,26 +133,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!--    计算每份每人答卷的总分-->
     <select id="sumEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
-    SELECT e.router_id,d.user_id,e.route_name,e.image_url,e.core,e.create_date,d.sumGrade
-    FROM quest_router e,(
-        SELECT
-        a.router_id,
-        a.user_id,
-        SUM(CAST(a.answer AS SIGNED)) AS sumGrade
-        FROM
-        quest_question c
-        INNER JOIN
-        quest_answer a ON c.issue_id = a.issue_id
-        INNER JOIN
-        quest_router_user b ON a.router_id = b.router_id AND c.router_id = b.router_id
-        WHERE
-        b.flag = 0 AND b.status = 1 AND c.answer_type = 1
-        GROUP BY
-        a.router_id,
-        a.user_id
-        ORDER BY
-        a.router_id) AS d
-    WHERE e.router_id = d.router_id;
+        SELECT e.router_id,d.user_id,e.route_name,e.image_url,e.core,e.create_date,d.sumGrade
+        FROM quest_router e,(
+            SELECT
+                a.router_id,
+                a.user_id,
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
+            FROM
+                quest_question c
+                    INNER JOIN
+                quest_answer a ON c.issue_id = a.issue_id
+            GROUP BY
+                a.router_id,
+                a.user_id
+            ORDER BY
+                a.router_id) AS d
+        <where>
+             e.router_id = d.router_id
+            <if test="routerId != null and routerId != ''">and d.router_id = #{routerId}</if>
+        </where>
+
     </select>
 
     <!--    计算每份问卷的答卷数-->
@@ -162,13 +163,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                   a.router_id,
                   COUNT(DISTINCT a.user_id) AS total
               FROM
-                  quest_question c
-                      INNER JOIN
-                  quest_answer a ON c.issue_id = a.issue_id
-                      INNER JOIN
-                  quest_router_user b ON a.router_id = b.router_id AND c.router_id = b.router_id
+                  quest_router_user a
               WHERE
-                  b.flag = 0 AND b.status = 1
+                  a.status = 1
               GROUP BY
                   a.router_id
               ORDER BY
@@ -176,58 +173,49 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE e.router_id = d.router_id;
     </select>
 
-    <!--    计算每份答卷的平均分-->
+    <!--    计算每条线路答卷的平均分-->
     <select id="avgEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
         SELECT
             d.router_id,e.route_name,e.image_url,e.core,e.create_date,
-            AVG(d.sumGrade) AS avgGrade
+            ROUND(AVG(d.sumGrade),2) AS avgGrade
         FROM quest_router e,(
             SELECT
-                a.router_id,
+                a.router_id AS router_id,
                 a.user_id,
-                SUM(CAST(a.answer AS SIGNED)) AS sumGrade
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
             FROM
                 quest_question c
                     INNER JOIN
                 quest_answer a ON c.issue_id = a.issue_id
-                    INNER JOIN
-                quest_router_user b ON a.router_id = b.router_id AND c.router_id = b.router_id
-            WHERE
-                b.flag = 0 AND b.status = 1 AND c.answer_type = 1
             GROUP BY
                 a.router_id,
                 a.user_id
-        ) d
+            ORDER BY
+                a.router_id) AS d
         WHERE e.router_id = d.router_id
         GROUP BY
             d.router_id
     </select>
 
-<!--    计算每份答卷里的小题的平均分-->
+<!--    计算每份问卷小题的平均分-->
     <select id="avgEveryAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
         SELECT
-            d.router_id,
+            d.router_id,c.issue_id,
             c.problem_type,
-            c.type_weight,
             c.problem,
-            c.answer_type,
-            c.garde,
-            c.issue_id,
+            c.grade,
             d.avgGrade
         FROM quest_question c,(
             SELECT
                 a.router_id router_id,
                 a.issue_id issue_id,
-                AVG(CAST(a.answer AS SIGNED)) AS avgGrade,
-                count(*) total
+                ROUND(AVG(a.answer), 2) AS avgGrade
             FROM
                 quest_question b
                     INNER JOIN
                 quest_answer a ON b.issue_id = a.issue_id
-        <where>
-            b.answer_type = 1
-            <if test="userId != null "> and a.router_id = #{routerId}</if>
-        </where>
+            WHERE
+                b.answer_type = 1
             GROUP BY
                 a.router_id,
                 a.issue_id
@@ -238,33 +226,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <!--    计算总的平均分-->
     <select id="avgAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
-    SELECT
-    AVG(d.sumGrade) AS avgGrade
-    FROM (
         SELECT
-        a.router_id,
-        a.user_id,
-        SUM(CAST(a.answer AS SIGNED)) AS sumGrade
-        FROM
-        quest_question c
-        INNER JOIN
-        quest_answer a ON c.issue_id = a.issue_id
-        INNER JOIN
-        quest_router_user b ON a.router_id = b.router_id AND c.router_id = b.router_id
-        WHERE
-        b.flag = 0 AND b.status = 1 AND c.answer_type = 1
-        GROUP BY
-        a.router_id,
-        a.user_id
-        ) d
+            ROUND(AVG(d.sumGrade),2) AS avgGrade
+        FROM quest_router e,(
+            SELECT
+                a.router_id AS router_id,
+                a.user_id,
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
+            FROM
+                quest_question c
+                    INNER JOIN
+                quest_answer a ON c.issue_id = a.issue_id
+            GROUP BY
+                a.router_id,
+                a.user_id
+            ORDER BY
+                a.router_id) AS d
+        WHERE e.router_id = d.router_id
 </select>
 
 <!--    展示每份每人的答卷-->
     <select id="selectEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
-    SELECT d.router_id, d.user_id, c.issue_id, c.problem_type, c.type_weight, c.problem, c.answer_type, c.garde, c.answer
-    FROM quest_router_user d
-    INNER JOIN (
+
         SELECT
+            b.router_id AS router_id,
+            b.user_id AS user_id,
+            b.issue_id AS issue_id,
+            a.problem_type AS problem_type,
+            a.type_weight AS type_weight,
+            a.problem AS problem,
+            a.answer_type AS answer_type,
+            a.grade AS grade,
+            b.answer AS answer,
+            b.answer_result
+        FROM quest_question a
+        INNER JOIN quest_answer b ON a.issue_id = b.issue_id
+        <where>
+        <if test="routerId != null "> and b.router_id = #{routerId}</if>
+         <if test="userId != null "> and b.user_id = #{userId}</if>
+        </where>
+    </select>
+
+
+    <!--    展示答题详情-->
+    <select id="listAnswerDetails" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+        b.id		AS  avgGrade,
         b.router_id AS router_id,
         b.user_id AS user_id,
         b.issue_id AS issue_id,
@@ -272,11 +279,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         a.type_weight AS type_weight,
         a.problem AS problem,
         a.answer_type AS answer_type,
-        a.garde AS garde,
-        b.answer AS answer
+        a.grade AS grade,
+        b.answer AS answer,
+        b.answer_result,
+        b.create_date as create_date
         FROM quest_question a
         INNER JOIN quest_answer b ON a.issue_id = b.issue_id
-        ) AS c ON d.router_id = c.router_id AND d.user_id = c.user_id
-    WHERE d.router_id=1 AND d.user_id=1;
 </select>
 </mapper>

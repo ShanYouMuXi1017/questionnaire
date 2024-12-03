@@ -28,6 +28,17 @@
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
+    <!--小程序用户基本信息-->
+    <resultMap type="SysUser" id="SysUserResult2">
+        <id property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="sex" column="sex"/>
+        <result property="ageDuan" column="age_duan"/>
+        <result property="ridingAge" column="riding_age"/>
+        <result property="preferredRouters" column="preferred_routers"/>
+    </resultMap>
+
     <resultMap id="deptResult" type="SysDept">
         <id property="deptId" column="dept_id"/>
         <result property="parentId" column="parent_id"/>
@@ -52,6 +63,34 @@
         <result property="nickName" column="nick_name"/>
         <result property="avatar" column="avatar"/>
         <result property="phonenumber" column="phonenumber"/>
+    </resultMap>
+
+    <resultMap id="RoutersList" type="RoutersListVo">
+        <result property="routerId"    column="router_id"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="core"    column="core"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+        <result property="length"    column="length"    />
+        <result property="elevation"    column="elevation"    />
+    </resultMap>
+
+
+
+    <resultMap id="QuestSheet" type="QuestionSheetVo">
+        <result property="issueId"    column="issue_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="problemType"    column="problem_type"    />
+        <result property="problem"    column="problem"    />
+        <result property="answerType"    column="answer_type"    />
+        <result property="answerOptions"    column="answer_options"    />
+        <result property="grade"    column="grade"    />
+        <result property="userId"    column="user_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="issueId"    column="issue_id"    />
+        <result property="answer"    column="answer"    />
+        <result property="answerResult"    column="answer_result"    />
     </resultMap>
 
     <sql id="selectUserVo">
@@ -88,6 +127,18 @@
                  left join sys_dept d on u.dept_id = d.dept_id
                  left join sys_user_role ur on u.user_id = ur.user_id
                  left join sys_role r on r.role_id = ur.role_id
+    </sql>
+
+    <!--小程序用户基本信息-->
+    <sql id="selectUserVo2">
+        select u.user_id,
+               u.user_name,
+               u.nick_name,
+               u.sex,
+               u.age_duan,
+               u.riding_age,
+               u.preferred_routers
+        from sys_user u
     </sql>
 
     <select id="selectUserList" parameterType="SysUser" resultMap="SysUserResult">
@@ -168,6 +219,12 @@
         where u.user_id = #{userId}
     </select>
 
+    <!--小程序用户基本信息-->
+    <select id="selectUserById2" parameterType="Long" resultMap="SysUserResult2">
+        <include refid="selectUserVo2"/>
+        where u.user_id = #{userId}
+    </select>
+
     <select id="checkUserNameUnique" parameterType="String" resultMap="SysUserResult">
         select user_id, user_name
         from sys_user
@@ -199,6 +256,37 @@
         from sys_user
         where sys_user.del_flag = 0
           and sys_user.status = '0'
+    </select>
+
+    <!--小程序查询骑行路线列表-->
+    <select id="getRoutersList" resultMap="RoutersList">
+        select router_id,
+               route_name,
+               image_url,
+               core,
+               create_date,
+               update_date,
+               length,
+               elevation
+        from quest_router
+    </select>
+
+
+    <!--小程序查询一份问卷表单-->
+    <!-- 小程序查询一份问卷表单，按问题类型分组，组内按问题ID升序排列 -->
+    <select id="getQuestSheet" resultMap="QuestSheet">
+        SELECT
+            qq.issue_id ,           -- 问题ID
+            qq.problem_type,   -- 问题类型
+            qq.problem ,            -- 问题内容
+            qq.answer_type,     -- 回答类型
+            qq.answer_options,  -- 回答选项
+            qq.grade                -- 评分
+        FROM
+            quest_question qq
+        ORDER BY
+            qq.problem_type,                 -- 按问题类型分组
+            qq.issue_id ASC                   -- 每组内按问题ID升序排列
     </select>
 
     <select id="selectUserType" parameterType="Long" resultType="java.lang.String">
@@ -287,6 +375,9 @@
             <if test="loginIp != null and loginIp != ''">login_ip = #{loginIp},</if>
             <if test="loginDate != null">login_date = #{loginDate},</if>
             <if test="updateBy != null and updateBy != ''">update_by = #{updateBy},</if>
+            <if test="ageDuan != null and ageDuan != ''">age_duan = #{ageDuan},</if>
+            <if test="ridingAge != null and ridingAge != ''">riding_age = #{ridingAge},</if>
+            <if test="preferredRouters != null and preferredRouters != ''">preferred_routers = #{preferredRouters},</if>
             <if test="remark != null">remark = #{remark},</if>
             update_time = sysdate()
         </set>

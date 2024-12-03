@@ -1,14 +1,6 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="问卷编号" prop="routerId">
-        <el-input
-          v-model="queryParams.routerId"
-          placeholder="请输入问卷编号"
-          clearable
-          @keyup.enter.native="handleQuery"
-        />
-      </el-form-item>
       <el-form-item label="问题类型" prop="problemType">
         <el-select v-model="queryParams.problemType" placeholder="请选择问题类型" clearable>
           <el-option
@@ -92,7 +84,6 @@
     <el-table v-loading="loading" :data="questionList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="问题编号" align="center" prop="issueId" />
-      <el-table-column label="问卷编号" align="center" prop="routerId" />
       <el-table-column label="问题类型" align="center" prop="problemType">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.quest_issue_type" :value="scope.row.problemType"/>
@@ -105,7 +96,7 @@
           <dict-tag :options="dict.type.quest_answer_type" :value="scope.row.answerType"/>
         </template>
       </el-table-column>
-      <el-table-column label="评分" align="center" prop="garde" />
+      <el-table-column label="评分" align="center" prop="grade" />
       <el-table-column label="创建时间" align="center" prop="createDate" width="180">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
@@ -145,11 +136,8 @@
     />
 
     <!-- 添加或修改问卷问题对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
+    <el-dialog :title="title" :visible.sync="open" width="60%" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="问卷编号" prop="routerId">
-          <el-input v-model="form.routerId" placeholder="请输入问卷编号" />
-        </el-form-item>
         <el-form-item label="问题类型" prop="problemType">
           <el-select v-model="form.problemType" placeholder="请选择问题类型">
             <el-option
@@ -176,8 +164,8 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="评分" prop="garde">
-          <el-input v-model="form.garde" placeholder="请输入评分" />
+        <el-form-item label="评分" prop="grade">
+          <el-input v-model="form.grade" placeholder="请输入评分" />
         </el-form-item>
         <el-form-item label="创建时间" prop="createDate">
           <el-date-picker clearable
@@ -234,11 +222,10 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        routerId: null,
         problemType: null,
         problem: null,
         answerType: null,
-        garde: null,
+        grade: null,
       },
       // 表单参数
       form: {},
@@ -269,12 +256,11 @@ export default {
     reset() {
       this.form = {
         issueId: null,
-        routerId: null,
         problemType: null,
         typeWeight: null,
         problem: null,
         answerType: null,
-        garde: null,
+        grade: null,
         createDate: null,
         updateDate: null
       };

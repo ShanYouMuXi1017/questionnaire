@@ -10,12 +10,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="routerId"    column="router_id"    />
         <result property="issueId"    column="issue_id"    />
         <result property="answer"    column="answer"    />
+        <result property="answerResult"    column="answer_result"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
     </resultMap>
 
     <sql id="selectQuestAnswerVo">
-        select id, user_id, router_id, issue_id, answer, create_date, update_date from quest_answer
+        select id, user_id, router_id, issue_id, answer, answer_result, create_date, update_date from quest_answer
     </sql>
 
     <select id="selectQuestAnswerList" parameterType="QuestAnswer" resultMap="QuestAnswerResult">
@@ -40,6 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routerId != null">router_id,</if>
             <if test="issueId != null">issue_id,</if>
             <if test="answer != null">answer,</if>
+            <if test="answerResult != null">answer_result,</if>
             <if test="createDate != null">create_date,</if>
             <if test="updateDate != null">update_date,</if>
          </trim>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routerId != null">#{routerId},</if>
             <if test="issueId != null">#{issueId},</if>
             <if test="answer != null">#{answer},</if>
+            <if test="answerResult != null">#{answerResult},</if>
             <if test="createDate != null">#{createDate},</if>
             <if test="updateDate != null">#{updateDate},</if>
          </trim>
@@ -61,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="routerId != null">router_id = #{routerId},</if>
             <if test="issueId != null">issue_id = #{issueId},</if>
             <if test="answer != null">answer = #{answer},</if>
+            <if test="answerResult != null">answer_result = #{answerResult},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
             <if test="updateDate != null">update_date = #{updateDate},</if>
         </trim>

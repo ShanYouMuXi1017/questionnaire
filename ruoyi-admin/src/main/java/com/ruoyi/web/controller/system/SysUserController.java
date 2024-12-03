@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.mysql.cj.x.protobuf.Mysqlx;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -14,6 +15,9 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
+import com.ruoyi.system.domain.vo.UserBasicInfoVo;
 import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
@@ -26,8 +30,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -290,4 +293,88 @@ public class SysUserController extends BaseController {
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
     }
+
+
+
+    /**
+     * 小程序判断用户是否填写基本信息
+     */
+    @GetMapping("/basic/{userId}")
+    public AjaxResult basic(@PathVariable("userId") Long userId) {
+        SysUser sysUser = userService.selectUserById2(userId);
+        if(sysUser.getSex()==null||sysUser.getAgeDuan()==null||sysUser.getRidingAge()==null||sysUser.getPreferredRouters()==null){
+            return success(-1);//没有填写
+        }
+        return success(1);//填写了
+    }
+
+
+    /**
+     * 小程序端 用户填写基本信息接口
+     * @param userBasicInfoVo
+     * @return
+     */
+    @PutMapping("/basic/update")
+    public AjaxResult fillBasic(@RequestBody UserBasicInfoVo userBasicInfoVo) {
+        SysUser sysUser = userService.selectUserById(userBasicInfoVo.getUserId());
+        sysUser.setSex(userBasicInfoVo.getSex());
+        sysUser.setAgeDuan(userBasicInfoVo.getAge_duan());
+        sysUser.setRidingAge(userBasicInfoVo.getRiding_age());
+        sysUser.setPreferredRouters(userBasicInfoVo.getPreferred_routers());
+        return toAjax(userService.updateUser(sysUser));
+    }
+
+    /**
+     * 小程序端 查询路线列表接口
+     * @return
+     */
+    @GetMapping("/basic/list")
+    public AjaxResult routersList() {
+        List<RoutersListVo> routersListVos = userService.getRoutersList();
+        return success(routersListVos);
+    }
+
+    /**
+     * 小程序端 找到一份问卷表单
+     * @return
+     */
+    @GetMapping("/quest/sheet")
+    public AjaxResult getQuestSheet() {
+        // 获取原始数据
+        List<QuestionSheetVo> questionSheetVos = userService.getQuestSheet();
+
+        // 处理选项并分组
+        Map<String, List<QuestionSheetVo>> groupedData = new LinkedHashMap<>();
+        for (QuestionSheetVo q : questionSheetVos) {
+            // 处理选项
+            if (q.getAnswerOptions() != null && !q.getAnswerOptions().isEmpty()) {
+                List<String> options = Arrays.asList(q.getAnswerOptions().split("、"));
+                List<Map<String, String>> optionList = new ArrayList<>();
+                for (int i = 0; i < options.size(); i++) {
+                    Map<String, String> optionMap = new LinkedHashMap<>();
+                    optionMap.put("id", String.valueOf(i + 1));  // 选项的ID
+                    optionMap.put("content", options.get(i));   // 选项的内容
+                    optionList.add(optionMap);
+                }
+                q.setAnswerOptions2(optionList);
+            } else {
+                q.setAnswerOptions2(new ArrayList<>());
+            }
+            q.setAnswerOptionsLength(q.getAnswerOptions2().size());
+
+            // 按 problemType 分组
+            groupedData.computeIfAbsent(q.getProblemType(), k -> new ArrayList<>()).add(q);
+        }
+
+        // 将分组后的数据转换为符合需求的结构
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map.Entry<String, List<QuestionSheetVo>> entry : groupedData.entrySet()) {
+            Map<String, Object> group = new LinkedHashMap<>();
+            group.put("problemType", entry.getKey());
+            group.put("subjects", entry.getValue());
+            result.add(group);
+        }
+        return success(result);
+    }
 }
+
