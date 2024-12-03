@@ -100,25 +100,7 @@ const user = {
 						commit('SET_ROLES', res.user.roles)
 						commit('SET_PERMISSIONS', res.permissions)
 					} else {
-						isAgent(state.userId).then(res => {
-							console.log(res.data[0].isAgent)
-							if (res.data[0].isAgent === 0) {
-								commit('SET_ROLES', [{
-									roleName: "代理商",
-									roleSort: 0,
-									tagType: 'success',
-									type: 'basic'
-								}])
-							}
-							if (res.data[0].isAgent !== 0) {
-								commit('SET_ROLES', [{
-									roleName: "普通用户",
-									roleSort: 0,
-									tagType: 'primary',
-									type: 'basic'
-								}])
-							}
-						})
+						commit('SET_ROLES', ['ROLE_DEFAULT'])
 					}
 					resolve(res)
 				}).catch(error => {
