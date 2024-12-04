@@ -1,5 +1,9 @@
 <template>
-  <div class="app-container">
+  <div class="app-container"
+       v-loading="downLoading"
+       element-loading-text="拼命下载中"
+       element-loading-spinner="el-icon-loading"
+       element-loading-background="rgba(0, 0, 0, 0.8)">
     <el-card v-show="paramRouteId == null">
       <el-button type="success" round>
         <router-link to="read">
@@ -15,6 +19,11 @@
           <el-button icon="el-icon-top" size="mini" @click="setCardsPerRow(4)">每行4个</el-button>
           <el-button type="primary" icon="el-icon-bottom" size="mini" @click="sumGradeDesc()">降序排序</el-button>
           <el-button icon="el-icon-top" size="mini" @click="sumGradeAsc()">升序排序</el-button>
+          <el-button
+            size="mini"
+            icon="el-icon-download"
+            @click="downloadExcel()"
+          >下载问卷汇总</el-button>
         </el-col>
         <el-col :span="8">
           <span>
@@ -27,7 +36,7 @@
 
     </el-card>
 
-    <el-card shadow="never" v-loading="loading" style="margin-top: 20px;">
+    <el-card shadow="never" v-loading="loading" style="margin-top: 20px;" >
       <el-row>
         <el-col :span="colSpan"
           v-for="(router, routerId) in answersheetList.filter(data => !search || data.routeName.toLowerCase().includes(search.toLowerCase()))"
@@ -40,7 +49,7 @@
                 <span>{{ router.routeName }}</span>
                 <span style=" font-size: 13px;    color: #999;    float: right;"> 用户：{{ router.userId }}号</span>
               </div>
-              <div class="bottom clearfix"> 
+              <div class="bottom clearfix">
                 <span style=" font-size: 13px;    color: #999;">总分：{{ router.core }}</span>
                 <span style=" font-size: 13px;    color: #999;    float: right;"> 得分：{{ router.sumGrade }}</span>
               </div>
@@ -64,7 +73,7 @@
 </template>
 
 <script>
-import { listRouter } from "@/api/questionnaire/router";
+import {downloadAnswerToExcel, listRouter} from "@/api/questionnaire/router";
 import { sumEveryoneAnswerRouter, countRouter, avgEveryoneAnswerRouter, avgEveryAnswerRouter, avgAnswerRouter, selectEveryoneAnswerRouter } from "@/api/questionnaire/questAnswerSheetVo";
 import { mount } from "sortablejs";
 import Cookies from 'js-cookie'
@@ -76,6 +85,8 @@ export default {
     return {
       // 遮罩层
       loading: true,
+      //下载汇总表时遮罩层
+      downLoading:false,
       // 显示搜索条件
       showSearch: true,
       // 总条数
@@ -96,7 +107,7 @@ export default {
       form: {},
       cardsPerRow: 3, // 每行显示的卡片数量
       search: '',
-
+      routeName: '',
     };
   },
   created() {
@@ -117,6 +128,7 @@ export default {
       this.queryParams.routerId = this.paramRouteId;
       sumEveryoneAnswerRouter(this.queryParams).then(response => {
         this.answersheetList = response.rows;
+        this.routeName = response.rows[0].routeName;
         this.total = response.total;
         this.loading = false;
       });
@@ -158,6 +170,30 @@ export default {
       this.answersheetList.sort((a, b) => {
         return a.sumGrade - b.sumGrade; // 升序排序
       });
+    },
+    downloadExcel(){
+      this.downLoading = true;
+      downloadAnswerToExcel(this.queryParams.routerId) .then(response => {
+        // 使用 Blob 创建 URL
+        let blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+        let url = window.URL.createObjectURL(blob);
+
+        // 创建下载链接并触发点击事件
+        let link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', this.routeName+'_路线用户问卷汇总表.xlsx'); // 设置下载文件名
+        document.body.appendChild(link);
+        link.click();
+        link.remove(); // 下载后移除链接
+
+        // 释放 Blob 对象
+        window.URL.revokeObjectURL(url);
+        this.downLoading = false;
+        this.$modal.msgSuccess("下载成功！");
+      })
+        .catch(error => {
+          console.error("下载失败", error);
+        });
     },
   }
 };

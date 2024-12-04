@@ -28,7 +28,7 @@
             :value="dict.value"
           />
         </el-select>
-      </el-form-item> 
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -36,7 +36,7 @@
     </el-form>
 
     <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button
           type="primary"
           plain
@@ -45,7 +45,7 @@
           @click="handleAdd"
           v-hasPermi="['questionnaire:question:add']"
         >新增</el-button>
-      </el-col>
+      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="success"
@@ -57,7 +57,7 @@
           v-hasPermi="['questionnaire:question:edit']"
         >修改</el-button>
       </el-col>
-      <el-col :span="1.5">
+<!--      <el-col :span="1.5">
         <el-button
           type="danger"
           plain
@@ -67,7 +67,7 @@
           @click="handleDelete"
           v-hasPermi="['questionnaire:question:remove']"
         >删除</el-button>
-      </el-col>
+      </el-col>-->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -77,6 +77,28 @@
           @click="handleExport"
           v-hasPermi="['questionnaire:question:export']"
         >导出</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="el-icon-plus"
+          size="mini"
+          @click="handleAddExcel"
+        >录入问卷问题
+        </el-button
+        >
+      </el-col>
+
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          icon="el-icon-download"
+          size="mini"
+          @click="handleDownloadExcel"
+        >下载录入模板
+        </el-button
+        >
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
@@ -89,7 +111,7 @@
           <dict-tag :options="dict.type.quest_issue_type" :value="scope.row.problemType"/>
         </template>
       </el-table-column>
-      <el-table-column label="问题类型权重" align="center" prop="typeWeight" />
+      <el-table-column label="问题类型权重（%）" align="center" prop="typeWeight" />
       <el-table-column label="问题" align="center" prop="problem" />
       <el-table-column label="回答类型" align="center" prop="answerType">
         <template slot-scope="scope">
@@ -126,7 +148,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -189,11 +211,54 @@
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>
+    <el-dialog :title="title" :visible.sync="upload.open" width="35%" append-to-body
+               element-loading-text="正在上传">
+      <el-form ref="form" :model="uploadForm" :rules="rules" label-width="110px">
+        <el-form-item label="附件" prop="photoPath">
+          <el-upload
+            ref="upload"
+            :headers="upload.headers"
+            :action="upload.url"
+            :multiple="false"
+            :file-list="fileList"
+            :disabled="upload.isUploading"
+            :on-remove="fileRemove"
+            :on-success="uploadSuccess"
+            :on-error="uploadError"
+            :before-upload="beforeUpload"
+            :limit="1"
+            :on-exceed="beyond"
+            :auto-upload="false"
+            accept=".xls,.xlsx"
+          >
+            <el-button size="small">
+              上传
+              <i class="el-icon-upload el-icon--right"></i>
+            </el-button>
+            <div class="el-upload__tip" style="color: red" slot="tip">
+              提示：仅允许导入“.xls、.xlsx、”格式文件，文件大小小于10MB！
+            </div>
+          </el-upload>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="submitExcelForm">确 定</el-button>
+        <el-button @click="cancelUpload">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listQuestion, getQuestion, delQuestion, addQuestion, updateQuestion } from "@/api/questionnaire/question";
+import {
+  listQuestion,
+  getQuestion,
+  delQuestion,
+  addQuestion,
+  updateQuestion,
+  getFilePath
+} from "@/api/questionnaire/question";
+import {getToken} from "@/utils/auth";
 
 export default {
   name: "Question",
@@ -231,13 +296,43 @@ export default {
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      // 上传文件
+      uploadForm: {},
+      fileList: [],
+      upload: {
+        // 是否显示弹出层（用户导入）
+        open: false,
+        // 弹出层标题（用户导入）
+        title: '',
+        // 是否禁用上传
+        isUploading: false,
+        // 是否更新已经存在的用户数据
+        updateSupport: 0,
+        // 设置上传的请求头部
+        headers: { Authorization: 'Bearer ' + getToken() },
+        // 上传的地址
+        url: process.env.VUE_APP_BASE_API + "/questionnaire/question/importQuestion",
+      },
+      uploadExcelPath: '',
     };
   },
   created() {
     this.getList();
+    this.getFilePath();
   },
   methods: {
+    //获取上传后的excel文件路径
+    getFilePath(){
+      getFilePath().then(response => {
+        if(response.code === 200){
+          this.uploadExcelPath = response.data;
+        }
+        else {
+          this.uploadExcelPath = '';
+        }
+      })
+    },
     /** 查询问卷问题列表 */
     getList() {
       this.loading = true;
@@ -333,7 +428,98 @@ export default {
       this.download('questionnaire/question/export', {
         ...this.queryParams
       }, `question_${new Date().getTime()}.xlsx`)
-    }
+    },
+    /** 新增按钮操作 */
+    handleAddExcel() {
+      this.fileRemove();
+      this.upload.open = true;
+      this.title = "添加文件";
+    },
+    // 移除选择的文件
+    fileRemove(file, fileList) {
+      this.upload.isUploading = false;
+      this.resetUpload();
+      this.fileList = [];
+    },
+    // 表单重置
+    resetUpload() {
+      this.uploadForm = {
+        id: null,
+        filename: null,
+        uploadpath: null,
+      };
+      this.resetForm("form");
+    },
+    // 取消按钮
+    cancelUpload() {
+      this.upload.open = false;
+      this.resetUpload();
+    },
+    // 文件上传成功
+    uploadSuccess(res, file, fileList) {
+      this.uploadForm.uploadpath = res.uploadpath;
+      this.upload.isUploading = false;
+      this.upload.open = false;
+      this.$refs.upload.clearFiles()
+      this.fileList = fileList;
+      this.cancelUpload();
+      this.getFilePath();
+      this.$message({
+        message: "问题录入成功！",
+        type: "success",
+      });
+
+    },
+    beyond(file, fileList) {
+      this.$message({
+        message: "最多上传一个文件",
+        type: "warning",
+      });
+    },
+    // 文件上传失败
+    uploadError(err) {
+      this.upload.isUploading = false;
+      this.$modal.error(err);
+    },
+    // 上传中
+    uploadProgress(e) {
+      // this.btnLoding = true;
+    },
+    // 文件上传之前
+    beforeUpload(file) {
+      const fileName = file.name;
+      const fileType = fileName.substring(fileName.lastIndexOf("."));
+      if(file.size > 10485760){
+        this.$message({
+          message: "文件大小不能超过10MB",
+          type: "warning",
+        });
+        return false;
+      }
+      if (
+        fileType === ".xls" ||
+        fileType === ".xlsx"
+      ) {
+        this.uploadForm.filename = file.name;
+        // 不处理
+      } else {
+        this.$message.error("请上传正确的文件类型,.xls,.xlsx");
+        return false;
+      }
+    },
+    // 下载模板
+    handleDownloadExcel() {
+      if(this.uploadExcelPath === ''){
+        this.$message.error("找不到文件，请联系管理员！");
+        return;
+      }
+      const baseURL = process.env.VUE_APP_BASE_API
+      window.location.href = baseURL + "/common/downloadResourceeasy?resource=" + encodeURI(this.uploadExcelPath);
+    },
+    /** 提交按钮 */
+    submitExcelForm() {
+      this.$refs.upload.submit();
+    },
   }
 };
 </script>
