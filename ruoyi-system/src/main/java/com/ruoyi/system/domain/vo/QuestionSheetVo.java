@@ -45,7 +45,7 @@ public class QuestionSheetVo {
     /**
      * 评分
      */
-    private Double garde;
+    private Double grade;
 
 
     /**

@@ -589,4 +589,12 @@ public class SysUserServiceImpl implements ISysUserService {
     public List<SysUser> getUnAgent() {
         return userMapper.getUnAgent();
     }
+
+    @Override
+    public QuestWritUserInfo getQuestWritUserInfo(Long userId) {
+        if(userId == null){
+            throw new ServiceException("用户ID不能为空！");
+        }
+        return userMapper.getQuestWritUserInfo(userId);
+    }
 }

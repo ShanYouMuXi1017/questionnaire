@@ -1,20 +1,22 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.system.domain.QuestQuestion;
+import com.ruoyi.system.domain.QuestQuestionFromExcel;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 /**
  * 问卷问题Mapper接口
- * 
+ *
  * @author MCL
  * @date 2024-09-14
  */
-public interface QuestQuestionMapper 
+public interface QuestQuestionMapper
 {
     /**
      * 查询问卷问题
-     * 
+     *
      * @param issueId 问卷问题主键
      * @return 问卷问题
      */
@@ -22,7 +24,7 @@ public interface QuestQuestionMapper
 
     /**
      * 查询问卷问题列表
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 问卷问题集合
      */
@@ -30,7 +32,7 @@ public interface QuestQuestionMapper
 
     /**
      * 新增问卷问题
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 结果
      */
@@ -38,7 +40,7 @@ public interface QuestQuestionMapper
 
     /**
      * 修改问卷问题
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 结果
      */
@@ -46,7 +48,7 @@ public interface QuestQuestionMapper
 
     /**
      * 删除问卷问题
-     * 
+     *
      * @param issueId 问卷问题主键
      * @return 结果
      */
@@ -54,9 +56,17 @@ public interface QuestQuestionMapper
 
     /**
      * 批量删除问卷问题
-     * 
+     *
      * @param issueIds 需要删除的数据主键集合
      * @return 结果
      */
     public int deleteQuestQuestionByIssueIds(Long[] issueIds);
+
+    /**
+     * 批量新增问卷问题
+     * @param list
+     * @return
+     */
+    int UpdateQuestQuestion(@Param("list") List<QuestQuestionFromExcel> list);
+
 }

@@ -1,6 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.QuestWritUserInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
 import com.ruoyi.system.domain.vo.QuestionSheetVo;
 import com.ruoyi.system.domain.vo.RoutersListVo;
@@ -177,5 +178,7 @@ public interface SysUserMapper {
     List<SysUser> getAgent();
 
     List<SysUser> getUnAgent();
+
+    QuestWritUserInfo getQuestWritUserInfo(Long userId);
 
 }

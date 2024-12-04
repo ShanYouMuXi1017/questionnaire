@@ -42,3 +42,12 @@ export function delRouter(routerId) {
     method: 'delete'
   })
 }
+
+// 下载路线问卷
+export function downloadAnswerToExcel(routerId) {
+  return request({
+    url: '/questionnaire/router/downloadExcel/' + routerId,
+    method: 'get',
+    responseType: 'arraybuffer' // 设置响应类型为blob
+  })
+}

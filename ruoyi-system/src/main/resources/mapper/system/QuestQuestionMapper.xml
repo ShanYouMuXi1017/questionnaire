@@ -3,7 +3,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.QuestQuestionMapper">
-    
+
     <resultMap type="QuestQuestion" id="QuestQuestionResult">
         <result property="issueId"    column="issue_id"    />
         <result property="problemType"    column="problem_type"    />
@@ -29,7 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="grade != null "> and grade = #{grade}</if>
         </where>
     </select>
-    
+
     <select id="selectQuestQuestionByIssueId" parameterType="Long" resultMap="QuestQuestionResult">
         <include refid="selectQuestQuestionVo"/>
         where issue_id = #{issueId}
@@ -75,12 +75,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where issue_id = #{issueId}
     </update>
 
+    <update id="UpdateQuestQuestion" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" open="" separator=";" close="">
+            UPDATE quest_question
+            <set>
+                <if test="item.problemType != null">problem_type = #{item.problemType,jdbcType=VARCHAR},</if>
+                <if test="item.typeWeight != null">type_weight = #{item.typeWeight,jdbcType=DOUBLE},</if>
+                <if test="item.problem != null">problem = #{item.problem,jdbcType=VARCHAR},</if>
+                <if test="item.answerType != null">answer_type = #{item.answerType,jdbcType=INTEGER},</if>
+                <if test="item.grade != null">grade = #{item.grade,jdbcType=DOUBLE},</if>
+                <if test="item.answerOptions != null">answer_options = #{item.answerOptions,jdbcType=VARCHAR},</if>
+            </set>
+            WHERE issue_id = #{item.issueId,jdbcType=INTEGER}
+        </foreach>
+
+    </update>
+
     <delete id="deleteQuestQuestionByIssueId" parameterType="Long">
         delete from quest_question where issue_id = #{issueId}
     </delete>
 
     <delete id="deleteQuestQuestionByIssueIds" parameterType="String">
-        delete from quest_question where issue_id in 
+        delete from quest_question where issue_id in
         <foreach item="issueId" collection="array" open="(" separator="," close=")">
             #{issueId}
         </foreach>

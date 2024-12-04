@@ -42,3 +42,11 @@ export function delQuestion(issueId) {
     method: 'delete'
   })
 }
+
+// 查询上传的excel路径
+export function getFilePath() {
+  return request({
+    url: '/questionnaire/question/getFilePath/',
+    method: 'get',
+  })
+}
