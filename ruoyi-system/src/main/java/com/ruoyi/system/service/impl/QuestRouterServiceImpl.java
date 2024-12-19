@@ -161,4 +161,16 @@ public class QuestRouterServiceImpl implements IQuestRouterService
     {
         return questRouterMapper.selectEveryoneAnswerRouter(questAnswerSheet);
     }
+
+    /**
+     * 展示答题详情
+     *
+     * @param questAnswerSheet 展示答题详情
+     * @return 展示答题详情
+     */
+    @Override
+    public List<QuestAnswerSheetVo> listAnswerDetails(QuestAnswerSheetVo questAnswerSheet)
+    {
+        return questRouterMapper.listAnswerDetails(questAnswerSheet);
+    }
 }

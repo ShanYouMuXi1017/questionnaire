@@ -34,14 +34,15 @@
             <div style="padding: 14px;">
               <div class="bottom clearfix">
                 <span>{{ router.routeName }}</span>
-                         </div>
+              </div>
               <div class="bottom clearfix">
                 <span style=" font-size: 13px;    color: #999;"> 共计{{ router.total }}份</span>
                 <span style=" font-size: 13px;    color: #999;    float: right;"> 总分：{{ router.core }}</span>
               </div>
               <div class="bottom clearfix">
                 <time class="time">{{ parseTime(router.createDate, '{y}-{m}-{d}') }}</time>
-                <el-button type="text" class="button" @click="readDetails(router.routerId,router.routeName)">详情</el-button>
+                <el-button type="text" class="button"
+                  @click="readDetails(router.routerId, router.routeName)">详情</el-button>
               </div>
             </div>
           </el-card>
@@ -60,6 +61,7 @@
 <script>
 import { listRouter } from "@/api/questionnaire/router";
 import { sumEveryoneAnswerRouter, countRouter, avgEveryoneAnswerRouter, avgEveryAnswerRouter, avgAnswerRouter, selectEveryoneAnswerRouter } from "@/api/questionnaire/questAnswerSheetVo";
+import Cookies from 'js-cookie'
 
 export default {
   name: "read",
@@ -89,6 +91,7 @@ export default {
 
     };
   },
+  
   created() {
     this.getList();
   },
@@ -131,15 +134,13 @@ export default {
     setCardsPerRow(num) {
       this.cardsPerRow = num;
     },
-        // 点击路由实现跳转功能
-        readDetails(routeId,routeName) {
+    // 点击路由实现跳转功能
+    readDetails(routeId, routeName) {
+      Cookies.set('routeId', routeId)
+      Cookies.set('routeName', routeName)
       this.$router.push({
-      name: 'readAnswer',
-      params: {
-        paramRouteId: routeId,
-        paramRouteName: routeName,
-      }
-    })
+        name: 'readAnswer',
+      })
     },
     sumGradeDesc() {
       this.listcountRouter.sort((a, b) => {

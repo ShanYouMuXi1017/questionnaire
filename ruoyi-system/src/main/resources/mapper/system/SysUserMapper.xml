@@ -85,12 +85,19 @@
         <result property="problem"    column="problem"    />
         <result property="answerType"    column="answer_type"    />
         <result property="answerOptions"    column="answer_options"    />
-        <result property="garde"    column="garde"    />
+        <result property="grade"    column="grade"    />
         <result property="userId"    column="user_id"    />
         <result property="routerId"    column="router_id"    />
         <result property="issueId"    column="issue_id"    />
         <result property="answer"    column="answer"    />
         <result property="answerResult"    column="answer_result"    />
+    </resultMap>
+
+    <resultMap id="QuestWritUserInfoResult" type="QuestWritUserInfo">
+        <result property="userId" column="user_id"/>
+        <result property="sex" column="sex"/>
+        <result property="ageDuan" column="age_duan"/>
+        <result property="ridingAge" column="riding_age"/>
     </resultMap>
 
     <sql id="selectUserVo">
@@ -209,6 +216,20 @@
         ${params.dataScope}
     </select>
 
+    <!--导出用户问卷汇总表时查询用户基本信息-->
+    <select id="getQuestWritUserInfo" resultMap="QuestWritUserInfoResult">
+        SELECT user_id,
+               CASE
+                   WHEN sex = 0 THEN '男'
+                   WHEN sex = 1 THEN '女'
+                   ELSE '未知'
+                   END AS sex,
+               age_duan,
+               riding_age
+        FROM sys_user
+        WHERE user_id = #{userId};
+    </select>
+
     <select id="selectUserByUserName" parameterType="String" resultMap="SysUserResult">
         <include refid="selectUserVo"/>
         where u.user_name = #{userName} and u.del_flag = '0'
@@ -281,7 +302,7 @@
             qq.problem ,            -- 问题内容
             qq.answer_type,     -- 回答类型
             qq.answer_options,  -- 回答选项
-            qq.garde                -- 评分
+            qq.grade                -- 评分
         FROM
             quest_question qq
         ORDER BY

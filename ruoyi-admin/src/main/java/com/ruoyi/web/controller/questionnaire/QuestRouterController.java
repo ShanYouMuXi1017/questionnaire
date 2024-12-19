@@ -1,9 +1,14 @@
 package com.ruoyi.web.controller.questionnaire;
 
+import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.system.domain.QuestAnswer;
 import com.ruoyi.system.domain.vo.QuestAnswerSheetVo;
+import com.ruoyi.web.controller.tool.excel.WritExcel;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,16 +30,20 @@ import com.ruoyi.common.core.page.TableDataInfo;
 
 /**
  * 路线问卷Controller
- * 
+ *
  * @author MCL
  * @date 2024-09-21
  */
+@Slf4j
 @RestController
 @RequestMapping("/questionnaire/router")
 public class QuestRouterController extends BaseController
 {
     @Autowired
     private IQuestRouterService questRouterService;
+
+    @Autowired
+    private WritExcel writExcel;
 
     /**
      * 查询路线问卷列表
@@ -163,4 +172,63 @@ public class QuestRouterController extends BaseController
         List<QuestAnswerSheetVo> list = questRouterService.selectEveryoneAnswerRouter(questAnswerSheet);
         return getDataTable(list);
     }
+
+    /**
+     * 展示答题详情
+     */
+    @GetMapping("/listAnswerDetails")
+    public TableDataInfo listAnswerDetails(QuestAnswerSheetVo questAnswerSheet)
+    {
+        startPage();
+        List<QuestAnswerSheetVo> list = questRouterService.listAnswerDetails(questAnswerSheet);
+        return getDataTable(list);
+    }
+
+    /**
+     * 导出回答表列表
+     */
+    @Log(title = "答卷表", businessType = BusinessType.EXPORT)
+    @PostMapping("/answerDetailsExport")
+    public void export(HttpServletResponse response, QuestAnswerSheetVo questAnswerSheet)
+    {
+        List<QuestAnswerSheetVo> list = questRouterService.listAnswerDetails(questAnswerSheet);
+        ExcelUtil<QuestAnswerSheetVo> util = new ExcelUtil<QuestAnswerSheetVo>(QuestAnswerSheetVo.class);
+        util.exportExcel(response, list, "答卷表数据");
+    }
+
+
+    /**
+     * 下载路线问卷汇总表
+     */
+    @GetMapping("/downloadExcel/{routerId}")
+    public void  selectEveryoneAnswerRouter(HttpServletResponse response,@PathVariable("routerId") Long routerId ) throws IOException {
+
+        QuestRouter router = questRouterService.selectQuestRouterByRouterId(routerId);
+        String fileName = router.getRouteName() + "_路线用户问卷汇总表.xlsx";
+
+        XSSFWorkbook workbook = null;
+
+        try {
+            // 生成 Excel 工作簿
+            workbook = writExcel.writeAnswerToExcel(routerId);
+
+            // 设置响应头，指示这是一个 Excel 文件
+            response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            response.setHeader("Content-Disposition", "attachment; filename=\""+fileName+"\""); // 设置文件名
+
+            // 写入文件到输出流
+            workbook.write(response.getOutputStream());
+            response.flushBuffer(); // 刷新响应流
+
+        } catch (Exception e) {
+            log.error("用户问卷写入excel失败", e);
+        } finally {
+            if (workbook != null) {
+                workbook.close();
+            }
+        }
+
+
+    }
+
 }

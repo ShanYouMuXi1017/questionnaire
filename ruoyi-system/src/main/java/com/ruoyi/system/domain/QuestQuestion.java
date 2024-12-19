@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * 问卷问题对象 quest_question
- * 
+ *
  * @author MCL
  * @date 2024-09-14
  */
@@ -21,9 +21,6 @@ public class QuestQuestion extends BaseEntity
     /** 问题ID */
     private Long issueId;
 
-    /** 问卷ID */
-    @Excel(name = "问卷ID")
-    private Long routerId;
 
     /** 问题类型 */
     @Excel(name = "问题类型")
@@ -41,9 +38,13 @@ public class QuestQuestion extends BaseEntity
     @Excel(name = "回答类型")
     private Long answerType;
 
+    /** 单元格位置 */
+    @Excel(name = "单元格位置")
+    private Integer cellPosition;
+
     /** 评分 */
     @Excel(name = "评分")
-    private Long garde;
+    private Long grade;
 
 
     /** 回答选项 */
@@ -60,70 +61,62 @@ public class QuestQuestion extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updateDate;
 
-    public void setIssueId(Long issueId) 
+    public void setIssueId(Long issueId)
     {
         this.issueId = issueId;
     }
 
-    public Long getIssueId() 
+    public Long getIssueId()
     {
         return issueId;
     }
-    public void setRouterId(Long routerId) 
-    {
-        this.routerId = routerId;
-    }
 
-    public Long getRouterId() 
-    {
-        return routerId;
-    }
-    public void setProblemType(String problemType) 
+    public void setProblemType(String problemType)
     {
         this.problemType = problemType;
     }
 
-    public String getProblemType() 
+    public String getProblemType()
     {
         return problemType;
     }
-    public void setTypeWeight(Long typeWeight) 
+    public void setTypeWeight(Long typeWeight)
     {
         this.typeWeight = typeWeight;
     }
 
-    public Long getTypeWeight() 
+    public Long getTypeWeight()
     {
         return typeWeight;
     }
-    public void setProblem(String problem) 
+    public void setProblem(String problem)
     {
         this.problem = problem;
     }
 
-    public String getProblem() 
+    public String getProblem()
     {
         return problem;
     }
-    public void setAnswerType(Long answerType) 
+    public void setAnswerType(Long answerType)
     {
         this.answerType = answerType;
     }
 
-    public Long getAnswerType() 
+    public Long getAnswerType()
     {
         return answerType;
     }
-    public void setGarde(Long garde) 
+    public void setGrade(Long grade)
     {
-        this.garde = garde;
+        this.grade = grade;
     }
 
-    public Long getGarde() 
+    public Long getGrade()
     {
-        return garde;
+        return grade;
     }
-    public void setCreateDate(Date createDate) 
+    public void setCreateDate(Date createDate)
     {
         this.createDate = createDate;
     }
@@ -131,33 +124,41 @@ public class QuestQuestion extends BaseEntity
     public String getAnswerOptions() {return answerOptions; }
     public void setAnswerOptions(String answerOptions) {this.answerOptions = answerOptions; }
 
-    public Date getCreateDate() 
+    public Date getCreateDate()
     {
         return createDate;
     }
-    public void setUpdateDate(Date updateDate) 
+    public void setUpdateDate(Date updateDate)
     {
         this.updateDate = updateDate;
     }
 
-    public Date getUpdateDate() 
+    public Date getUpdateDate()
     {
         return updateDate;
     }
 
+    public Integer getCellPosition() {
+        return cellPosition;
+    }
+
+    public void setCellPosition(Integer cellPosition) {
+        this.cellPosition = cellPosition;
+    }
+
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("issueId", getIssueId())
-            .append("routerId", getRouterId())
-            .append("problemType", getProblemType())
-            .append("typeWeight", getTypeWeight())
-            .append("problem", getProblem())
-            .append("answerType", getAnswerType())
-            .append("answerOptions", getAnswerOptions())
-            .append("garde", getGarde())
-            .append("createDate", getCreateDate())
-            .append("updateDate", getUpdateDate())
-            .toString();
+        return "QuestQuestion{" +
+                "issueId=" + issueId +
+                ", problemType='" + problemType + '\'' +
+                ", typeWeight=" + typeWeight +
+                ", problem='" + problem + '\'' +
+                ", answerType=" + answerType +
+                ", cellPosition=" + cellPosition +
+                ", grade=" + grade +
+                ", answerOptions='" + answerOptions + '\'' +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
+                '}';
     }
 }

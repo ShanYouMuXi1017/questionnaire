@@ -3,35 +3,33 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.QuestQuestionMapper">
-    
+
     <resultMap type="QuestQuestion" id="QuestQuestionResult">
         <result property="issueId"    column="issue_id"    />
-        <result property="routerId"    column="router_id"    />
         <result property="problemType"    column="problem_type"    />
         <result property="typeWeight"    column="type_weight"    />
         <result property="problem"    column="problem"    />
         <result property="answerType"    column="answer_type"    />
         <result property="answerOptions"    column="answer_options"    />
-        <result property="garde"    column="garde"    />
+        <result property="grade"    column="grade"    />
         <result property="createDate"    column="create_date"    />
         <result property="updateDate"    column="update_date"    />
     </resultMap>
 
     <sql id="selectQuestQuestionVo">
-        select issue_id, router_id, problem_type, type_weight, problem, answer_type, answer_options, garde, create_date, update_date from quest_question
+        select issue_id, problem_type, type_weight, problem, answer_type, answer_options, grade, create_date, update_date from quest_question
     </sql>
 
     <select id="selectQuestQuestionList" parameterType="QuestQuestion" resultMap="QuestQuestionResult">
         <include refid="selectQuestQuestionVo"/>
-        <where>  
-            <if test="routerId != null "> and router_id = #{routerId}</if>
+        <where>
             <if test="problemType != null  and problemType != ''"> and problem_type = #{problemType}</if>
             <if test="problem != null  and problem != ''"> and problem like concat('%', #{problem}, '%')</if>
             <if test="answerType != null "> and answer_type = #{answerType}</if>
-            <if test="garde != null "> and garde = #{garde}</if>
+            <if test="grade != null "> and grade = #{grade}</if>
         </where>
     </select>
-    
+
     <select id="selectQuestQuestionByIssueId" parameterType="Long" resultMap="QuestQuestionResult">
         <include refid="selectQuestQuestionVo"/>
         where issue_id = #{issueId}
@@ -41,24 +39,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into quest_question
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="issueId != null">issue_id,</if>
-            <if test="routerId != null">router_id,</if>
             <if test="problemType != null">problem_type,</if>
             <if test="typeWeight != null">type_weight,</if>
             <if test="problem != null">problem,</if>
             <if test="answerType != null">answer_type,</if>
-            <if test="garde != null">garde,</if>
+            <if test="grade != null">grade,</if>
             <if test="answerOptions != null">answer_options,</if>
             <if test="createDate != null">create_date,</if>
             <if test="updateDate != null">update_date,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="issueId != null">#{issueId},</if>
-            <if test="routerId != null">#{routerId},</if>
             <if test="problemType != null">#{problemType},</if>
             <if test="typeWeight != null">#{typeWeight},</if>
             <if test="problem != null">#{problem},</if>
             <if test="answerType != null">#{answerType},</if>
-            <if test="garde != null">#{garde},</if>
+            <if test="grade != null">#{grade},</if>
             <if test="createDate != null">#{createDate},</if>
             <if test="updateDate != null">#{updateDate},</if>
          </trim>
@@ -67,12 +63,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateQuestQuestion" parameterType="QuestQuestion">
         update quest_question
         <trim prefix="SET" suffixOverrides=",">
-            <if test="routerId != null">router_id = #{routerId},</if>
             <if test="problemType != null">problem_type = #{problemType},</if>
             <if test="typeWeight != null">type_weight = #{typeWeight},</if>
             <if test="problem != null">problem = #{problem},</if>
             <if test="answerType != null">answer_type = #{answerType},</if>
-            <if test="garde != null">garde = #{garde},</if>
+            <if test="grade != null">grade = #{grade},</if>
             <if test="answerOptions != null">answer_options = #{answerOptions},</if>
             <if test="createDate != null">create_date = #{createDate},</if>
             <if test="updateDate != null">update_date = #{updateDate},</if>
@@ -80,12 +75,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where issue_id = #{issueId}
     </update>
 
+    <update id="UpdateQuestQuestion" parameterType="java.util.List">
+        <foreach collection="list" index="index" item="item" open="" separator=";" close="">
+            UPDATE quest_question
+            <set>
+                <if test="item.problemType != null">problem_type = #{item.problemType,jdbcType=VARCHAR},</if>
+                <if test="item.typeWeight != null">type_weight = #{item.typeWeight,jdbcType=DOUBLE},</if>
+                <if test="item.problem != null">problem = #{item.problem,jdbcType=VARCHAR},</if>
+                <if test="item.answerType != null">answer_type = #{item.answerType,jdbcType=INTEGER},</if>
+                <if test="item.grade != null">grade = #{item.grade,jdbcType=DOUBLE},</if>
+                <if test="item.answerOptions != null">answer_options = #{item.answerOptions,jdbcType=VARCHAR},</if>
+            </set>
+            WHERE issue_id = #{item.issueId,jdbcType=INTEGER}
+        </foreach>
+
+    </update>
+
     <delete id="deleteQuestQuestionByIssueId" parameterType="Long">
         delete from quest_question where issue_id = #{issueId}
     </delete>
 
     <delete id="deleteQuestQuestionByIssueIds" parameterType="String">
-        delete from quest_question where issue_id in 
+        delete from quest_question where issue_id in
         <foreach item="issueId" collection="array" open="(" separator="," close=")">
             #{issueId}
         </foreach>

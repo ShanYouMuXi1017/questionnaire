@@ -49,3 +49,11 @@ export function sumEveryoneAnswerRouter(query) {
     })
   }
   
+  export function listAnswerDetails(query) {
+    return request({
+      url: '/questionnaire/router/listAnswerDetails',
+      method: 'get',
+      params: query
+    })
+  }
+  

@@ -1,6 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.QuestWritUserInfo;
 import com.ruoyi.system.domain.SysUserBaseInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
 import com.ruoyi.system.domain.vo.QuestionSheetVo;
@@ -276,4 +277,12 @@ public interface ISysUserService {
      * @return
      */
     public List<QuestionSheetVo> getQuestSheet();
+
+    /**
+     * 根据用户ID查询用户部分信息
+     * @param userId
+     * @return
+     */
+    QuestWritUserInfo getQuestWritUserInfo(Long userId);
+
 }
