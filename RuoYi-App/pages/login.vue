@@ -201,9 +201,9 @@
 						data: res.roles,
 						success: function() {
 							console.log('success');
-              uni.reLaunch({
-                url: '/pages/index'
-              });
+						  uni.reLaunch({
+							url: '/pages/welcome/welcome'
+						  });
 						}
 					})
 				})

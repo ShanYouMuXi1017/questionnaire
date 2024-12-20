@@ -56,7 +56,7 @@ export default {
         }
         if(res.data===-1){//没填
           uni.reLaunch({
-            url: '/pages/basic/basic'
+            url: '/pages/componentsB/basic/basic'
           });
         }
       })
