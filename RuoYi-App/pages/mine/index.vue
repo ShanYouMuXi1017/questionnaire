@@ -24,42 +24,14 @@
           <view v-if="nickName" class="user-info">
             <view class="u_title">{{ nickName }}</view>
           </view>
-					<!--<view v-if="nickName" @click="handleToInfo" class="user-info">-->
-					<!--	<view class="u_title">{{ nickName }}</view>-->
-					<!--</view>-->
 				</view>
 
-				<!--<view @click="handleToInfo" class="flex align-center">-->
-				<!--	<text>个人信息</text>-->
-				<!--	<view class="iconfont icon-right"></view>-->
-				<!--</view>-->
 
 			</view>
 		</view>
 
 		<view class="content-section">
 			<view class="menu-list">
-				<!--<view class="list-cell list-cell-arrow" @click="handleToEditInfo">-->
-				<!--	<view class="menu-item-box">-->
-				<!--		&lt;!&ndash; <view class="iconfont icon-user menu-icon"></view> &ndash;&gt;-->
-				<!--		<image src="/static/icon/book.png" mode="aspectFit"-->
-				<!--			style="width: 20px; height: 16px; margin-right: 2px;"></image>-->
-				<!--		<view> 编辑资料</view>-->
-				<!--	</view>-->
-				<!--</view>-->
-				<view class="list-cell list-cell-arrow" @click="handleHelp">
-					<view class="menu-item-box">
-						<view class="iconfont icon-help menu-icon"></view>
-						<view>常见问题</view>
-					</view>
-				</view>
-				<view class="list-cell list-cell-arrow" @click="handleAbout">
-					<view class="menu-item-box">
-						<!-- <view class="iconfont icon-aixin menu-icon"></view> -->
-						<image src="/static/icon/about.png" mode="aspectFit" style="width: 20px; height:20px;"></image>
-						<view>关于我们</view>
-					</view>
-				</view>
 				<view class="list-cell list-cell-arrow" @click="handleToSetting">
 					<view class="menu-item-box">
 						<view class="iconfont icon-setting menu-icon"></view>
@@ -74,10 +46,7 @@
 </template>
 
 <script>
-	import storage from '@/utils/storage'
-	import {
-		getUserProfile
-	} from '../../api/system/user';
+
 
 	export default {
 		data() {
@@ -115,15 +84,9 @@
 			handleLogout() {
 				this.$modal.confirm('确定退出系统吗？').then(() => {
 					this.$store.dispatch('LogOut').then(() => {
-						this.$tab.reLaunch('/pages/index')
+						this.$tab.reLaunch('/pages/login')
 					})
 				})
-			},
-			handleHelp() {
-				this.$tab.navigateTo('/pages/componentsB/help/index')
-			},
-			handleAbout() {
-				this.$tab.navigateTo('/pages/componentsB/about/index')
 			},
 			/**
 			 * 用于实现对象数组按某一项属性排序
