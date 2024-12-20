@@ -1,233 +1,211 @@
 <template>
-	<view class="work-container">
+  <view>
+    <view class="x-panel-top">
+      <!-- 访谈意图文字替代搜索框 -->
+      <view class="x-row intro-container" style="width: 90%; margin-left: 5%; margin-right: 5%; margin-top: 15px;">
+        <view class="intro-text">
+          <text class="text-content">
+            为优化昆明市郊骑行线路的环境，现需广大骑友的帮助，真诚的希望您花点时间，选择一条或多条自己骑行过的线路，进行评价打分。以便我们更好的掌握该线路的优缺点，并完成该线路的环境提升改造设计。
+          </text>
+        </view>
+      </view>
+      <!-- 用户提示 -->
+      <view class="user-hint" style="text-align: center">
+        <text style="color: #555; font-size: 16px;font-weight:700">选中路线进行填写问卷</text>
+      </view>
+    </view>
 
-		<u-navbar @leftClick="handlerNoticeClick" safeAreaInsetTop fixed placeholder title="问卷">
-			<view slot="left">
-				<u-badge isDot="true" :show="showNoticeDot" type="error"  :offset="[8,5]" absolute="true"></u-badge>
-				<u-icon name="bell-fill" color="#4b95df" size="20"></u-icon>
-			</view>
-		</u-navbar>
-
-
-		<!-- 轮播图 -->
-		<u-swiper
-			:list="swiperData"
-			previousMargin="30"
-			:height="180"
-			:imgMode="scaleToFill"
-			nextMargin="30"
-			circular="true"
-			:autoplay="true"
-			radius="5"
-			bgColor="#ffffff"
-			indicator="true"
-			indicatorMode="line"
-		></u-swiper>
-		<view class="devide_line"></view>
-		<!-- 公告 -->
-		<u-notice-bar :text="appAnnouncementTitle" mode="link" color="#2979ff" bgColor="#FFFFFF" is-circular="false" @click="toAnnouncementPage"></u-notice-bar>
-
-		<!-- <u-divider text="首页功能" textColor="#2979ff" lineColor="#2979ff"></u-divider> -->
-
-		<!-- 首页宫格组件 -->
-		<!-- 图标自行更改 https://xuqu.gitee.io/components/icon.html -->
-		<view>
-			<u-grid :border="false">
-				<u-grid-item v-for="(listItem, listIndex) in list" :key="listIndex" @click="onFunClick" customStyle="padding-top: 20px; padding-bottom: 20px">
-					<image :src="listItem.icon" mode="aspectFit" style="width: 30px; height: 30px"></image>
-					<text class="grid-text">{{ listItem.title }}</text>
-				</u-grid-item>
-			</u-grid>
-		</view>
-	</view>
+      <view class="x-panel x-panel-content">
+        <view v-if="filteredRoutes.length > 0">
+          <!-- 遍历显示路线列表 -->
+          <view class="itemcss" v-for="(route, index) in filteredRoutes" :key="index">
+            <view
+                :class="{'disabled-item': route.isAC === 1}"
+                @click="handleClick(route)"
+            >
+              <view class="x-row">
+                <view class="x-col col-left">
+                  <text>{{ route.routeName }}</text>
+                </view>
+              </view>
+              <view class="x-row" style="display: flex; align-items: center">
+                <view class="x-col col-left" style="flex: 1; display: flex; align-items: center; text-align: left">
+                  <!-- 图片 -->
+                  <image style="width: 30%; height: 60px; margin-right: 10px" :src="route.imageUrl"></image>
+                  <!-- 全长 -->
+                  <view style="margin-right: 10px">
+                    <text>全长: {{ route.length }} km</text>
+                  </view>
+                  <!-- 爬升高度 -->
+                  <view>
+                    <text>爬升高度: {{ route.elevation }} m</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+          </view>
+          <view style="height: 10px"></view>
+        </view>
+        <view v-else>
+          <sa-empty></sa-empty>
+        </view>
+      </view>
+  </view>
 </template>
 
 <script>
-
-import { getUser } from '@/api/system/user';
-import { getLastAnnouncement, listBanner, listNotice } from '../api/home';
-import { baseUrl } from '../config';
+import { toast } from "utils/common";
+import { getRouters } from "api/system/user";
 
 export default {
-	data() {
-		return {
-			userId: this.$store.state.user.userId,
-			swiperData: [
-				{
-					url: '/static/logo_200.png'
-				}
-			],
-			// 公告栏信息
-			showNoticeDot: false,
-			appAnnouncementTitle: '公告内容',
-			appAnnouncementText: '',
-			total: 1, // 假设 total 是你的一个数据属性，表示产品维修进度的总数
-			stepsList: [],
-			progressData: {
-				// 假设 progressData 包含产品维修进度信息
-				application: 1,
-				delivery: 0,
-				flag: 0,
-				id: 4,
-				inspection: 0,
-				makeOffer: 0,
-				productId: 1122,
-				repair: 0,
-				userId: 26,
-				userName: '骑友'
-			},
-			active: 0, // 当前活动的步骤
-			list: [],
-			coupons: {},
-			paramsList: {
-				bannerType: 1
-			}
-		};
-	},
-	// onLoad() {
-	// 	console.log("执行了这个")
-	// 	this.getUserInfo();
-	// },
-	created() {
-	},
-
-	methods: {
-		parseDate(dateTimeString) {
-			var date = new Date(dateTimeString);
-			var dateOnlyString = date.toISOString().slice(0, 10);
-			return dateOnlyString;
-		},
-
-		/**
-		 * 轮播图点击处理
-		 * @param {Object} e 第几张图片
-		 */
-		onSwiperClick(e) {
-			console.log('点击了第' + e + '张轮播图!');
-		},
-
-		/**
-		 * 点击公告条跳转想看详细
-		 */
-		toAnnouncementPage() {
-			this.$tab.navigateTo(`/pages/componentsB/common/notice/announcement?title=`);
-		},
-
-		change() {
-			if (this.active < this.list1.length - 1) {
-				this.active += 1;
-			} else {
-				this.active = 0;
-			}
-		},
-
-		/**
-		 * 点击顶部通知按钮
-		 */
-		handlerNoticeClick() {
-			this.$tab.navigateTo(`/pages/componentsB/common/notice/notificationlist`);
-		},
-
-		/**
-		 * 首页功能点击监听
-		 * @param {Object} e 点击了第几个功能
-		 */
-		onFunClick(listIndex) {
-			// 获取要跳转到的页面路径
-			const pagePath = this.list[listIndex].page;
-			// 页面跳转
-			uni.navigateTo({
-				url: pagePath
-			});
-		},
-		fetchData() {},
-		onLoad: function (query) {
-				this.list = [
-					{
-						icon: '/static/icon/repair.png',
-						title: '问卷调查',
-						page: '/pages/questionnaire/route_choice',
-						visible: true // 添加 visible 属性
-					}
-				];
-			// 页面加载同步设置公告栏信息
-			getLastAnnouncement()
-				.then((response) => {
-					if (response.code == 200) {
-						this.appAnnouncementTitle = response.data.noticeTitle;
-						this.appAnnouncementText = response.data.noticeContent;
-					}
-				})
-				.catch((error) => {
-					this.appAnnouncementTitle = '公司公告内容 . . .';
-				});
-			listNotice().then(res=>{
-				let noticeListTmp = res.data;
-				if(noticeListTmp.length != 0){
-					let noticeTmpTamp = new Date(noticeListTmp[0].createTime).getTime()
-					noticeListTmp.forEach(item=>{
-						let tamp = new Date(item.createTime).getTime()
-						if(tamp > noticeTmpTamp){
-							noticeTmpTamp = tamp;
-						}
-					})
-					if(new Date().getTime() - noticeTmpTamp <= 86400000){
-						this.showNoticeDot = true
-					}
-				}
-			})
-			listBanner(this.paramsList).then((response) => {
-				if (response.code == 200 && response.rows.length != 0) {
-					this.swiperData = [];
-					this.swiperData = response.rows;
-					this.swiperData.forEach((item) => {
-						item.url = baseUrl + item.banner;
-					});
-				}
-			});
-		}
-	}
+  name: "route-choice",
+  data() {
+    return {
+      list: [], // 原始路线列表
+      filteredRoutes: [], // 过滤后的路线列表
+      keyword: "", // 搜索关键词
+      isRefreshing: false, // 下拉刷新状态
+    };
+  },
+  created() {
+    // 页面创建时加载数据
+    this.fetchRoutes();
+  },
+  onShow() {
+    // 页面从其他页面返回时自动刷新数据
+    this.fetchRoutes();
+  },
+  methods: {
+    fetchRoutes() {
+      getRouters()
+          .then((res) => {
+            if (res && res.data) {
+              this.list = res.data;
+              this.list.forEach((route) => {
+                route.imageUrl =
+                    "https://th.bing.com/th/id/R.7802625ef081ea627fb2bde1777b188e?rik=CaRMWKA8fchmCA&riu=http%3a%2f%2fstatic.imxingzhe.com%2flushu%2f403cbd8a-436b-4af0-9876-af14dc472e9a.png!webActivityPhotos&ehk=0%2fqug0h0tf0iQDJyZ0HTXwAhSz90FYSQp4%2fZHp47C3Q%3d&risl=&pid=ImgRaw&r=0";
+              });
+              this.filteredRoutes = [...this.list];
+            }
+          })
+          .catch((error) => {
+            console.error("路由数据加载失败:", error);
+          });
+    },
+    handleClick(route) {
+      if (route.isAC === 1) {
+        // 提示用户已经作答
+        toast("该路线已作答！");
+        return;
+      }
+      // 跳转到填写问卷页面
+      const routeStr = JSON.stringify(route);
+      uni.navigateTo({
+        url: `/pages/componentsA/questionnaire/questionnaire_filling?route=${encodeURIComponent(
+            routeStr
+        )}`,
+      });
+    },
+  },
 };
 </script>
 
-<style lang="scss">
-/* #ifndef APP-NVUE */
-page {
-	display: flex;
-	flex-direction: column;
-	box-sizing: border-box;
-	background-color: #fff;
-	min-height: 100%;
-	height: auto;
+
+<style>
+/* 样式更新 */
+
+/* 禁用样式 */
+.disabled-item {
+  opacity: 0.5; /* 使项看起来变灰 */
 }
 
-view {
-	font-size: 14px;
-	line-height: inherit;
+.input {
+  line-height: 35px;
+  height: 35px;
 }
 
-.cont {
-	padding-top: 40rpx;
-	width: 750rpx;
+.col-left {
+  font-weight: 700;
+  padding-left: 15px;
 }
 
-/* #endif */
-
-.text {
-	text-align: center;
-	font-size: 26rpx;
-	margin-top: 10rpx;
+.col-right {
+  padding-right: 15px;
+  text-align: right;
 }
 
-.devide_line {
-	margin: 5rpx 30rpx;
-	height: 3rpx;
-	background-color: rgb(228, 228, 228);
-	display: inline-block;
-	width: 100%;
+.x-panel-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: auto;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  background-color: #f8f8f8;
 }
 
-.grid-text {
-	// color: #000000;
+.x-panel-content {
+  position: relative;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #f8f8f8;
 }
+
+.x-panel {
+  bottom: 0px;
+  top: 206px;
+}
+
+.itemcss {
+  width: 90%;
+  margin-left: 5%;
+  background-color: white;
+  border-radius: 15px;
+  margin-top: 15px;
+}
+
+.x-row {
+  display: flex;
+  width: 100%;
+  position: relative;
+  line-height: 35px;
+}
+
+.x-col {
+  flex: 1;
+  display: block;
+  width: 100%;
+}
+
+.x-col-20 {
+  flex: 20%;
+  max-width: 20%;
+}
+
+/* 访谈意图文字样式 */
+.intro-container {
+  background-color: #ffffff;
+  border-radius: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.intro-text {
+  text-align: left;
+  font-size: 16px;
+  line-height: 1.8; /* 增大行间距 */
+  color: #333333;
+  font-weight: 500;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  text-indent: 2em;
+}
+
+.text-content {
+  display: block;
+  white-space: normal;
+}
+
 </style>

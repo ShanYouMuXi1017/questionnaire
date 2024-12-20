@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {isFillUserBasic} from "../../api/system/user";
+import {isFillUserBasic} from "api/system/user";
 
 export default {
   data() {
@@ -51,7 +51,7 @@ export default {
        await isFillUserBasic(this.userId).then(res=>{
         if(res.data===1){//填了
           uni.reLaunch({
-            url: '/pages/questionnaire/route_choice'
+            url: '/pages/index'
           });
         }
         if(res.data===-1){//没填

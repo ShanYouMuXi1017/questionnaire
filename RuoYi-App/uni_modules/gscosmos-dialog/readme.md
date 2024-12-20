@@ -1,1 +1,0 @@
-# gscosmos-dialog

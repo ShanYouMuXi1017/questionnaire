@@ -2,9 +2,10 @@
 	<view class="normal-login-container">
 		<!-- 标题和图片 -->
 		<view class="logo-content">
-			<image :src="globalConfig.appInfo.logo200" style="height: 150rpx;" mode="widthFix">
-			</image>
-			<text class="title">问卷调查程序登录</text>
+			<!--<image :src="globalConfig.appInfo.logo200" style="height: 150rpx;" mode="widthFix">-->
+			<!--</image>-->
+			<text class="title" style="padding-top:12%;font-size:44px">昆明市骑行路线</text>
+			<text class="title" style="padding-top:7%;padding-bottom:45%;font-size:34px">问卷调查</text>
 		</view>
 
 		<!-- 构建登录表单 -->
@@ -55,9 +56,9 @@
 		<u-toast ref="uToast"></u-toast>
 		<u-loading-page :loadingText="loadingText" loadingMode="spinner" bgColor="#fafafa" :loading="loading"
 			color="#3c3f41" iconSize="32" loadingColor="#3c3f41" />
-		<u-modal title="信息未完善!" content="您需要填写手机号码, 完善昵称、头像和地址等信息, 其中电话号码用于小程序维修, 如无维修需求可暂时跳过。"
-			:show="showInfoEditModal" showCancelButton @confirm="confirm" @cancel="cancel" cancelText="跳过"
-			confirmText="完善"></u-modal>
+		<!--<u-modal title="信息未完善!" content="您需要填写手机号码, 完善昵称、头像和地址等信息, 其中电话号码用于小程序维修, 如无维修需求可暂时跳过。"-->
+		<!--	:show="showInfoEditModal" showCancelButton @confirm="confirm" @cancel="cancel" cancelText="跳过"-->
+		<!--	confirmText="完善"></u-modal>-->
 
 	</view>
 
@@ -188,7 +189,7 @@
 						null) {
 						this.showInfoEditModal = true;
 					} else {
-						this.$tab.reLaunch('/pages/index')
+						this.$tab.reLaunch('/pages/welcome/welcome')
 					}
 					uni.setStorage({
 						// key: 'userId',
@@ -200,18 +201,16 @@
 						data: res.roles,
 						success: function() {
 							console.log('success');
+              uni.reLaunch({
+                url: '/pages/index'
+              });
 						}
 					})
 				})
 			},
 
-			//处理提示用户填写信息弹窗
-			confirm() {
-				this.showInfoEditModal = false
-				this.$tab.reLaunch('/pages/componentsB/info/edit')
-			},
 			cancel() {
-				this.$tab.reLaunch('/pages/index')
+				this.$tab.reLaunch('/pages/welcome/welcome')
 			},
 
 
@@ -422,7 +421,6 @@
 			}
 
 			.title {
-				margin: 15% 0;
 				font-size: 24px;
 				text-align: center;
 				font-weight: bolder;

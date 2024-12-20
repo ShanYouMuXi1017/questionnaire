@@ -45,4 +45,7 @@ public class RoutersListVo extends BaseEntity {
 
     /** 爬升高度(米) */
     private Double elevation;
+
+    /** 是否已经作答标识*/
+    private int isAC;
 }

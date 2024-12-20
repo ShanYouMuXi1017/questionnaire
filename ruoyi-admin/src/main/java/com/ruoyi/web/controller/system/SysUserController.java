@@ -14,14 +14,11 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.QuestAnswer;
+import com.ruoyi.system.domain.QuestRouterUser;
 import com.ruoyi.system.domain.SysUsersInfo;
-import com.ruoyi.system.domain.vo.QuestionSheetVo;
-import com.ruoyi.system.domain.vo.RoutersListVo;
-import com.ruoyi.system.domain.vo.UserBasicInfoVo;
-import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.system.service.ISysPostService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.service.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +42,9 @@ public class SysUserController extends BaseController {
     private ISysUserService userService;
 
     @Autowired
+    private IQuestAnswerService questAnswerService;
+
+    @Autowired
     private ISysRoleService roleService;
 
     @Autowired
@@ -52,6 +52,10 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private ISysPostService postService;
+
+    @Autowired
+    private IQuestRouterUserService questRouterUserService;
+
 
     /**
      * 获取用户列表
@@ -295,14 +299,13 @@ public class SysUserController extends BaseController {
     }
 
 
-
     /**
      * 小程序判断用户是否填写基本信息
      */
     @GetMapping("/basic/{userId}")
     public AjaxResult basic(@PathVariable("userId") Long userId) {
         SysUser sysUser = userService.selectUserById2(userId);
-        if(sysUser.getSex()==null||sysUser.getAgeDuan()==null||sysUser.getRidingAge()==null||sysUser.getPreferredRouters()==null){
+        if (sysUser.getSex() == null || sysUser.getAgeDuan() == null || sysUser.getRidingAge() == null || sysUser.getPreferredRouters() == null) {
             return success(-1);//没有填写
         }
         return success(1);//填写了
@@ -311,6 +314,7 @@ public class SysUserController extends BaseController {
 
     /**
      * 小程序端 用户填写基本信息接口
+     *
      * @param userBasicInfoVo
      * @return
      */
@@ -330,12 +334,32 @@ public class SysUserController extends BaseController {
      */
     @GetMapping("/basic/list")
     public AjaxResult routersList() {
+        LoginUser loginUser = getLoginUser();
+        QuestRouterUser q = new QuestRouterUser();
+        q.setUserId(loginUser.getUserId());
+        List<QuestRouterUser> questRouterUsers = questRouterUserService.selectQuestRouterUserList(q);
+        Set<Integer> answeredRouterIds = new HashSet<>();
+        if (questRouterUsers != null && !questRouterUsers.isEmpty()) {
+            answeredRouterIds = questRouterUsers.stream()
+                    .map(qru -> qru.getRouterId().intValue())
+                    .collect(Collectors.toSet());
+        }
         List<RoutersListVo> routersListVos = userService.getRoutersList();
+        for (RoutersListVo routersListVo : routersListVos) {
+            if (answeredRouterIds.contains(routersListVo.getRouterId().intValue())) {
+                routersListVo.setIsAC(1);
+            } else {
+                routersListVo.setIsAC(0);
+            }
+        }
+        routersListVos.sort(Comparator.comparingInt(RoutersListVo::getIsAC));
         return success(routersListVos);
     }
 
+
     /**
      * 小程序端 找到一份问卷表单
+     *
      * @return
      */
     @GetMapping("/quest/sheet")
@@ -375,6 +399,34 @@ public class SysUserController extends BaseController {
             result.add(group);
         }
         return success(result);
+    }
+
+
+    /**
+     * 小程序端  提交问卷逻辑
+     */
+    @PutMapping("/submit")
+    public AjaxResult submitTo(@RequestBody SubmitVo submitVo) {
+        QuestRouterUser questRouterUser = new QuestRouterUser();
+        questRouterUser.setUserId(submitVo.getUserId());
+        questRouterUser.setRouterId(submitVo.getRouterId());
+        questRouterUser.setCreateDate(new Date());
+        questRouterUserService.insertQuestRouterUser(questRouterUser);
+        if (submitVo.getSubjects() != null) {
+            for (SubjectVo subject : submitVo.getSubjects()) {
+                QuestAnswer questAnswer = new QuestAnswer();
+                questAnswer.setUserId(submitVo.getUserId());
+                questAnswer.setRouterId(submitVo.getRouterId());
+                questAnswer.setIssueId(subject.getIssueId());
+                questAnswer.setAnswer(subject.getAnswer().toString());
+                questAnswer.setAnswerResult(subject.getAnswerResult());
+                questAnswer.setCreateDate(new Date());
+                questAnswerService.insertQuestAnswer(questAnswer);
+            }
+        } else {
+            return AjaxResult.error("提交失败，题目数据为空！");
+        }
+        return AjaxResult.success("提交成功");
     }
 }
 
