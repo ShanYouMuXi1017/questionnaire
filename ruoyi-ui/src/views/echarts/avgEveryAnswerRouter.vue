@@ -120,6 +120,7 @@ export default {
       this.loading = true;
       countRouter(this.queryParams).then(response => {
         this.listcountRouter = response.rows;
+        console.log(this.listcountRouter);
         this.avg();
       }).catch(error => {
         console.error("Error fetching data: ", error);
@@ -133,6 +134,9 @@ export default {
             if (response && response.rows) {
               return getRouter(item.routerId)
                 .then(routerResponse => {
+                  console.log("routerResponse");
+                  console.log(routerResponse);
+
                   if (routerResponse && routerResponse.data && routerResponse.data.routeName) {
                     return { avgResponse: response, routerName: routerResponse.data.routeName };
                   } else {
