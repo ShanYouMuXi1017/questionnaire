@@ -10,7 +10,7 @@
           <text class="info-value">{{routeObject.length}} km</text>
         </view>
         <view class="info">
-          <text class="info-label" style="margin-left: 26px">爬升高度:</text>
+          <text class="info-label" style="margin-left: 10px">爬升高度:</text>
           <text class="info-value">{{ routeObject.elevation }} m</text>
         </view>
       </view>
