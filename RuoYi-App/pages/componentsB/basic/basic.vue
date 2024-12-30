@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import {fillUserBasic, getRouters} from "api/system/user";
+import {fillUserBasic, getRouters2} from "api/system/user";
 
 export default {
   data() {
@@ -106,7 +106,7 @@ export default {
     };
   },
   created() {
-    getRouters().then(res=>{
+    getRouters2().then(res=>{
       this.routesOptions = this.transformRoutesData(res.data)
     })
   },

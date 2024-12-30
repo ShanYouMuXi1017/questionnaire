@@ -21,12 +21,16 @@ import com.ruoyi.system.domain.vo.*;
 import com.ruoyi.system.service.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -38,6 +42,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController {
+
+    @Value("${ruoyi.profile}") // 读取配置文件中的文件根路径
+    private String profile;
+
     @Autowired
     private ISysUserService userService;
 
@@ -353,9 +361,46 @@ public class SysUserController extends BaseController {
             }
         }
         routersListVos.sort(Comparator.comparingInt(RoutersListVo::getIsAC));
+
+        routersListVos.forEach(router -> {
+            if (router.getImageUrl() != null && !router.getImageUrl().isEmpty()) {
+                // 拼接完整的文件路径
+                String filePath = profile + router.getImageUrl().replaceFirst("/profile", "");
+                // 将图片文件转为 Base64
+                String base64Image = encodeFileToBase64(filePath);
+                // 设置 Base64 编码到 imageUrl 字段
+                router.setImageUrl(base64Image);
+            }
+        });
         return success(routersListVos);
     }
 
+    /**
+     * 将文件路径对应的文件转为 Base64 编码
+     */
+    private String encodeFileToBase64(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            byte[] fileBytes = Files.readAllBytes(path); // 读取文件字节
+            String base64 = Base64.getEncoder().encodeToString(fileBytes); // 转为 Base64
+            // 拼接 Base64 图片前缀（根据图片格式调整）
+            return "data:image/png;base64," + base64;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 如果失败，返回 null
+        }
+    }
+
+
+    /**
+     * 小程序端 查询路线列表接口2
+     * @return
+     */
+    @GetMapping("/basic/list2")
+    public AjaxResult routersList2() {
+        List<RoutersListVo> routersListVos = userService.getRoutersList();
+        return success(routersListVos);
+    }
 
     /**
      * 小程序端 找到一份问卷表单

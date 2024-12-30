@@ -16,9 +16,9 @@
     </view>
 
       <view class="x-panel x-panel-content">
-        <view v-if="filteredRoutes.length > 0">
+        <view v-if="list.length > 0">
           <!-- 遍历显示路线列表 -->
-          <view class="itemcss" v-for="(route, index) in filteredRoutes" :key="index">
+          <view class="itemcss" v-for="(route, index) in list" :key="index">
             <view
                 :class="{'disabled-item': route.isAC === 1}"
                 @click="handleClick(route)"
@@ -57,12 +57,13 @@
 import { toast } from "utils/common";
 import { getRouters } from "api/system/user";
 
+import config from '@/config'
+
 export default {
   name: "route-choice",
   data() {
     return {
       list: [], // 原始路线列表
-      filteredRoutes: [], // 过滤后的路线列表
       keyword: "", // 搜索关键词
       isRefreshing: false, // 下拉刷新状态
     };
@@ -81,11 +82,6 @@ export default {
           .then((res) => {
             if (res && res.data) {
               this.list = res.data;
-              this.list.forEach((route) => {
-                route.imageUrl =
-                    "https://th.bing.com/th/id/R.7802625ef081ea627fb2bde1777b188e?rik=CaRMWKA8fchmCA&riu=http%3a%2f%2fstatic.imxingzhe.com%2flushu%2f403cbd8a-436b-4af0-9876-af14dc472e9a.png!webActivityPhotos&ehk=0%2fqug0h0tf0iQDJyZ0HTXwAhSz90FYSQp4%2fZHp47C3Q%3d&risl=&pid=ImgRaw&r=0";
-              });
-              this.filteredRoutes = [...this.list];
             }
           })
           .catch((error) => {
@@ -155,7 +151,7 @@ export default {
 
 .x-panel {
   bottom: 0px;
-  top: 206px;
+  top: 220px;
 }
 
 .itemcss {
