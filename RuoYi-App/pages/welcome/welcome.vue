@@ -21,8 +21,6 @@ export default {
     }
   },
   onLoad() {
-    console.log(this.userId);
-    console.log("用户id");
     this.getImgSrc()
     this.countDown()
   },

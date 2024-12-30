@@ -46,6 +46,14 @@ export function getRouters() {
 	})
 }
 
+// 查询路线列表2
+export function getRouters2() {
+	return request({
+		url: '/system/user/basic/list2',
+		method: 'get'
+	})
+}
+
 // 展示问卷表单
 
 export function getQuestSheet(){
