@@ -15,13 +15,13 @@ ruoyi:
   captchaType: math
     # appId和secret要换成自己的
     # 微信小程序的appId
-  appId: wxf5752db94f663dce
+#  appId: wxd4620cfa7d04cff1
   # 微信小程序的secret
-  secret: bc595aef2d8612b036b41bffe93d53a8
+#  secret: 2246cb339865526c1fd71f2dae525f3b
 
-#  appId: wxf5752db94f663dce
+  appId: wxf5752db94f663dce
 #  # 微信小程序的secret
-#  secret: 5823d95ebd234a56ccc6e5326065f893
+  secret: bc595aef2d8612b036b41bffe93d53a8
 
 
 # 开发环境配置

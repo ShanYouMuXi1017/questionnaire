@@ -131,7 +131,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 
 
-<!--    计算每份每人答卷的总分-->
+<!--    计算每份每人答卷的总分aa-->
     <select id="sumEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
         SELECT e.router_id,d.user_id,e.route_name,e.image_url,e.core,e.create_date,d.sumGrade
         FROM quest_router e,(
@@ -155,25 +155,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     </select>
 
-    <!--    计算每份问卷的答卷数-->
+    <!--    计算每份问卷的答卷数aa-->
     <select id="countRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
-        SELECT e.router_id,e.route_name,e.image_url,e.core,e.create_date,d.total
-        FROM quest_router e,
-             (SELECT
-                  a.router_id,
-                  COUNT(DISTINCT a.user_id) AS total
-              FROM
-                  quest_router_user a
-              WHERE
-                  a.status = 1
-              GROUP BY
-                  a.router_id
-              ORDER BY
-                  a.router_id) AS d
-        WHERE e.router_id = d.router_id;
+        SELECT
+            e.router_id,     e.route_name,     e.image_url,     e.core,     e.create_date,
+            COALESCE(d.answer_sum, 0) AS total
+        FROM
+            quest_router e
+                LEFT JOIN (
+                SELECT
+                    COUNT(DISTINCT a.router_id,user_id) AS answer_sum,
+                    a.router_id
+                FROM
+                    quest_answer a
+                GROUP BY
+                    a.router_id
+            ) AS d ON e.router_id = d.router_id
+        ORDER BY
+            e.router_id;
     </select>
 
-    <!--    计算每条线路答卷的平均分-->
+    <!--    计算每条线路答卷的平均分aa-->
     <select id="avgEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
         SELECT
             d.router_id,e.route_name,e.image_url,e.core,e.create_date,
@@ -222,6 +224,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             ORDER BY a.router_id
         ) d
         WHERE   c.issue_id = d.issue_id
+        <if test="routerId != null "> and d.router_id = #{routerId}</if>
     </select>
 
 <!--    计算总的平均分-->
