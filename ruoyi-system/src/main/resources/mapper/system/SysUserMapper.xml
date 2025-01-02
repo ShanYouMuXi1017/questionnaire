@@ -306,8 +306,8 @@
         FROM
             quest_question qq
         ORDER BY
-            qq.problem_type,                 -- 按问题类型分组
-            qq.issue_id ASC                   -- 每组内按问题ID升序排列
+            qq.issue_id ASC,                 -- 按问题类型分组
+            qq.problem_type                   -- 每组内按问题ID升序排列
     </select>
 
     <select id="selectUserType" parameterType="Long" resultType="java.lang.String">
