@@ -38,6 +38,13 @@
 						<view>应用设置</view>
 					</view>
 				</view>
+
+        <view class="list-cell list-cell-arrow" @click="handleUserAgrement">
+          <view class="menu-item-box">
+            <view class="iconfont icon-setting menu-icon"></view>
+            <view>用户协议</view>
+          </view>
+        </view>
 			</view>
 
 		</view>
@@ -53,7 +60,8 @@
 			return {
 				nickName: this.$store.state.user.nickName,
 				version: getApp().globalData.config.appInfo.version,
-				modalVisible: false
+				modalVisible: false,
+        globalConfig: getApp().globalData.config,
 			}
 		},
 
@@ -78,6 +86,10 @@
 			handleToSetting() {
 				this.$tab.navigateTo('/pages/componentsB/setting/index')
 			},
+      handleUserAgrement() {
+        let site = this.globalConfig.appInfo.agreements[0]
+        this.$tab.navigateTo(`/pages/common/webview/index?title=${site.title}&url=${site.url}`)
+      },
 			handleToLogin() {
 				this.$tab.reLaunch('/pages/login')
 			},
