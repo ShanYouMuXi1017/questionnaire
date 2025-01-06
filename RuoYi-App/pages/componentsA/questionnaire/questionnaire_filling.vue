@@ -2,7 +2,9 @@
   <view class="container">
     <!-- 路线信息卡片 -->
     <view class="card">
-      <text class="route-name">{{routeObject.routeName}}</text>
+      <!-- 默认展示第一个途径 -->
+      <text class="route-name">{{ firstRouteName }}</text>
+
       <image class="route-image" :src="routeObject.imageUrl" mode="aspectFill" />
       <view class="route-info">
         <view class="info">
@@ -12,6 +14,14 @@
         <view class="info">
           <text class="info-label" style="margin-left: 10px">爬升高度:</text>
           <text class="info-value">{{ routeObject.elevation }} m</text>
+        </view>
+      </view>
+
+      <!-- 其他途径展示在下方 -->
+      <view class="other-routes" v-if="otherRoutes.length > 0">
+        <view class="other-routes-title">其他途径:</view>
+        <view class="route-item" v-for="(route, index) in otherRoutes" :key="index">
+          <text class="route-name2">● {{ route }}</text>
         </view>
       </view>
     </view>
@@ -29,6 +39,18 @@ export default {
     return {
       routeObject: {},  // 存储传递的 route
     };
+  },
+  computed: {
+    // 提取第一个途径
+    firstRouteName() {
+      const routes = this.routeObject.routeName ? this.routeObject.routeName.split("、") : [];
+      return routes.length > 0 ? routes[0] : this.routeObject.routeName;
+    },
+    // 提取其他途径
+    otherRoutes() {
+      const routes = this.routeObject.routeName ? this.routeObject.routeName.split("、") : [];
+      return routes.slice(1);  // 返回除了第一个以外的所有途径
+    },
   },
   onLoad(options) {
     const routeStr = options.route;
@@ -84,12 +106,41 @@ export default {
   font-size: 26px;
   font-weight: bold;
   color: #333;
-  margin-bottom: 15px !important;
+  margin-bottom: 10px !important;
 }
 
+.route-name2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px !important;
+}
+
+.other-routes {
+  margin-top: 10px;
+  padding-left: 10px;
+  display: block; /* 确保是块级布局 */
+  clear: both; /* 确保与上方内容分离，换行显示 */
+}
+
+.other-routes-title {
+  font-size: 18px;
+  color: #888;
+  padding-top:18px;
+  margin-bottom: 5px;
+  display: block; /* 标题独占一行 */
+}
+
+.route-item {
+  margin-top: 5px;
+  color: #555;
+  font-size: 16px;
+  display: block; /* 每个途径独占一行 */
+}
+
+
+/* 信息项 */
 .info {
-  //display: flex;
-  //justify-content: space-between;
   float:left;
   margin-top: 10px;
 }

@@ -1,17 +1,8 @@
 <template>
   <view>
     <view class="x-panel-top">
-      <!-- 访谈意图文字替代搜索框 -->
-      <view class="x-row intro-container" style="width: 90%; margin-left: 5%; margin-right: 5%; margin-top: 15px;">
-        <view class="intro-text">
-          <text class="text-content">
-            为优化昆明市郊骑行线路的环境，现需广大骑友的帮助，真诚的希望您花点时间，选择一条或多条自己骑行过的线路，进行评价打分。以便我们更好的掌握该线路的优缺点，并完成该线路的环境提升改造设计。
-          </text>
-        </view>
-      </view>
-      <!-- 用户提示 -->
       <view class="user-hint" style="text-align: center">
-        <text style="color: #555; font-size: 16px;font-weight:700">选中路线进行填写问卷</text>
+        <text style="color: #555; font-size: 16px;font-weight:700">请选择你骑行过的路线进行打分吧！</text>
       </view>
     </view>
 
@@ -25,10 +16,11 @@
             >
               <view class="x-row">
                 <view class="x-col col-left">
+                  <text class="tag">{{route.routerId}}</text>
                   <text>{{ route.routeName }}</text>
                 </view>
               </view>
-              <view class="x-row" style="display: flex; align-items: center">
+              <view class="x-row" style="display: flex; align-items: center; position: relative;">
                 <view class="x-col col-left" style="flex: 1; display: flex; align-items: center; text-align: left">
                   <!-- 图片 -->
                   <image style="width: 30%; height: 60px; margin-right: 10px" :src="route.imageUrl"></image>
@@ -40,6 +32,14 @@
                   <view>
                     <text>爬升高度: {{ route.elevation }} m</text>
                   </view>
+                </view>
+
+                <!-- 三角形水印 -->
+                <view
+                    v-if="route.isAC === 1"
+                    class="triangle-watermark"
+                >
+                  <text class="triangle-text">已完成</text>
                 </view>
               </view>
             </view>
@@ -82,6 +82,7 @@ export default {
           .then((res) => {
             if (res && res.data) {
               this.list = res.data;
+              console.log(this.list);
             }
           })
           .catch((error) => {
@@ -151,7 +152,7 @@ export default {
 
 .x-panel {
   bottom: 0px;
-  top: 220px;
+  top: 39px;
 }
 
 .itemcss {
@@ -180,28 +181,40 @@ export default {
   max-width: 20%;
 }
 
-/* 访谈意图文字样式 */
-.intro-container {
-  background-color: #ffffff;
-  border-radius: 15px;
-  padding: 15px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+/* 三角形水印样式 */
+.triangle-watermark {
+  position: absolute;
+  top: -30px;
+  right: 0;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 66px 66px 0; /* 控制三角形大小和方向 */
+  border-color: transparent red transparent transparent; /* 透明边框+红色 */
+  z-index: 10; /* 确保显示在最前面 */
 }
 
-.intro-text {
-  text-align: left;
-  font-size: 16px;
-  line-height: 1.8; /* 增大行间距 */
-  color: #333333;
-  font-weight: 500;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  text-indent: 2em;
+/* 水印文字样式 */
+.triangle-text {
+  position: absolute;
+  top: 3px; /* 调整文字位置 */
+  right: -60px;
+  transform: rotate(45deg); /* 旋转文字以适配三角形 */
+  color: white; /* 文字颜色 */
+  font-size: 12px; /* 字体大小 */
+  font-weight: bold; /* 字体加粗 */
+  text-align: center;
+}
+.tag {
+  padding: 4px 8px;
+  //border-radius: 12px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  margin-right: 8px; /* 标签与问题文本之间的间距 */
+  background-color: #1A98DA; /* 蓝色标识单选题 */
 }
 
-.text-content {
-  display: block;
-  white-space: normal;
-}
 
 </style>
