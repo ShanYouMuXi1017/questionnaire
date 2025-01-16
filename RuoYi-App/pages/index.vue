@@ -23,7 +23,7 @@
               <view class="x-row" style="display: flex; align-items: center; position: relative;">
                 <view class="x-col col-left" style="flex: 1; display: flex; align-items: center; text-align: left">
                   <!-- 图片 -->
-                  <image style="width: 30%; height: 60px; margin-right: 10px" :src="route.imageUrl"></image>
+                  <image style="width: 30%; height: 100px; margin-right: 10px" :src="route.imageUrl"></image>
                   <!-- 全长 -->
                   <view style="margin-right: 10px">
                     <text>全长: {{ route.length }} km</text>
