@@ -6,7 +6,7 @@ import { getToken } from '@/utils/auth';
 export default {
 	onLaunch: function (options) {
 		this.initApp();
-		
+
 	},
 	methods: {
 		// 初始化应用
@@ -32,6 +32,8 @@ export default {
 
 <style lang="scss">
 @import 'uview-ui/index.scss';
+@import "colorui/main.css";
+@import "colorui/icon.css";
 
 // @import '@/static/scss/index.scss';
 @import '@/pages/componentsB/static/scss/index.scss';

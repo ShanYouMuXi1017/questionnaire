@@ -1,5 +1,6 @@
 package com.ruoyi.web.controller.system;
 
+import com.mysql.cj.x.protobuf.Mysqlx;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -13,21 +14,24 @@ import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.QuestAnswer;
+import com.ruoyi.system.domain.QuestRouterUser;
 import com.ruoyi.system.domain.SysUsersInfo;
-import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.system.service.ISysPostService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.domain.vo.*;
+import com.ruoyi.system.service.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -38,8 +42,15 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/system/user")
 public class SysUserController extends BaseController {
+
+    @Value("${ruoyi.profile}") // 读取配置文件中的文件根路径
+    private String profile;
+
     @Autowired
     private ISysUserService userService;
+
+    @Autowired
+    private IQuestAnswerService questAnswerService;
 
     @Autowired
     private ISysRoleService roleService;
@@ -49,6 +60,10 @@ public class SysUserController extends BaseController {
 
     @Autowired
     private ISysPostService postService;
+
+    @Autowired
+    private IQuestRouterUserService questRouterUserService;
+
 
     /**
      * 获取用户列表
@@ -290,4 +305,173 @@ public class SysUserController extends BaseController {
     public AjaxResult deptTree(SysDept dept) {
         return success(deptService.selectDeptTreeList(dept));
     }
+
+
+    /**
+     * 小程序判断用户是否填写基本信息
+     */
+    @GetMapping("/basic/{userId}")
+    public AjaxResult basic(@PathVariable("userId") Long userId) {
+        SysUser sysUser = userService.selectUserById2(userId);
+        if (sysUser.getSex() == null || sysUser.getAgeDuan() == null || sysUser.getRidingAge() == null || sysUser.getPreferredRouters() == null) {
+            return success(-1);//没有填写
+        }
+        return success(1);//填写了
+    }
+
+
+    /**
+     * 小程序端 用户填写基本信息接口
+     *
+     * @param userBasicInfoVo
+     * @return
+     */
+    @PutMapping("/basic/update")
+    public AjaxResult fillBasic(@RequestBody UserBasicInfoVo userBasicInfoVo) {
+        SysUser sysUser = userService.selectUserById(userBasicInfoVo.getUserId());
+        sysUser.setSex(userBasicInfoVo.getSex());
+        sysUser.setAgeDuan(userBasicInfoVo.getAge_duan());
+        sysUser.setRidingAge(userBasicInfoVo.getRiding_age());
+        sysUser.setPreferredRouters(userBasicInfoVo.getPreferred_routers());
+        return toAjax(userService.updateUser(sysUser));
+    }
+
+    /**
+     * 小程序端 查询路线列表接口
+     * @return
+     */
+    @GetMapping("/basic/list")
+    public AjaxResult routersList() {
+        LoginUser loginUser = getLoginUser();
+        QuestRouterUser q = new QuestRouterUser();
+        q.setUserId(loginUser.getUserId());
+        List<QuestRouterUser> questRouterUsers = questRouterUserService.selectQuestRouterUserList(q);
+        Set<Integer> answeredRouterIds = new HashSet<>();
+        if (questRouterUsers != null && !questRouterUsers.isEmpty()) {
+            answeredRouterIds = questRouterUsers.stream()
+                    .map(qru -> qru.getRouterId().intValue())
+                    .collect(Collectors.toSet());
+        }
+        List<RoutersListVo> routersListVos = userService.getRoutersList();
+        for (RoutersListVo routersListVo : routersListVos) {
+            if (answeredRouterIds.contains(routersListVo.getRouterId().intValue())) {
+                routersListVo.setIsAC(1);
+            } else {
+                routersListVo.setIsAC(0);
+            }
+        }
+        //routersListVos.sort(Comparator.comparingInt(RoutersListVo::getIsAC));
+
+        routersListVos.forEach(router -> {
+            if (router.getImageUrl() != null && !router.getImageUrl().isEmpty()) {
+                // 拼接完整的文件路径
+                String filePath = profile + router.getImageUrl().replaceFirst("/profile", "");
+                // 将图片文件转为 Base64
+                String base64Image = encodeFileToBase64(filePath);
+                // 设置 Base64 编码到 imageUrl 字段
+                router.setImageUrl(base64Image);
+            }
+        });
+        return success(routersListVos);
+    }
+
+    /**
+     * 将文件路径对应的文件转为 Base64 编码
+     */
+    private String encodeFileToBase64(String filePath) {
+        try {
+            Path path = Paths.get(filePath);
+            byte[] fileBytes = Files.readAllBytes(path); // 读取文件字节
+            String base64 = Base64.getEncoder().encodeToString(fileBytes); // 转为 Base64
+            // 拼接 Base64 图片前缀（根据图片格式调整）
+            return "data:image/png;base64," + base64;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null; // 如果失败，返回 null
+        }
+    }
+
+
+    /**
+     * 小程序端 查询路线列表接口2
+     * @return
+     */
+    @GetMapping("/basic/list2")
+    public AjaxResult routersList2() {
+        List<RoutersListVo> routersListVos = userService.getRoutersList();
+        return success(routersListVos);
+    }
+
+    /**
+     * 小程序端 找到一份问卷表单
+     *
+     * @return
+     */
+    @GetMapping("/quest/sheet")
+    public AjaxResult getQuestSheet() {
+        // 获取原始数据
+        List<QuestionSheetVo> questionSheetVos = userService.getQuestSheet();
+
+        // 处理选项并分组
+        Map<String, List<QuestionSheetVo>> groupedData = new LinkedHashMap<>();
+        for (QuestionSheetVo q : questionSheetVos) {
+            // 处理选项
+            if (q.getAnswerOptions() != null && !q.getAnswerOptions().isEmpty()) {
+                List<String> options = Arrays.asList(q.getAnswerOptions().split("、"));
+                List<Map<String, String>> optionList = new ArrayList<>();
+                for (int i = 0; i < options.size(); i++) {
+                    Map<String, String> optionMap = new LinkedHashMap<>();
+                    optionMap.put("id", String.valueOf(i + 1));  // 选项的ID
+                    optionMap.put("content", options.get(i));   // 选项的内容
+                    optionList.add(optionMap);
+                }
+                q.setAnswerOptions2(optionList);
+            } else {
+                q.setAnswerOptions2(new ArrayList<>());
+            }
+            q.setAnswerOptionsLength(q.getAnswerOptions2().size());
+
+            // 按 problemType 分组
+            groupedData.computeIfAbsent(q.getProblemType(), k -> new ArrayList<>()).add(q);
+        }
+
+        // 将分组后的数据转换为符合需求的结构
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Map.Entry<String, List<QuestionSheetVo>> entry : groupedData.entrySet()) {
+            Map<String, Object> group = new LinkedHashMap<>();
+            group.put("problemType", entry.getKey());
+            group.put("subjects", entry.getValue());
+            result.add(group);
+        }
+        return success(result);
+    }
+
+
+    /**
+     * 小程序端  提交问卷逻辑
+     */
+    @PutMapping("/submit")
+    public AjaxResult submitTo(@RequestBody SubmitVo submitVo) {
+        QuestRouterUser questRouterUser = new QuestRouterUser();
+        questRouterUser.setUserId(submitVo.getUserId());
+        questRouterUser.setRouterId(submitVo.getRouterId());
+        questRouterUser.setCreateDate(new Date());
+        questRouterUserService.insertQuestRouterUser(questRouterUser);
+        if (submitVo.getSubjects() != null) {
+            for (SubjectVo subject : submitVo.getSubjects()) {
+                QuestAnswer questAnswer = new QuestAnswer();
+                questAnswer.setUserId(submitVo.getUserId());
+                questAnswer.setRouterId(submitVo.getRouterId());
+                questAnswer.setIssueId(subject.getIssueId());
+                questAnswer.setAnswer(subject.getAnswer().toString());
+                questAnswer.setAnswerResult(subject.getAnswerResult());
+                questAnswer.setCreateDate(new Date());
+                questAnswerService.insertQuestAnswer(questAnswer);
+            }
+        } else {
+            return AjaxResult.error("提交失败，题目数据为空！");
+        }
+        return AjaxResult.success("提交成功");
+    }
 }
+

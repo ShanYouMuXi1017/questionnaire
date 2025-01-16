@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.QuestRouterUserMapper">
+    
+    <resultMap type="QuestRouterUser" id="QuestRouterUserResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="flag"    column="flag"    />
+        <result property="status"    column="status"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+    </resultMap>
+
+    <sql id="selectQuestRouterUserVo">
+        select id, user_id, router_id, flag, status, create_date, update_date from quest_router_user
+    </sql>
+
+    <select id="selectQuestRouterUserList" parameterType="QuestRouterUser" resultMap="QuestRouterUserResult">
+        <include refid="selectQuestRouterUserVo"/>
+        <where>  
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="routerId != null "> and router_id = #{routerId}</if>
+            <if test="flag != null "> and flag = #{flag}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+            <if test="updateDate != null "> and update_date = #{updateDate}</if>
+        </where>
+    </select>
+    
+    <select id="selectQuestRouterUserById" parameterType="Long" resultMap="QuestRouterUserResult">
+        <include refid="selectQuestRouterUserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertQuestRouterUser" parameterType="QuestRouterUser">
+        insert into quest_router_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="routerId != null">router_id,</if>
+            <if test="flag != null">flag,</if>
+            <if test="status != null">status,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="routerId != null">#{routerId},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+         </trim>
+    </insert>
+
+    <update id="updateQuestRouterUser" parameterType="QuestRouterUser">
+        update quest_router_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="routerId != null">router_id = #{routerId},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteQuestRouterUserById" parameterType="Long">
+        delete from quest_router_user where id = #{id}
+    </delete>
+
+    <delete id="deleteQuestRouterUserByIds" parameterType="String">
+        delete from quest_router_user where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

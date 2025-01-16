@@ -1,7 +1,10 @@
 package com.ruoyi.system.mapper;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.QuestWritUserInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -34,6 +37,19 @@ public interface SysUserMapper {
      * @return 数据集合
      */
     public List<SysUsersInfo> selectUsersInfo();
+
+    /**
+     * 小程序查询骑行路线列表
+     * @return
+     */
+    public List<RoutersListVo> getRoutersList();
+
+    /**
+     * 小程序 得到一份问卷表单
+     * @return
+     */
+    public List<QuestionSheetVo> getQuestSheet();
+
 
     /**
      * 根据id查询用户类型
@@ -76,6 +92,14 @@ public interface SysUserMapper {
      * @return 用户对象信息
      */
     public SysUser selectUserById(Long userId);
+
+    /**
+     * 通过用户ID查询用户基本信息(小程序)
+     *
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    public SysUser selectUserById2(Long userId);
 
     /**
      * 新增用户信息
@@ -154,5 +178,7 @@ public interface SysUserMapper {
     List<SysUser> getAgent();
 
     List<SysUser> getUnAgent();
+
+    QuestWritUserInfo getQuestWritUserInfo(Long userId);
 
 }

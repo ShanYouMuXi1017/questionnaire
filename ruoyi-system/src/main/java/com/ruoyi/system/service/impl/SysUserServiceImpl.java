@@ -10,6 +10,8 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.BeanValidators;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.domain.*;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;
@@ -93,6 +95,25 @@ public class SysUserServiceImpl implements ISysUserService {
     }
 
     /**
+     * 小程序 查询骑行路线列表
+     * @return
+     */
+    @Override
+    public List<RoutersListVo> getRoutersList() {
+        return userMapper.getRoutersList();
+    }
+
+    /**
+     * 小程序 得到一份问卷表单
+     * @return
+     */
+    @Override
+    public List<QuestionSheetVo> getQuestSheet() {
+        return userMapper.getQuestSheet();
+    }
+
+
+    /**
      * 根据userId查询该用户的用户类型
      *
      * @return 用户类型字符串
@@ -158,6 +179,17 @@ public class SysUserServiceImpl implements ISysUserService {
         return userMapper.selectUserById(userId);
     }
 
+
+    /**
+     * 通过用户ID查询用户基本信息(小程序)
+     *
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    @Override
+    public SysUser selectUserById2(Long userId) {
+        return userMapper.selectUserById2(userId);
+    }
 
     /**
      * 通过用户ID查询用户基本信息
@@ -556,5 +588,13 @@ public class SysUserServiceImpl implements ISysUserService {
     @Override
     public List<SysUser> getUnAgent() {
         return userMapper.getUnAgent();
+    }
+
+    @Override
+    public QuestWritUserInfo getQuestWritUserInfo(Long userId) {
+        if(userId == null){
+            throw new ServiceException("用户ID不能为空！");
+        }
+        return userMapper.getQuestWritUserInfo(userId);
     }
 }

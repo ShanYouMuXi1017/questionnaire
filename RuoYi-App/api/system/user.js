@@ -2,6 +2,68 @@ import upload from '@/utils/upload'
 import request from '@/utils/request'
 
 
+// 提交问卷逻辑
+// 提交问卷逻辑
+export function submitTo(userId, routerId, processedSubjects) {
+	const payload = {
+		userId: userId,
+		routerId: routerId,
+		subjects: processedSubjects // 处理后的数据
+	};
+	return request({
+		url: '/system/user/submit',
+		method: 'put',
+		data: payload
+	});
+}
+
+
+
+
+// 查询用户基本信息是否填写(骑行)
+export function isFillUserBasic(userId) {
+	return request({
+		url: '/system/user/basic/' + userId,
+		method: 'get'
+	})
+}
+
+
+// 填写用户基本信息(骑行)
+export function fillUserBasic(data) {
+	return request({
+		url: '/system/user/basic/update',
+		method: 'put',
+		data:data
+	})
+}
+
+// 查询路线列表
+export function getRouters() {
+	return request({
+		url: '/system/user/basic/list',
+		method: 'get'
+	})
+}
+
+// 查询路线列表2
+export function getRouters2() {
+	return request({
+		url: '/system/user/basic/list2',
+		method: 'get'
+	})
+}
+
+// 展示问卷表单
+
+export function getQuestSheet(){
+	return request({
+		url:'/system/user/quest/sheet',
+		methods: 'get',
+	})
+}
+
+
 // 查询用户列表
 export function listUser(query) {
 	return request({
@@ -10,7 +72,7 @@ export function listUser(query) {
 		params: query
 	})
 }
- 
+
 // 查询用户详细
 export function getUser(userId) {
   return request({
