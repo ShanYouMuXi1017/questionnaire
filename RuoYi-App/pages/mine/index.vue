@@ -21,9 +21,9 @@
 					</view>
 
 					<!-- 昵称和角色认证 -->
-          <view v-if="nickName" class="user-info">
-            <view class="u_title">{{ nickName }}</view>
-          </view>
+					<view v-if="nickName" class="user-info">
+						<view class="u_title">{{ nickName }}</view>
+					</view>
 				</view>
 
 
@@ -39,12 +39,18 @@
 					</view>
 				</view>
 
-        <view class="list-cell list-cell-arrow" @click="handleUserAgrement">
-          <view class="menu-item-box">
-            <view class="iconfont icon-setting menu-icon"></view>
-            <view>用户协议</view>
-          </view>
-        </view>
+				<view class="list-cell list-cell-arrow" @click="handleUserAgrement">
+					<view class="menu-item-box">
+						<view class="iconfont icon-user  menu-icon"></view>
+						<view>用户协议</view>
+					</view>
+				</view>
+				<view class="list-cell list-cell-arrow" @click="handleUserPrivacy">
+					<view class="menu-item-box">
+						<view class="iconfont icon-user menu-icon"></view>
+						<view>隐私政策</view>
+					</view>
+				</view>
 			</view>
 
 		</view>
@@ -53,15 +59,13 @@
 </template>
 
 <script>
-
-
 	export default {
 		data() {
 			return {
 				nickName: this.$store.state.user.nickName,
 				version: getApp().globalData.config.appInfo.version,
 				modalVisible: false,
-        globalConfig: getApp().globalData.config,
+				globalConfig: getApp().globalData.config,
 			}
 		},
 
@@ -74,8 +78,7 @@
 				return uni.getSystemInfoSync().windowHeight - 50
 			}
 		},
-		created() {
-		},
+		created() {},
 		methods: {
 			handleToInfo() {
 				this.$tab.navigateTo('/pages/componentsB/info/index')
@@ -86,10 +89,12 @@
 			handleToSetting() {
 				this.$tab.navigateTo('/pages/componentsB/setting/index')
 			},
-      handleUserAgrement() {
-        let site = this.globalConfig.appInfo.agreements[0]
-        this.$tab.navigateTo(`/pages/common/webview/index?title=${site.title}&url=${site.url}`)
-      },
+			handleUserAgrement() {
+				this.$tab.navigateTo('/pages/componentsB/user/agreement')
+			},
+			handleUserPrivacy(){
+				this.$tab.navigateTo('/pages/componentsB/user/privacy')
+			},
 			handleToLogin() {
 				this.$tab.reLaunch('/pages/login')
 			},
@@ -219,46 +224,51 @@
 			}
 		}
 
-    .content-section {
-      position: relative;
-      top: -50px;
+		.content-section {
+			position: relative;
+			top: -50px;
 
-      .menu-list {
-        .list-cell {
-          /* 增加高度 */
-          height: 60px; /* 你可以根据需要调整高度 */
-          padding: 10px 15px; /* 为每个项增加内边距，调整项的内容位置 */
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
+			.menu-list {
+				.list-cell {
+					/* 增加高度 */
+					height: 60px;
+					/* 你可以根据需要调整高度 */
+					padding: 10px 15px;
+					/* 为每个项增加内边距，调整项的内容位置 */
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
 
-          .menu-item-box {
-            display: flex;
-            align-items: center;
-          }
+					.menu-item-box {
+						display: flex;
+						align-items: center;
+					}
 
-          .iconfont, image {
-            margin-right: 10px; /* 图标与文本之间的间距 */
-          }
+					.iconfont,
+					image {
+						margin-right: 10px;
+						/* 图标与文本之间的间距 */
+					}
 
-          /* 调整图标大小，可以根据需要进一步修改 */
-          .iconfont {
-            font-size: 24px;
-          }
+					/* 调整图标大小，可以根据需要进一步修改 */
+					.iconfont {
+						font-size: 24px;
+					}
 
-          image {
-            width: 24px;
-            height: 24px;
-          }
+					image {
+						width: 24px;
+						height: 24px;
+					}
 
-          /* 如果你需要不同的颜色和字体大小，可以在这里添加样式 */
-          .menu-item-box view {
-            font-size: 16px; /* 增大文本字体 */
-            //color: #333; /* 默认文本颜色 */
-          }
-        }
-      }
-    }
+					/* 如果你需要不同的颜色和字体大小，可以在这里添加样式 */
+					.menu-item-box view {
+						font-size: 16px;
+						/* 增大文本字体 */
+						//color: #333; /* 默认文本颜色 */
+					}
+				}
+			}
+		}
 
 	}
 </style>

@@ -8,20 +8,20 @@ ruoyi:
   copyrightYear: 2023
   # 文件路径 示例（ Windows配置D:/ruoyi/uploadPath，Linux配置 /home/ruoyi/uploadPath）
   profile: D:/ruoyi/uploadPath
-  #  profile: /home/ruoyi/uploadPath
+#  profile: /home/ruoyi/uploadPath
   # 获取ip地址开关
   addressEnabled: false
   # 验证码类型 math 数字计算 char 字符验证
   captchaType: math
     # appId和secret要换成自己的
     # 微信小程序的appId
-#  appId: wxd4620cfa7d04cff1
-  # 微信小程序的secret
-#  secret: 2246cb339865526c1fd71f2dae525f3b
+  appId: wxd4620cfa7d04cff1
+#   微信小程序的secret
+  secret: 2246cb339865526c1fd71f2dae525f3b
 
-  appId: wxf5752db94f663dce
-#  # 微信小程序的secret
-  secret: bc595aef2d8612b036b41bffe93d53a8
+#  appId: wxf5752db94f663dce
+##  # 微信小程序的secret
+#  secret: bc595aef2d8612b036b41bffe93d53a8
 
 
 # 开发环境配置
@@ -160,7 +160,7 @@ xss:
       port-numbers: 8100
 
 url:
-  httpUrl: https://gkxiu.com/profile/
+  httpUrl: https://swfu.online/profile/
 
 
 # 微信小程序消息模板
