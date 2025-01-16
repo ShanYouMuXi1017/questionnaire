@@ -70,7 +70,10 @@ public class SysLoginController {
                 SysUser user = new SysUser();
                 user.setUserName(openId);
                 if (userService.checkUserNameUnique(user)) {
-                    user.setNickName("新用户");
+                    //user.setNickName("骑友");
+                    // 获取当前时间戳的最后四位数字或随机生成四位数字
+                    String uniqueNumber = String.format("%04d", (int)(Math.random() * 10000));
+                    user.setNickName("骑友" + uniqueNumber);
                     user.setUserType("11");
                     user.setPassword(SecurityUtils.encryptPassword(simpleEncryption(openId)));
                     userService.insertUser(user);

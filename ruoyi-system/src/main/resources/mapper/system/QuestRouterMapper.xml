@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.QuestRouterMapper">
+    
+    <resultMap type="QuestRouter" id="QuestRouterResult">
+        <result property="routerId"    column="router_id"    />
+        <result property="routeName"    column="route_name"    />
+        <result property="beginName"    column="begin_name"    />
+        <result property="endName"    column="end_name"    />
+        <result property="status"    column="status"    />
+        <result property="imageUrl"    column="image_url"    />
+        <result property="core"    column="core"    />
+        <result property="flag"    column="flag"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+    </resultMap>
+
+    <resultMap type="QuestRouterUser" id="QuestRouterUserResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="routerId"    column="router_id"    />
+        <result property="flag"    column="flag"    />
+        <result property="status"    column="status"    />
+        <result property="createDate"    column="create_date"    />
+        <result property="updateDate"    column="update_date"    />
+    </resultMap>
+
+    <!-- 定义 QuestAnswerSheetVo 的 resultMap -->
+    <resultMap id="questAnswerSheetResultMap" type="com.ruoyi.system.domain.vo.QuestAnswerSheetVo">
+        <id property="routerId" column="router_id" />
+        <result property="routeName" column="route_name" />
+        <result property="imageUrl" column="image_url" />
+        <result property="core" column="core" />
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP" />
+        <result property="sumGrade" column="sumGrade" />
+        <result property="total" column="total" />
+        <result property="avgGrade" column="avgGrade" jdbcType="DOUBLE" />
+        <result property="totalAvgGrade" column="total_avg_grade" jdbcType="DOUBLE" />
+        <result property="userId" column="user_id" />
+        <result property="issueId" column="issue_id" />
+        <result property="problemType" column="problem_type" />
+        <result property="typeWeight" column="type_weight" jdbcType="DOUBLE" />
+        <result property="problem" column="problem" />
+        <result property="answerType" column="answer_type" />
+        <result property="grade" column="grade" />
+        <result property="answer" column="answer" />
+        <result property="answerResult" column="answer_result" />
+    </resultMap>
+
+
+
+
+    <sql id="selectQuestRouterVo">
+        select router_id, route_name, begin_name, end_name, status, image_url, core, flag, create_date, update_date from quest_router
+    </sql>
+
+    <select id="selectQuestRouterList" parameterType="QuestRouter" resultMap="QuestRouterResult">
+        <include refid="selectQuestRouterVo"/>
+        <where>  
+            <if test="routeName != null  and routeName != ''"> and route_name like concat('%', #{routeName}, '%')</if>
+            <if test="beginName != null  and beginName != ''"> and begin_name like concat('%', #{beginName}, '%')</if>
+            <if test="endName != null  and endName != ''"> and end_name like concat('%', #{endName}, '%')</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createDate != null "> and create_date = #{createDate}</if>
+        </where>
+    </select>
+
+    
+    <select id="selectQuestRouterByRouterId" parameterType="Long" resultMap="QuestRouterResult">
+        <include refid="selectQuestRouterVo"/>
+        where router_id = #{routerId}
+    </select>
+
+    <insert id="insertQuestRouter" parameterType="QuestRouter">
+        insert into quest_router
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="routerId != null">router_id,</if>
+            <if test="routeName != null">route_name,</if>
+            <if test="beginName != null">begin_name,</if>
+            <if test="endName != null">end_name,</if>
+            <if test="status != null">status,</if>
+            <if test="imageUrl != null">image_url,</if>
+            <if test="core != null">core,</if>
+            <if test="flag != null">flag,</if>
+            <if test="createDate != null">create_date,</if>
+            <if test="updateDate != null">update_date,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="routerId != null">#{routerId},</if>
+            <if test="routeName != null">#{routeName},</if>
+            <if test="beginName != null">#{beginName},</if>
+            <if test="endName != null">#{endName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="imageUrl != null">#{imageUrl},</if>
+            <if test="core != null">#{core},</if>
+            <if test="flag != null">#{flag},</if>
+            <if test="createDate != null">#{createDate},</if>
+            <if test="updateDate != null">#{updateDate},</if>
+         </trim>
+    </insert>
+
+
+    <update id="updateQuestRouter" parameterType="QuestRouter">
+        update quest_router
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="routeName != null">route_name = #{routeName},</if>
+            <if test="beginName != null">begin_name = #{beginName},</if>
+            <if test="endName != null">end_name = #{endName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="imageUrl != null">image_url = #{imageUrl},</if>
+            <if test="core != null">core = #{core},</if>
+            <if test="flag != null">flag = #{flag},</if>
+            <if test="createDate != null">create_date = #{createDate},</if>
+            <if test="updateDate != null">update_date = #{updateDate},</if>
+        </trim>
+        where router_id = #{routerId}
+    </update>
+
+    <delete id="deleteQuestRouterByRouterId" parameterType="Long">
+        delete from quest_router where router_id = #{routerId}
+    </delete>
+
+    <delete id="deleteQuestRouterByRouterIds" parameterType="String">
+        delete from quest_router where router_id in 
+        <foreach item="routerId" collection="array" open="(" separator="," close=")">
+            #{routerId}
+        </foreach>
+    </delete>
+
+
+
+<!--    计算每份每人答卷的总分aa-->
+    <select id="sumEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT e.router_id,d.user_id,e.route_name,e.image_url,e.core,e.create_date,d.sumGrade
+        FROM quest_router e,(
+            SELECT
+                a.router_id,
+                a.user_id,
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
+            FROM
+                quest_question c
+                    INNER JOIN
+                quest_answer a ON c.issue_id = a.issue_id
+            GROUP BY
+                a.router_id,
+                a.user_id
+            ORDER BY
+                a.router_id) AS d
+        <where>
+             e.router_id = d.router_id
+            <if test="routerId != null and routerId != ''">and d.router_id = #{routerId}</if>
+        </where>
+
+    </select>
+
+    <!--    计算每份问卷的答卷数aa-->
+    <select id="countRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+            e.router_id,     e.route_name,     e.image_url,     e.core,     e.create_date,
+            COALESCE(d.answer_sum, 0) AS total
+        FROM
+            quest_router e
+                LEFT JOIN (
+                SELECT
+                    COUNT(DISTINCT a.router_id,user_id) AS answer_sum,
+                    a.router_id
+                FROM
+                    quest_answer a
+                GROUP BY
+                    a.router_id
+            ) AS d ON e.router_id = d.router_id
+        ORDER BY
+            e.router_id;
+    </select>
+
+    <!--    计算每条线路答卷的平均分aa-->
+    <select id="avgEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+            d.router_id,e.route_name,e.image_url,e.core,e.create_date,
+            ROUND(AVG(d.sumGrade),2) AS avgGrade
+        FROM quest_router e,(
+            SELECT
+                a.router_id AS router_id,
+                a.user_id,
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
+            FROM
+                quest_question c
+                    INNER JOIN
+                quest_answer a ON c.issue_id = a.issue_id
+            GROUP BY
+                a.router_id,
+                a.user_id
+            ORDER BY
+                a.router_id) AS d
+        WHERE e.router_id = d.router_id
+        GROUP BY
+            d.router_id
+    </select>
+
+<!--    计算每份问卷小题的平均分-->
+    <select id="avgEveryAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+            d.router_id,c.issue_id,
+            c.problem_type,
+            c.problem,
+            c.grade,
+            d.avgGrade
+        FROM quest_question c,(
+            SELECT
+                a.router_id router_id,
+                a.issue_id issue_id,
+                ROUND(AVG(a.answer), 2) AS avgGrade
+            FROM
+                quest_question b
+                    INNER JOIN
+                quest_answer a ON b.issue_id = a.issue_id
+            WHERE
+                b.answer_type = 1
+            GROUP BY
+                a.router_id,
+                a.issue_id
+            ORDER BY a.router_id
+        ) d
+        WHERE   c.issue_id = d.issue_id
+        <if test="routerId != null "> and d.router_id = #{routerId}</if>
+    </select>
+
+<!--    计算总的平均分-->
+    <select id="avgAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+            ROUND(AVG(d.sumGrade),2) AS avgGrade
+        FROM quest_router e,(
+            SELECT
+                a.router_id AS router_id,
+                a.user_id,
+                ROUND(SUM(a.answer*c.type_weight*0.01),2) AS sumGrade
+            FROM
+                quest_question c
+                    INNER JOIN
+                quest_answer a ON c.issue_id = a.issue_id
+            GROUP BY
+                a.router_id,
+                a.user_id
+            ORDER BY
+                a.router_id) AS d
+        WHERE e.router_id = d.router_id
+</select>
+
+<!--    展示每份每人的答卷-->
+    <select id="selectEveryoneAnswerRouter" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+
+        SELECT
+            b.router_id AS router_id,
+            b.user_id AS user_id,
+            b.issue_id AS issue_id,
+            a.problem_type AS problem_type,
+            a.type_weight AS type_weight,
+            a.problem AS problem,
+            a.answer_type AS answer_type,
+            a.grade AS grade,
+            b.answer AS answer,
+            b.answer_result
+        FROM quest_question a
+        INNER JOIN quest_answer b ON a.issue_id = b.issue_id
+        <where>
+        <if test="routerId != null "> and b.router_id = #{routerId}</if>
+         <if test="userId != null "> and b.user_id = #{userId}</if>
+        </where>
+    </select>
+
+
+    <!--    展示答题详情-->
+    <select id="listAnswerDetails" parameterType="QuestAnswerSheetVo" resultMap="questAnswerSheetResultMap">
+        SELECT
+        b.id		AS  avgGrade,
+        b.router_id AS router_id,
+        b.user_id AS user_id,
+        b.issue_id AS issue_id,
+        a.problem_type AS problem_type,
+        a.type_weight AS type_weight,
+        a.problem AS problem,
+        a.answer_type AS answer_type,
+        a.grade AS grade,
+        b.answer AS answer,
+        b.answer_result,
+        b.create_date as create_date
+        FROM quest_question a
+        INNER JOIN quest_answer b ON a.issue_id = b.issue_id
+</select>
+</mapper>

@@ -1,8 +1,11 @@
 package com.ruoyi.system.service;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
+import com.ruoyi.system.domain.QuestWritUserInfo;
 import com.ruoyi.system.domain.SysUserBaseInfo;
 import com.ruoyi.system.domain.SysUsersInfo;
+import com.ruoyi.system.domain.vo.QuestionSheetVo;
+import com.ruoyi.system.domain.vo.RoutersListVo;
 
 import java.util.List;
 
@@ -81,6 +84,14 @@ public interface ISysUserService {
      * @return 用户对象信息
      */
     public SysUser selectUserById(Long userId);
+
+    /**
+     * 通过用户ID查询用户基本信息(小程序)
+     *
+     * @param userId 用户ID
+     * @return 用户对象信息
+     */
+    public SysUser selectUserById2(Long userId);
 
     /**
      * 通过用户ID查询用户基本信息
@@ -253,5 +264,25 @@ public interface ISysUserService {
     * 查询非代理商的人数
     * */
     List<SysUser> getUnAgent();
+
+
+    /**
+     * 小程序 查询骑行路线列表
+     * @return
+     */
+    public List<RoutersListVo> getRoutersList();
+
+    /**
+     * 小程序 得到一份问卷表单
+     * @return
+     */
+    public List<QuestionSheetVo> getQuestSheet();
+
+    /**
+     * 根据用户ID查询用户部分信息
+     * @param userId
+     * @return
+     */
+    QuestWritUserInfo getQuestWritUserInfo(Long userId);
 
 }
