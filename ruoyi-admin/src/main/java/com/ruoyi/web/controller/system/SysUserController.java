@@ -360,7 +360,7 @@ public class SysUserController extends BaseController {
                 routersListVo.setIsAC(0);
             }
         }
-        routersListVos.sort(Comparator.comparingInt(RoutersListVo::getIsAC));
+        //routersListVos.sort(Comparator.comparingInt(RoutersListVo::getIsAC));
 
         routersListVos.forEach(router -> {
             if (router.getImageUrl() != null && !router.getImageUrl().isEmpty()) {
