@@ -6,12 +6,13 @@
         <!--判断当前这道小题是什么类型的-->
         <text>问题类型:{{ currentGroupType }}</text>
       </view>
+
       <view class="action">
         <button class="cu-btn bg-blue shadow" @tap="showCardModal" data-target="modalCard">答题卡</button>
       </view>
     </view>
-
     <!-- 答题卡弹窗 -->
+
     <view class="cu-modal" :class="modalCard === 'modalCard' ? 'show' : ''" @tap="hideCardModal">
       <view class="cu-dialog" @tap.stop>
         <scroll-view class="page padding" :scroll-y="true" :style="{'height': swiperHeight2}">
@@ -49,7 +50,7 @@
 
     <!-- 问题组 Swiper -->
     <swiper :current="groupIndex" class="swiper-box" @change="SwiperGroupChange" :style="{'height': swiperHeight}">
-      <swiper-item v-for="(group, index) in groupedData" :key="index">
+      <swiper-item  @touchmove.stop v-for="(group, index) in groupedData" :key="index">
         <scroll-view
             scroll-y="true"
             style="height: 1300rpx;"
@@ -70,28 +71,7 @@
             <!-- 单选题 -->
             <view v-if="subject.answerType === 1">
               <view class="slider-container">
-                <!-- 滑动条 -->
-                <slider
-                    :max="100"
-                    :value="subject.answer || 0"
-                step="0.1"
-                show-value
-                @changing="handleSliderChanging(subject, $event)"
-                @change="handleSliderChange(subject, $event)"
-                active-color="#ff7e5f"
-                background-color="#e0e0e0"
-                block-size="20"
-                class="custom-slider"
-                ></slider>
-                <!-- 分段标记 -->
-                <view class="slider-divider-container">
-                  <view
-                      v-for="(option, index) in subject.answerOptions2"
-                      :key="option.id"
-                      class="slider-divider"
-                      :style="{ left: calculateDividerPosition(index, subject.answerOptions2.length) + '%' }"
-                  ></view>
-                </view>
+
                 <!-- 标签 -->
                 <view class="slider-labels">
                   <view
@@ -104,6 +84,30 @@
                     {{ option.id }}. {{ option.content }}
                   </view>
                 </view>
+                  <!-- 滑动条 -->
+                  <slider
+                      :max="100"
+                      :value="subject.answer || 0"
+                      step="0.1"
+                      show-value
+                      @changing="handleSliderChanging(subject, $event)"
+                      @change="handleSliderChange(subject, $event)"
+                      active-color="#ff7e5f"
+                      background-color="#e0e0e0"
+                      block-size="20"
+                      class="custom-slider"
+                  ></slider>
+                  <!-- 分段标记 -->
+                  <!--<view class="slider-divider-container">-->
+                  <!--  <view-->
+                  <!--      v-for="(option, index) in subject.answerOptions2"-->
+                  <!--      :key="option.id"-->
+                  <!--      class="slider-divider"-->
+                  <!--      :style="{ left: calculateDividerPosition(index, subject.answerOptions2.length) + '%' }"-->
+                  <!--  ></view>-->
+                  <!--</view>-->
+
+
               </view>
             </view>
 
@@ -144,7 +148,7 @@
           ></text>
         </view>
         <view class="label">
-          {{ groupIndex === groupedData.length-1  ? '交卷' : '下一组' }}
+          {{ groupIndex === groupedData.length - 1 ? '交卷' : '下一组' }}
         </view>
       </view>
 
@@ -361,7 +365,7 @@ export default {
           // 填空题处理
           return {
             issueId: subject.issueId, // 返回题目ID
-            answer: subject.answer , // 验证并存储填空题答案
+            answer: subject.answer, // 验证并存储填空题答案
             answerResult: null // 填空题没有选项结果
           };
         } else {
@@ -394,13 +398,19 @@ export default {
       submitTo(userId, routerId, processedSubjects)
           .then(res => {
             uni.showToast({
-              title: '提交成功',
+              title: '提交成功！',
               icon: 'success',
               duration: 2000
             });
             setTimeout(() => {
               uni.switchTab({
                 url: '/pages/index'
+              }).then(res=>{
+                uni.showToast({
+                  title: '请再打一条吧！',
+                  icon: 'success',
+                  duration: 2000
+                });
               });
             }, 2000);
           })
@@ -555,7 +565,6 @@ page {
   color: #ff7e5f;
   font-weight: bold;
 }
-
 
 </style>
 

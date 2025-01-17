@@ -112,13 +112,12 @@ export default {
   },
   methods: {
     transformRoutesData(routesData) {
+      console.log(routesData);
       return routesData.map(route => {
         // 获取路线名称、全长、爬升高度
         const routeName = route.routeName || '';
-        const length = route.length || '未知';
-        const elevation = route.elevation || '未知';
-        // 拼接 text 字符串：路线名称 + 全长 + 爬升高度
-        const text = `${routeName} ${length} km 爬升${elevation} m`;
+        const routerId = route.routerId || '';
+        const text = `${routerId}.${routeName}`;
         // 生成一个新的对象，包含 text 和 value
         return {
           text: text,

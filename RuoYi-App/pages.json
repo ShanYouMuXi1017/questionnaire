@@ -33,6 +33,7 @@
         "enablePullDownRefresh": true
       }
     },
+
     {
       "path": "pages/common/webview/index",
       "style": {
@@ -73,6 +74,18 @@
           "path": "setting/index",
           "style": {
             "navigationBarTitleText": "应用设置"
+          }
+        },
+		{
+		  "path": "user/agreement",
+		  "style": {
+		    "navigationBarTitleText": "用户协议"
+		  }
+		},
+        {
+          "path": "user/privacy",
+          "style": {
+            "navigationBarTitleText": "隐私政策"
           }
         },
         {
