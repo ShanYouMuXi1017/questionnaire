@@ -20,7 +20,7 @@ module.exports = {
 				agreements: [
 					{
 						title: "用户服务协议",
-						url: "https://swfu.online/prod-apis/protocol.html"
+						url: "https://swfu.online/prod-api/protocol.html"
 					}
 				]
 	}
