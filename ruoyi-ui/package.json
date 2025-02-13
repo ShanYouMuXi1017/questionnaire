@@ -2,7 +2,7 @@
   "name": "ruoyi",
   "version": "3.8.7",
   "description": "问卷调查",
-  "author": "工控云",
+  "author": "问卷调查",
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",

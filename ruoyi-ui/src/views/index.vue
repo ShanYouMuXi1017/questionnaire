@@ -1,18 +1,5 @@
 <template>
   <div class="container">
-    <el-card>
-      <h2 style="text-align: center;">问卷管理系统自建API</h2>
-    <el-row  :gutter="20" style="width: 100%;">
-    </el-row>
-    <el-table     :data="tableData"     border    style="width: 100%">
-    <el-table-column        prop="date"      label="名称"    >    </el-table-column>
-    <el-table-column      prop="name"      label="url" >    </el-table-column>
-    <el-table-column      prop="address"      label="API">    </el-table-column>
-  </el-table>
-
-
-    </el-card>
-
 
     <el-card style="margin-bottom: 20px;">
       <el-row>
@@ -127,33 +114,6 @@ export default {
           content: '{nt}个' 
         },
       ],
-      tableData: [{
-          date: '计算每份每人答卷的总分',
-          name: '@GetMapping("/sumEveryoneAnswerRouter")',
-          address: 'sumEveryoneAnswerRouter'
-        },
-
-        {
-          date: '计算每份问卷的答卷数',
-          name: '@GetMapping("/countRouter")',
-          address: 'countRouter'
-        },{
-          date: '计算每份答卷的平均分',
-          name: '@GetMapping("/avgEveryoneAnswerRouter")',
-          address: 'avgEveryoneAnswerRouter'
-        },{
-          date: '计算每份答卷里的小题的平均分',
-          name: '@GetMapping("/avgEveryAnswerRouter")',
-          address: 'avgEveryAnswerRouter'
-        }, {
-          date: '计算总的平均分',
-          name: '@GetMapping("/avgAnswerRouter")',
-          address: 'avgAnswerRouteravgAnswerRouter()'
-        }, {
-          date: '展示每份每人的答卷',
-          name: '@GetMapping("/selectEveryoneAnswerRouter")',
-          address: 'selectEveryoneAnswerRouter'
-        }]
     };
   },
   created() {
