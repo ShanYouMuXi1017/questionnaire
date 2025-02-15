@@ -1,8 +1,8 @@
 
 // 应用全局配置
 module.exports = {
-	baseUrl: 'https://swfu.online/prod-api',
-	// baseUrl: 'http://localhost:8080',
+	// baseUrl: 'https://swfu.online/prod-api',
+	baseUrl: 'http://localhost:8080',
 	// baseUrl: 'http:// 192.168.6.9:8080',
 	// 应用信息
 	appInfo: {

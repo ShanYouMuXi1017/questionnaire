@@ -21,7 +21,7 @@
     {
       "path": "pages/index",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "骑行",
         "enablePullDownRefresh": false
       }
     },

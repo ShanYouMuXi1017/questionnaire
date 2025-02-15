@@ -59,6 +59,15 @@
         <EChartComponentB />
       </div>
     </el-card>
+ 
+    <el-card  >
+      <div class="el-login-footer">
+      <div>ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2024093876号-1</a></div>
+      <div><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41042502000211">
+          <img src="@/assets/icons/备案编号图标.png" style="" />豫公网安备41042502000211号</a></div>
+      <div> Copyright © 2025 msun02</div>
+    </div>
+    </el-card>
 
   </div>
 </template>
@@ -135,12 +144,10 @@ export default {
       });
       // 计算每份每人答卷的总分
       sumEveryoneAnswerRouter(this.queryParams).then(response => {
-        // console.log(response);
         this.listsumEveryoneAnswerRouter = response;
       });
       // 计算每份问卷的答卷数
       countRouter(this.queryParams).then(response => {
-        // console.log(response);
         const listcountRouter = response.rows;
         this.answertotal = 0;
         for (let i = 0; i < response.total; i++) {
@@ -149,12 +156,10 @@ export default {
       });
       // 计算总的平均分
       avgAnswerRouter().then(response => {
-        // console.log(response);
         this.avgAnswerRouter = response.avgGrade;
       });
       // 展示每份每人的答卷
       selectEveryoneAnswerRouter(this.queryParams).then(response => {
-        // console.log(response);
         this.listselectEveryoneAnswerRouter = response;
       });
       this.loading = false
@@ -169,4 +174,22 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+.el-login-footer {
+  height: 40px;
+  line-height: 40px;
+
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  color: #000000;
+  font-family: Arial;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.el-login-footer > div {
+  flex: 1; /* 两个子元素平分空间 */
+}
+</style>

@@ -181,8 +181,7 @@ export default {
     getList() {
       this.loading = true;      
       this.queryParams.routerId = this.paramRouteId ;
-      console.log("this.queryParams");
-      console.log(this.queryParams);
+
       listQuestion(this.queryParams).then(response => {
         this.questionList = response.rows;
         this.total = response.total;

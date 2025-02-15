@@ -39,10 +39,11 @@ export function fillUserBasic(data) {
 }
 
 // 查询路线列表
-export function getRouters() {
+export function getRouters(query) {
 	return request({
 		url: '/system/user/basic/list',
-		method: 'get'
+		method: 'get',
+		params: query
 	})
 }
 
