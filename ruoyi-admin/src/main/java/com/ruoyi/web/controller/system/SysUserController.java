@@ -251,8 +251,9 @@ public class SysUserController extends BaseController {
     public AjaxResult resetPwd(@RequestBody SysUser user) {
         userService.checkUserAllowed(user);
         userService.checkUserDataScope(user.getUserId());
-        if (userService.selectUserType(user.getUserId()).equals("11"))
+        if (userService.selectUserType(user.getUserId()).equals("11")) {
             throw new ServiceException("该用户账户密码由微信授权, 无法重置!");
+        }
         user.setPassword(SecurityUtils.encryptPassword(user.getPassword()));
         user.setUpdateBy(getUsername());
         return toAjax(userService.resetPwd(user));
@@ -341,18 +342,24 @@ public class SysUserController extends BaseController {
      * @return
      */
     @GetMapping("/basic/list")
-    public AjaxResult routersList() {
+    public AjaxResult routersList(QuestRouterUser questRouterUser) {
+
         LoginUser loginUser = getLoginUser();
-        QuestRouterUser q = new QuestRouterUser();
-        q.setUserId(loginUser.getUserId());
-        List<QuestRouterUser> questRouterUsers = questRouterUserService.selectQuestRouterUserList(q);
+        questRouterUser.setUserId(loginUser.getUserId());
+
+        List<QuestRouterUser> questRouterUsers = questRouterUserService.selectQuestRouterUserList(questRouterUser);
+        System.out.println("questRouterUsers");
+        System.out.println(questRouterUsers);
         Set<Integer> answeredRouterIds = new HashSet<>();
         if (questRouterUsers != null && !questRouterUsers.isEmpty()) {
             answeredRouterIds = questRouterUsers.stream()
                     .map(qru -> qru.getRouterId().intValue())
                     .collect(Collectors.toSet());
         }
+        startPage();
         List<RoutersListVo> routersListVos = userService.getRoutersList();
+        System.out.println("routersListVos");
+        System.out.println(routersListVos);
         for (RoutersListVo routersListVo : routersListVos) {
             if (answeredRouterIds.contains(routersListVo.getRouterId().intValue())) {
                 routersListVo.setIsAC(1);

@@ -106,7 +106,6 @@ export default {
     getList() {
       this.loading = true;
       countRouter(this.queryParams).then(response => {
-        // console.log(response);
         this.listcountRouter = response.rows;
         this.loading = false;
       });

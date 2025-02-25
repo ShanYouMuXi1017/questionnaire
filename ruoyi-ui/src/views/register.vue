@@ -60,8 +60,11 @@
       </el-form-item>
     </el-form>
     <!--  底部  -->
-    <div class="el-register-footer">
-      <span>Copyright © 2018-2023 底部备案号 All Rights Reserved.</span>
+    <div class="el-login-footer">
+      <p>ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2024093876号-1</a></p>
+      <p><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41042502000211">
+          <img src="../assets/icons/备案编号图标.png" style="" />豫公网安备41042502000211号</a></p>
+      <p> Copyright © 2025 msun02</p>
     </div>
   </div>
 </template>
@@ -205,5 +208,17 @@ export default {
 }
 .register-code-img {
   height: 38px;
+}
+.el-login-footer {
+  height: 100px;
+  // line-height: 40px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  color: #fff;
+  font-family: Arial;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 </style>

@@ -71,7 +71,10 @@
     <div class="login-division"></div>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>备案号</span>
+      <p>ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2024093876号-1</a></p>
+      <p><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41042502000211">
+          <img src="../assets/icons/备案编号图标.png" style="" />豫公网安备41042502000211号</a></p>
+      <p> Copyright © 2025 msun02</p>
     </div>
   </div>
 </template>
@@ -251,7 +254,7 @@ export default {
 }
 
 .el-login-footer {
-  height: 40px;
+  height: 150px;
   line-height: 40px;
   position: fixed;
   bottom: 0;
@@ -262,6 +265,8 @@ export default {
   font-size: 12px;
   letter-spacing: 1px;
 }
+
+
 
 .login-code-img {
   height: 38px;
