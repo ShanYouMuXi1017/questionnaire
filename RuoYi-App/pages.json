@@ -12,27 +12,17 @@
         "navigationStyle": "custom"
       }
     },
-    // 基本信息页
-    {
-      "path": "pages/basic/basic",
-      "style": {
-        "navigationBarTitleText": "骑友信息调查",
-        "enablePullDownRefresh": false,
-        "navigationStyle": "default"
-      }
-    },
-    // 路线首页
-    {
-      "path": "pages/index",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationStyle": "custom"
-      }
-    },
     {
       "path": "pages/login",
       "style": {
         "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/index",
+      "style": {
+        "navigationBarTitleText": "骑行",
+        "enablePullDownRefresh": false
       }
     },
     {
@@ -43,13 +33,7 @@
         "enablePullDownRefresh": true
       }
     },
-    {
-      "path": "pages/researchAndDevelopment",
-      "style": {
-        "navigationBarTextStyle": "black",
-        "navigationStyle": "custom"
-      }
-    },
+
     {
       "path": "pages/common/webview/index",
       "style": {
@@ -61,27 +45,6 @@
       "style": {
         "navigationBarTitleText": "浏览文本"
       }
-    },
-    {
-      "path": "pages/questionnaire/route_choice",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/questionnaire/questionnaire_filling",
-      "style": {
-        "navigationBarTitleText": "开始答题",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/questionnaire/answer_sheet",
-      "style": {
-        "navigationBarTitleText": "开始答题",
-        "enablePullDownRefresh": false
-      }
     }
   ],
   "subPackages": [
@@ -89,9 +52,16 @@
       "root": "pages/componentsA",
       "pages": [
         {
-          "path": "relation/relation",
+          "path": "questionnaire/questionnaire_filling",
           "style": {
-            "navigationBarTitleText": "联系我们",
+            "navigationBarTitleText": "开始答题",
+            "enablePullDownRefresh": false
+          }
+        },
+        {
+          "path": "questionnaire/answer_sheet",
+          "style": {
+            "navigationBarTitleText": "答题记录",
             "enablePullDownRefresh": false
           }
         }
@@ -101,55 +71,27 @@
       "root": "pages/componentsB",
       "pages": [
         {
-          "path": "info/index",
-          "style": {
-            "navigationBarTitleText": "个人信息"
-          }
-        },
-        {
-          "path": "info/edit",
-          "style": {
-            "navigationBarTitleText": "编辑资料"
-          }
-        },
-        {
           "path": "setting/index",
           "style": {
             "navigationBarTitleText": "应用设置"
           }
         },
         {
-          "path": "help/index",
+          "path": "basic/basic",
           "style": {
-            "navigationBarTitleText": "常见问题"
+            "navigationBarTitleText": "骑友信息调查",
+            "enablePullDownRefresh": false,
+            "navigationStyle": "default"
           }
         },
         {
-          "path": "about/index",
-          "style": {
-            "navigationBarTitleText": "关于我们"
-          }
-        },
-        {
-          "path": "common/notice/announcement",
-          "style": {
-            "navigationBarTitleText": "最新公告",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "common/notice/notificationlist",
-          "style": {
-            "navigationBarTitleText": "公司通知",
-            "enablePullDownRefresh": true
-          }
-        },
-        {
-          "path": "common/notice/notification",
-          "style": {
-            "navigationBarTitleText": "通知详情",
-            "enablePullDownRefresh": true
-          }
+        	"path" : "user/agreementAndPrivacy",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "《用户协议》与《隐私政策》",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "default"
+        	}
         }
       ]
     }
@@ -161,7 +103,7 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/questionnaire/route_choice",
+        "pagePath": "pages/index",
         "iconPath": "pages/componentsA/static/images/tabbar/repair_normal.png",
         "selectedIconPath": "pages/componentsA/static/images/tabbar/repair_active.png",
         "text": "骑行"

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div v-for="(item, index) in listcountRouter" :key="index" :ref="`chartDom_${index}`" style="width: 90%; height: 400px;"></div>
+    <div v-for="(item, index) in listcountRouter" :key="index" :ref="`chartDom_${index}`" style="width: 90%; height: 400px;">
+    </div>
   </div>
 </template>
 

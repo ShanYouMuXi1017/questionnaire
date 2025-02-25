@@ -53,7 +53,7 @@
 				this.$modal.confirm('确定退出系统吗？').then(() => {
 					this.$store.dispatch('LogOut').then(() => {
 						uni.reLaunch({
-							url: 'pages/index'
+							url: 'pages/login'
 						})
 					})
 				})

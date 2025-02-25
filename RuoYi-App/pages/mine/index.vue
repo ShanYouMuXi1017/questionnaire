@@ -21,51 +21,31 @@
 					</view>
 
 					<!-- 昵称和角色认证 -->
-          <view v-if="nickName" class="user-info">
-            <view class="u_title">{{ nickName }}</view>
-          </view>
-					<!--<view v-if="nickName" @click="handleToInfo" class="user-info">-->
-					<!--	<view class="u_title">{{ nickName }}</view>-->
-					<!--</view>-->
+					<view v-if="nickName" class="user-info">
+						<view class="u_title">{{ nickName }}</view>
+					</view>
 				</view>
 
-				<!--<view @click="handleToInfo" class="flex align-center">-->
-				<!--	<text>个人信息</text>-->
-				<!--	<view class="iconfont icon-right"></view>-->
-				<!--</view>-->
 
 			</view>
 		</view>
 
 		<view class="content-section">
 			<view class="menu-list">
-				<!--<view class="list-cell list-cell-arrow" @click="handleToEditInfo">-->
-				<!--	<view class="menu-item-box">-->
-				<!--		&lt;!&ndash; <view class="iconfont icon-user menu-icon"></view> &ndash;&gt;-->
-				<!--		<image src="/static/icon/book.png" mode="aspectFit"-->
-				<!--			style="width: 20px; height: 16px; margin-right: 2px;"></image>-->
-				<!--		<view> 编辑资料</view>-->
-				<!--	</view>-->
-				<!--</view>-->
-				<view class="list-cell list-cell-arrow" @click="handleHelp">
-					<view class="menu-item-box">
-						<view class="iconfont icon-help menu-icon"></view>
-						<view>常见问题</view>
-					</view>
-				</view>
-				<view class="list-cell list-cell-arrow" @click="handleAbout">
-					<view class="menu-item-box">
-						<!-- <view class="iconfont icon-aixin menu-icon"></view> -->
-						<image src="/static/icon/about.png" mode="aspectFit" style="width: 20px; height:20px;"></image>
-						<view>关于我们</view>
-					</view>
-				</view>
 				<view class="list-cell list-cell-arrow" @click="handleToSetting">
 					<view class="menu-item-box">
 						<view class="iconfont icon-setting menu-icon"></view>
 						<view>应用设置</view>
 					</view>
 				</view>
+
+				<view class="list-cell list-cell-arrow" @click="handleUserAgrement">
+					<view class="menu-item-box">
+						<view class="iconfont icon-user  menu-icon"></view>
+						<view>用户协议与隐私政策</view>
+					</view>
+				</view>
+
 			</view>
 
 		</view>
@@ -74,17 +54,13 @@
 </template>
 
 <script>
-	import storage from '@/utils/storage'
-	import {
-		getUserProfile
-	} from '../../api/system/user';
-
 	export default {
 		data() {
 			return {
 				nickName: this.$store.state.user.nickName,
 				version: getApp().globalData.config.appInfo.version,
-				modalVisible: false
+				modalVisible: false,
+				globalConfig: getApp().globalData.config,
 			}
 		},
 
@@ -97,8 +73,7 @@
 				return uni.getSystemInfoSync().windowHeight - 50
 			}
 		},
-		created() {
-		},
+		created() {},
 		methods: {
 			handleToInfo() {
 				this.$tab.navigateTo('/pages/componentsB/info/index')
@@ -109,21 +84,18 @@
 			handleToSetting() {
 				this.$tab.navigateTo('/pages/componentsB/setting/index')
 			},
+			handleUserAgrement() {
+				this.$tab.navigateTo('/pages/componentsB/user/agreementAndPrivacy')
+			},
 			handleToLogin() {
 				this.$tab.reLaunch('/pages/login')
 			},
 			handleLogout() {
 				this.$modal.confirm('确定退出系统吗？').then(() => {
 					this.$store.dispatch('LogOut').then(() => {
-						this.$tab.reLaunch('/pages/index')
+						this.$tab.reLaunch('/pages/login')
 					})
 				})
-			},
-			handleHelp() {
-				this.$tab.navigateTo('/pages/componentsB/help/index')
-			},
-			handleAbout() {
-				this.$tab.navigateTo('/pages/componentsB/about/index')
 			},
 			/**
 			 * 用于实现对象数组按某一项属性排序
@@ -244,46 +216,51 @@
 			}
 		}
 
-    .content-section {
-      position: relative;
-      top: -50px;
+		.content-section {
+			position: relative;
+			top: -50px;
 
-      .menu-list {
-        .list-cell {
-          /* 增加高度 */
-          height: 60px; /* 你可以根据需要调整高度 */
-          padding: 10px 15px; /* 为每个项增加内边距，调整项的内容位置 */
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
+			.menu-list {
+				.list-cell {
+					/* 增加高度 */
+					height: 60px;
+					/* 你可以根据需要调整高度 */
+					padding: 10px 15px;
+					/* 为每个项增加内边距，调整项的内容位置 */
+					display: flex;
+					align-items: center;
+					justify-content: flex-start;
 
-          .menu-item-box {
-            display: flex;
-            align-items: center;
-          }
+					.menu-item-box {
+						display: flex;
+						align-items: center;
+					}
 
-          .iconfont, image {
-            margin-right: 10px; /* 图标与文本之间的间距 */
-          }
+					.iconfont,
+					image {
+						margin-right: 10px;
+						/* 图标与文本之间的间距 */
+					}
 
-          /* 调整图标大小，可以根据需要进一步修改 */
-          .iconfont {
-            font-size: 24px;
-          }
+					/* 调整图标大小，可以根据需要进一步修改 */
+					.iconfont {
+						font-size: 24px;
+					}
 
-          image {
-            width: 24px;
-            height: 24px;
-          }
+					image {
+						width: 24px;
+						height: 24px;
+					}
 
-          /* 如果你需要不同的颜色和字体大小，可以在这里添加样式 */
-          .menu-item-box view {
-            font-size: 16px; /* 增大文本字体 */
-            //color: #333; /* 默认文本颜色 */
-          }
-        }
-      }
-    }
+					/* 如果你需要不同的颜色和字体大小，可以在这里添加样式 */
+					.menu-item-box view {
+						font-size: 16px;
+						/* 增大文本字体 */
+						//color: #333; /* 默认文本颜色 */
+					}
+				}
+			}
+		}
 
 	}
 </style>

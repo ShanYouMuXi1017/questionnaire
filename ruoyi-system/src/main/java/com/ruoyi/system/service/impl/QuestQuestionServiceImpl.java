@@ -1,6 +1,7 @@
 package com.ruoyi.system.service.impl;
 
 import com.ruoyi.system.domain.QuestQuestion;
+import com.ruoyi.system.domain.QuestQuestionFromExcel;
 import com.ruoyi.system.mapper.QuestQuestionMapper;
 import com.ruoyi.system.service.IQuestQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,19 +11,19 @@ import java.util.List;
 
 /**
  * 问卷问题Service业务层处理
- * 
+ *
  * @author MCL
  * @date 2024-09-14
  */
 @Service
-public class QuestQuestionServiceImpl implements IQuestQuestionService 
+public class QuestQuestionServiceImpl implements IQuestQuestionService
 {
     @Autowired
     private QuestQuestionMapper questQuestionMapper;
 
     /**
      * 查询问卷问题
-     * 
+     *
      * @param issueId 问卷问题主键
      * @return 问卷问题
      */
@@ -34,7 +35,7 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
 
     /**
      * 查询问卷问题列表
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 问卷问题
      */
@@ -46,7 +47,7 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
 
     /**
      * 新增问卷问题
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 结果
      */
@@ -58,7 +59,7 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
 
     /**
      * 修改问卷问题
-     * 
+     *
      * @param questQuestion 问卷问题
      * @return 结果
      */
@@ -70,7 +71,7 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
 
     /**
      * 批量删除问卷问题
-     * 
+     *
      * @param issueIds 需要删除的问卷问题主键
      * @return 结果
      */
@@ -82,7 +83,7 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
 
     /**
      * 删除问卷问题信息
-     * 
+     *
      * @param issueId 问卷问题主键
      * @return 结果
      */
@@ -90,5 +91,15 @@ public class QuestQuestionServiceImpl implements IQuestQuestionService
     public int deleteQuestQuestionByIssueId(Long issueId)
     {
         return questQuestionMapper.deleteQuestQuestionByIssueId(issueId);
+    }
+
+    /**
+     * 批量新增问卷问题
+     * @param list
+     * @return
+     */
+    @Override
+    public int UpdateQuestQuestion(List<QuestQuestionFromExcel> list) {
+        return questQuestionMapper.UpdateQuestQuestion(list);
     }
 }

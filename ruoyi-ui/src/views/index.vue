@@ -1,18 +1,5 @@
 <template>
   <div class="container">
-    <el-card>
-      <h2 style="text-align: center;">问卷管理系统自建API</h2>
-    <el-row  :gutter="20" style="width: 100%;">
-    </el-row>
-    <el-table     :data="tableData"     border    style="width: 100%">
-    <el-table-column        prop="date"      label="名称"    >    </el-table-column>
-    <el-table-column      prop="name"      label="url" >    </el-table-column>
-    <el-table-column      prop="address"      label="API">    </el-table-column>
-  </el-table>
-
-
-    </el-card>
-
 
     <el-card style="margin-bottom: 20px;">
       <el-row>
@@ -72,6 +59,15 @@
         <EChartComponentB />
       </div>
     </el-card>
+ 
+    <el-card  >
+      <div class="el-login-footer">
+      <div>ICP备案/许可证号：<a href="https://beian.miit.gov.cn/" target="_blank">豫ICP备2024093876号-1</a></div>
+      <div><a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41042502000211">
+          <img src="@/assets/icons/备案编号图标.png" style="" />豫公网安备41042502000211号</a></div>
+      <div> Copyright © 2025 msun02</div>
+    </div>
+    </el-card>
 
   </div>
 </template>
@@ -127,33 +123,6 @@ export default {
           content: '{nt}个' 
         },
       ],
-      tableData: [{
-          date: '计算每份每人答卷的总分',
-          name: '@GetMapping("/sumEveryoneAnswerRouter")',
-          address: 'sumEveryoneAnswerRouter'
-        },
-
-        {
-          date: '计算每份问卷的答卷数',
-          name: '@GetMapping("/countRouter")',
-          address: 'countRouter'
-        },{
-          date: '计算每份答卷的平均分',
-          name: '@GetMapping("/avgEveryoneAnswerRouter")',
-          address: 'avgEveryoneAnswerRouter'
-        },{
-          date: '计算每份答卷里的小题的平均分',
-          name: '@GetMapping("/avgEveryAnswerRouter")',
-          address: 'avgEveryAnswerRouter'
-        }, {
-          date: '计算总的平均分',
-          name: '@GetMapping("/avgAnswerRouter")',
-          address: 'avgAnswerRouteravgAnswerRouter()'
-        }, {
-          date: '展示每份每人的答卷',
-          name: '@GetMapping("/selectEveryoneAnswerRouter")',
-          address: 'selectEveryoneAnswerRouter'
-        }]
     };
   },
   created() {
@@ -175,12 +144,10 @@ export default {
       });
       // 计算每份每人答卷的总分
       sumEveryoneAnswerRouter(this.queryParams).then(response => {
-        // console.log(response);
         this.listsumEveryoneAnswerRouter = response;
       });
       // 计算每份问卷的答卷数
       countRouter(this.queryParams).then(response => {
-        // console.log(response);
         const listcountRouter = response.rows;
         this.answertotal = 0;
         for (let i = 0; i < response.total; i++) {
@@ -189,12 +156,10 @@ export default {
       });
       // 计算总的平均分
       avgAnswerRouter().then(response => {
-        // console.log(response);
         this.avgAnswerRouter = response.avgGrade;
       });
       // 展示每份每人的答卷
       selectEveryoneAnswerRouter(this.queryParams).then(response => {
-        // console.log(response);
         this.listselectEveryoneAnswerRouter = response;
       });
       this.loading = false
@@ -209,4 +174,22 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+
+.el-login-footer {
+  height: 40px;
+  line-height: 40px;
+
+  bottom: 0;
+  width: 100%;
+  display: flex;
+  text-align: center;
+  color: #000000;
+  font-family: Arial;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+.el-login-footer > div {
+  flex: 1; /* 两个子元素平分空间 */
+}
+</style>

@@ -117,8 +117,6 @@ export default {
       this.loading = true;
       // 计算每份每人答卷的总分
       sumEveryoneAnswerRouter().then(response => {
-        console.log("response");
-        console.log(response);
         this.listsumEveryoneAnswerRouter = response.rows;
         this.total = response.total;
         this.loading = false;
@@ -147,7 +145,6 @@ export default {
     },
     // 点击路由实现跳转功能
     readDetails(routeId, routeName, userId) {
-      console.log(routeId, routeName, userId);
       this.$router.push({
         name: 'answerSheetDetails',
         params: {

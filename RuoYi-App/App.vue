@@ -6,7 +6,6 @@ import { getToken } from '@/utils/auth';
 export default {
 	onLaunch: function (options) {
 		this.initApp();
-
 	},
 	methods: {
 		// 初始化应用
@@ -17,6 +16,7 @@ export default {
 			//#ifdef H5
 			this.checkLogin();
 			//#endif
+
 		},
 		initConfig() {
 			this.globalData.config = config;

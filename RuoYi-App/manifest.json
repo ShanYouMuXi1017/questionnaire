@@ -43,7 +43,7 @@
     "quickapp" : {},
     "mp-weixin" : {
         "lazyCodeLoading" : "requiredComponents",
-        "appid" : "wxf5752db94f663dce",
+        "appid" : "wx003161c3b3581754",
         "setting" : {
             "urlCheck" : false,
             "es6" : true,
@@ -62,11 +62,7 @@
             "chooseAddress",
             "choosePoi"
         ],
-        "permission" : {
-            "scope.userLocation" : {
-                "desc" : "您的位置信息将用于业务员拜访签到"
-            }
-        }
+        "permission" : {}
     },
     "vueVersion" : "2",
     "h5" : {

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {isFillUserBasic} from "../../api/system/user";
+import {isFillUserBasic} from "api/system/user";
 
 export default {
   data() {
@@ -21,8 +21,6 @@ export default {
     }
   },
   onLoad() {
-    console.log(this.userId);
-    console.log("用户id");
     this.getImgSrc()
     this.countDown()
   },
@@ -51,12 +49,12 @@ export default {
        await isFillUserBasic(this.userId).then(res=>{
         if(res.data===1){//填了
           uni.reLaunch({
-            url: '/pages/questionnaire/route_choice'
+            url: '/pages/index'
           });
         }
         if(res.data===-1){//没填
           uni.reLaunch({
-            url: '/pages/basic/basic'
+            url: '/pages/componentsB/basic/basic'
           });
         }
       })
