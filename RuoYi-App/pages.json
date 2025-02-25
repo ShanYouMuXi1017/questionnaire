@@ -76,18 +76,6 @@
             "navigationBarTitleText": "应用设置"
           }
         },
-		{
-		  "path": "user/agreement",
-		  "style": {
-		    "navigationBarTitleText": "用户协议"
-		  }
-		},
-        {
-          "path": "user/privacy",
-          "style": {
-            "navigationBarTitleText": "隐私政策"
-          }
-        },
         {
           "path": "basic/basic",
           "style": {
@@ -95,6 +83,15 @@
             "enablePullDownRefresh": false,
             "navigationStyle": "default"
           }
+        },
+        {
+        	"path" : "user/agreementAndPrivacy",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "《用户协议》与《隐私政策》",
+				"enablePullDownRefresh": false,
+				"navigationStyle": "default"
+        	}
         }
       ]
     }

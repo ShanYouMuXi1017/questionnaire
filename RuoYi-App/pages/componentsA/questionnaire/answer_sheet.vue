@@ -566,5 +566,10 @@ page {
   font-weight: bold;
 }
 
+.custom-slider{
+	margin-left: 17%;
+	width:  %;
+}
+
 </style>
 

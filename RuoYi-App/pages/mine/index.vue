@@ -42,15 +42,10 @@
 				<view class="list-cell list-cell-arrow" @click="handleUserAgrement">
 					<view class="menu-item-box">
 						<view class="iconfont icon-user  menu-icon"></view>
-						<view>用户协议</view>
+						<view>用户协议与隐私政策</view>
 					</view>
 				</view>
-				<view class="list-cell list-cell-arrow" @click="handleUserPrivacy">
-					<view class="menu-item-box">
-						<view class="iconfont icon-user menu-icon"></view>
-						<view>隐私政策</view>
-					</view>
-				</view>
+
 			</view>
 
 		</view>
@@ -90,10 +85,7 @@
 				this.$tab.navigateTo('/pages/componentsB/setting/index')
 			},
 			handleUserAgrement() {
-				this.$tab.navigateTo('/pages/componentsB/user/agreement')
-			},
-			handleUserPrivacy(){
-				this.$tab.navigateTo('/pages/componentsB/user/privacy')
+				this.$tab.navigateTo('/pages/componentsB/user/agreementAndPrivacy')
 			},
 			handleToLogin() {
 				this.$tab.reLaunch('/pages/login')

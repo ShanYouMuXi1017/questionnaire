@@ -6,7 +6,7 @@
 			<text class="route-name">{{ firstRouteName }}</text>
 
 			<image class="route-image" :src="routeObject.imageUrl" mode="aspectFill" @tap="previewImage" />
-			<view class="route-info">
+<!-- 			<view class="route-info">
 				<view class="info">
 					<text class="info-label">全程:</text>
 					<text class="info-value">{{ routeObject.length }} km</text>
@@ -15,7 +15,7 @@
 					<text class="info-label" style="margin-left: 10px">爬升高度:</text>
 					<text class="info-value">{{ routeObject.elevation }} m</text>
 				</view>
-			</view>
+			</view> -->
 
 			<!-- 其他途径展示在下方 -->
 			<view class="other-routes" v-if="otherRoutes.length > 0">
