@@ -105,31 +105,32 @@
 
     <el-table v-loading="loading" :data="questionList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="问题编号" align="center" prop="issueId" />
-      <el-table-column label="问题类型" align="center" prop="problemType">
+      <el-table-column label="问题编号" align="center" prop="issueId" width="80px" />
+      <el-table-column label="问题类型" align="center" prop="problemType" width="120px">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.quest_issue_type" :value="scope.row.problemType"/>
         </template>
       </el-table-column>
-      <el-table-column label="问题类型权重（%）" align="center" prop="typeWeight" />
-      <el-table-column label="问题" align="center" prop="problem" />
-      <el-table-column label="回答类型" align="center" prop="answerType">
+      <el-table-column label="问题类型权重（%）" align="center" prop="typeWeight" width="140px" />
+      <el-table-column label="问题" align="center" prop="problem"  />
+      <el-table-column label="回答选项" align="center" prop="answerOptions"  />
+      <el-table-column label="回答类型" align="center" prop="answerType" width="80px">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.quest_answer_type" :value="scope.row.answerType"/>
         </template>
       </el-table-column>
-      <el-table-column label="评分" align="center" prop="grade" />
-      <el-table-column label="创建时间" align="center" prop="createDate" width="180">
+      <el-table-column label="评分" align="center" prop="grade" width="60px" />
+      <el-table-column label="创建时间" align="center" prop="createDate" width="120px">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.createDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="更新时间" align="center" prop="updateDate" width="180">
+      <el-table-column label="更新时间" align="center" prop="updateDate" width="120px">
         <template slot-scope="scope">
           <span>{{ parseTime(scope.row.updateDate, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="120px">
         <template slot-scope="scope">
           <el-button
             size="mini"
@@ -175,6 +176,9 @@
         </el-form-item>
         <el-form-item label="问题" prop="problem">
           <el-input v-model="form.problem" placeholder="请输入问题" />
+        </el-form-item>
+        <el-form-item label="回答选项" prop="answerOptions">
+          <el-input v-model="form.answerOptions" placeholder="请输入回答选项" />
         </el-form-item>
         <el-form-item label="回答类型" prop="answerType">
           <el-select v-model="form.answerType" placeholder="请选择回答类型">
